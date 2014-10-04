@@ -20,6 +20,11 @@ public interface Token {
 	public int getStopPos();
 
 	/**
+	 * get token text size. this is equivalent to Token#getStopPos() - Token#getStartPos()
+	 * @return
+	 */
+	public int getSize();
+	/**
 	 * get token text. this is equivalent to Token#getSubText(0, 0)
 	 * @return
 	 */
