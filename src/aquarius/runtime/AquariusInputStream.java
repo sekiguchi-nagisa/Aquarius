@@ -25,7 +25,7 @@ public interface AquariusInputStream {
 	 * if position < 0
 	 * if position >= input size
 	 */
-	public void rollbackPosition(int position) throws IndexOutOfBoundsException;
+	public void setPosition(int position) throws IndexOutOfBoundsException;
 
 	/**
 	 * get charactor in current position.
@@ -40,6 +40,15 @@ public interface AquariusInputStream {
 	 * consumed character. if input is end of file, return EOF.
 	 */
 	public int consume();
+
+	/**
+	 * 
+	 * @return
+	 * may be null
+	 */
+	public String getSourceName();
+
+	public void setSourceName(String sourceName);
 
 	/**
 	 * create token.

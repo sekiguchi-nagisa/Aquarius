@@ -6,16 +6,19 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 
 public class BufferedStream implements AquariusInputStream {
+	private String sourceName;
 	private final byte[] buffer;
 	private final int bufferSize;
 	private int currentPos = 0;
 	
-	public BufferedStream(String source) {
+	public BufferedStream(String sourceName, String source) {
+		this.sourceName = sourceName;
 		this.buffer = source.getBytes(Charset.forName("UTF-8"));
 		this.bufferSize = this.buffer.length;
 	}
 
-	public BufferedStream(InputStream inputStream, boolean close) {
+	public BufferedStream(String sourceName, InputStream inputStream, boolean close) {
+		this.sourceName = sourceName;
 		ByteArrayOutputStream bufStream = new ByteArrayOutputStream();
 		final int size = 512;
 		byte[] buf = new byte[size];
@@ -55,7 +58,7 @@ public class BufferedStream implements AquariusInputStream {
 	}
 
 	@Override
-	public void rollbackPosition(int position) throws IndexOutOfBoundsException {
+	public void setPosition(int position) throws IndexOutOfBoundsException {
 		if(!this.checkIndexRange(position)) {
 			throw new IndexOutOfBoundsException("position is " + position + 
 					", but buffer size is " + this.bufferSize);
@@ -167,5 +170,15 @@ public class BufferedStream implements AquariusInputStream {
 			}
 			return lineNum;
 		}
+	}
+
+	@Override
+	public String getSourceName() {
+		return this.sourceName;
+	}
+
+	@Override
+	public void setSourceName(String sourceName) {
+		this.sourceName = sourceName;
 	}
 }

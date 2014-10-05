@@ -5,7 +5,7 @@ package aquarius.runtime;
  * @author skgchxngsxyz-opensuse
  *
  */
-public interface Token {
+public interface Token extends ParsedResult {
 	/**
 	 * get token start position. inclusive
 	 * @return
