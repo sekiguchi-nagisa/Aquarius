@@ -40,12 +40,12 @@ public abstract class ParsingExpression implements ParsedResult {
 		return new CharSet(ranges);
 	}
 
-	public static Rule rule(ParsingExpression expr) {
-		return new Rule(expr);
+	public static Rule rule(String ruleName, ParsingExpression expr) {
+		return new Rule(ruleName, expr);
 	}
 
-	public static Rule rule() {
-		return new Rule(null);
+	public static Rule rule(String ruleName) {
+		return new Rule(ruleName, null);
 	}
 
 	public static SubExpr sub(ParsingExpression expr) {
@@ -80,8 +80,8 @@ public abstract class ParsingExpression implements ParsedResult {
 		return new Choice(exprs);
 	}
 
-	public static Action action(int index) {
-		return new Action(index);
+	public static Action action(ParsingExpression expr, int index) {
+		return new Action(expr, index);
 	}
 
 	public static AndPredictAction andAction(int index) {
@@ -123,6 +123,11 @@ class StringLiteral extends ParsingExpression {
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitString(this);
 	}
+
+	@Override
+	public String toString() {
+		return "'" + this.target + "'";
+	}
 }
 
 /**
@@ -135,6 +140,11 @@ class Any extends ParsingExpression {
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitAny(this);
+	}
+
+	@Override
+	public String toString() {
+		return ".";
 	}
 }
 
@@ -184,10 +194,20 @@ class CharSet extends ParsingExpression {
 		return this;
 	}
 
+	/**
+	 * 
+	 * @return
+	 * may be null
+	 */
 	public List<Integer> getCharList() {
 		return this.charList;
 	}
 
+	/**
+	 * 
+	 * @return
+	 * may be null
+	 */
 	public List<Pair<Integer, Integer>> getRangeList() {
 		return this.rangeList;
 	}
@@ -195,6 +215,26 @@ class CharSet extends ParsingExpression {
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitCharSet(this);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sBuilder = new StringBuilder();
+		sBuilder.append('[');
+		if(this.charList != null) {
+			for(int ch : this.charList) {
+				sBuilder.append((char) ch);
+			}
+		}
+		if(this.rangeList != null) {
+			for(Pair<Integer, Integer> range : this.rangeList) {
+				sBuilder.append((char) range.getLeft().intValue());
+				sBuilder.append('-');
+				sBuilder.append((char) range.getRight().intValue());
+			}
+		}
+		sBuilder.append(']');
+		return sBuilder.toString();
 	}
 }
 
@@ -205,6 +245,7 @@ class CharSet extends ParsingExpression {
 *
 */
 class Rule extends ParsingExpression {
+	private final String ruleName;
 	private ParsingExpression pattern;
 	private ParsingActionSet actionSet;
 
@@ -213,8 +254,13 @@ class Rule extends ParsingExpression {
 	 * @param pattern
 	 * may be null
 	 */
-	Rule(ParsingExpression pattern) {
+	Rule(String ruleName, ParsingExpression pattern) {
+		this.ruleName = ruleName;
 		this.pattern = pattern;
+	}
+
+	public String getRuleName() {
+		return this.ruleName;
 	}
 
 	/**
@@ -258,6 +304,18 @@ class Rule extends ParsingExpression {
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitRule(this);
 	}
+
+	@Override
+	public String toString() {
+		return this.ruleName;
+	}
+
+	public String stringify() {
+		if(this.pattern == null) {
+			return this.ruleName + " = $null$";
+		}
+		return this.ruleName + " = " + this.pattern.toString() + ";";
+	}
 }
 
 abstract class CompoundExpr extends ParsingExpression {
@@ -288,6 +346,11 @@ class SubExpr extends CompoundExpr {
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitSubExpr(this);
 	}
+
+	@Override
+	public String toString() {
+		return "(" + this.expr.toString() + ")";
+	}
 }
 
 /**
@@ -304,6 +367,11 @@ class ZeroMore extends CompoundExpr {
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitZeroMore(this);
+	}
+
+	@Override
+	public String toString() {
+		return this.expr.toString() + "*";
 	}
 }
 
@@ -322,6 +390,11 @@ class OneMore extends CompoundExpr {
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitOneMore(this);
 	}
+
+	@Override
+	public String toString() {
+		return this.expr.toString() + "+";
+	}
 }
 
 /**
@@ -338,6 +411,11 @@ class Optional extends CompoundExpr {
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitOptional(this);
+	}
+
+	@Override
+	public String toString() {
+		return this.expr.toString() + "?";
 	}
 }
 
@@ -358,6 +436,11 @@ class AndPredict extends CompoundExpr {
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitAndPredict(this);
 	}
+
+	@Override
+	public String toString() {
+		return "&" + this.expr.toString();
+	}
 }
 
 /**
@@ -375,6 +458,11 @@ class NotPredict extends CompoundExpr {
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitNotPredict(this);
+	}
+
+	@Override
+	public String toString() {
+		return "!" + this.expr.toString();
 	}
 }
 
@@ -408,6 +496,19 @@ class Sequence extends ListExpr {
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitSeq(this);
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sBuilder = new StringBuilder();
+		final int size = this.exprList.size();
+		for(int i = 0; i < size; i++) {
+			if(i > 0) {
+				sBuilder.append(' ');
+			}
+			sBuilder.append(this.exprList.get(i));
+		}
+		return sBuilder.toString();
+	}
 }
 
 /**
@@ -425,6 +526,19 @@ class Choice extends ListExpr {
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitChoice(this);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sBuilder = new StringBuilder();
+		final int size = this.exprList.size();
+		for(int i = 0; i < size; i++) {
+			if(i > 0) {
+				sBuilder.append(" / ");
+			}
+			sBuilder.append(this.exprList.get(i));
+		}
+		return sBuilder.toString();
 	}
 }
 
@@ -453,13 +567,25 @@ abstract class AbstractAction extends ParsingExpression {
 *
 */
 class Action extends AbstractAction {	// extended expression type
-	Action(int index) {
+	private final ParsingExpression expr;
+
+	Action(ParsingExpression expr, int index) {
 		super(index);
+		this.expr = expr;
+	}
+
+	public ParsingExpression getExpr() {
+		return this.expr;
 	}
 
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitAction(this);
+	}
+
+	@Override
+	public String toString() {
+		return this.expr + " {" + this.index + "}";
 	}
 }
 
@@ -479,6 +605,11 @@ class AndPredictAction extends AbstractAction {	// extended expression type
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitAndPredictAction(this);
 	}
+
+	@Override
+	public String toString() {
+		return "&{" + this.index + "}";
+	}
 }
 
 /**
@@ -497,11 +628,16 @@ class NotPredictAction extends AbstractAction {	// extended expression type
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitNotPredictAction(this);
 	}
+
+	@Override
+	public String toString() {
+		return "!{" + this.index + "}";
+	}
 }
 
 /**
-* try to match sub expression and return matched result as one string.
-* -> < expr >
+* try to match sub expression sequence and return matched result as one string.
+* -> < expr1 expr2 ... exprN >
 * @author skgchxngsxyz-opensuse
 *
 */
@@ -513,5 +649,20 @@ class Capture extends ListExpr {	// extended expression type
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitCapture(this);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sBuilder = new StringBuilder();
+		sBuilder.append('<');
+		final int size = this.exprList.size();
+		for(int i = 0; i < size; i++) {
+			if(i > 0) {
+				sBuilder.append(' ');
+			}
+			sBuilder.append(this.exprList.get(i));
+		}
+		sBuilder.append('>');
+		return sBuilder.toString();
 	}
 }

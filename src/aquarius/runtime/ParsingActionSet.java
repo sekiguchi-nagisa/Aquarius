@@ -6,6 +6,6 @@ package aquarius.runtime;
  *
  */
 public interface ParsingActionSet {
-	public void action();
+	public ParsedResult action();
 	public boolean predicate();
 }
