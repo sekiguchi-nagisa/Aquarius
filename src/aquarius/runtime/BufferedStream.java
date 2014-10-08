@@ -101,10 +101,6 @@ public class BufferedStream implements AquariusInputStream {
 		return new GeneralToken(startPos, stopPos);
 	}
 
-	public int getBufferSize() {
-		return this.bufferSize;
-	}
-
 	class GeneralToken implements Token {
 		private final int startPos;
 		private final int stopPos;
@@ -180,5 +176,10 @@ public class BufferedStream implements AquariusInputStream {
 	@Override
 	public void setSourceName(String sourceName) {
 		this.sourceName = sourceName;
+	}
+
+	@Override
+	public int getInputSize() {
+		return this.bufferSize;
 	}
 }

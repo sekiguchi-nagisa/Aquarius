@@ -1,6 +1,6 @@
-package aquarius.runtime.expression;
+package aquarius.combinator.expression;
 
-import aquarius.runtime.ExpressionVisitor;
+import aquarius.combinator.ExpressionVisitor;
 
 /**
 * try to match string literal. return matched string

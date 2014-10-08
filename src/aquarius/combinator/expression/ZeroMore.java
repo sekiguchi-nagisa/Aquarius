@@ -1,6 +1,6 @@
-package aquarius.runtime.expression;
+package aquarius.combinator.expression;
 
-import aquarius.runtime.ExpressionVisitor;
+import aquarius.combinator.ExpressionVisitor;
 
 /**
 * match zero or more repetition of the expression. return matched results as array

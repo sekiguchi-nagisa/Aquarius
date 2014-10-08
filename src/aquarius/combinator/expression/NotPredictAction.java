@@ -1,7 +1,7 @@
-package aquarius.runtime.expression;
+package aquarius.combinator.expression;
 
-import aquarius.runtime.ExpressionVisitor;
-import aquarius.runtime.PredictiveAction;
+import aquarius.combinator.ExpressionVisitor;
+import aquarius.combinator.PredictiveAction;
 
 /**
 * execute semantic action. if return value is failed, not advance parsing position.

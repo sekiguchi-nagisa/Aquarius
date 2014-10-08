@@ -1,12 +1,12 @@
-package aquarius.runtime.expression;
+package aquarius.combinator.expression;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import aquarius.runtime.ExpressionVisitor;
+import aquarius.combinator.ExpressionVisitor;
+import aquarius.combinator.ParsingAction;
+import aquarius.combinator.PredictiveAction;
 import aquarius.runtime.ParsedResult;
-import aquarius.runtime.ParsingAction;
-import aquarius.runtime.PredictiveAction;
 
 public interface ParsingExpression extends ParsedResult {
 	public <T> T accept(ExpressionVisitor<T> visitor);
@@ -22,14 +22,6 @@ public interface ParsingExpression extends ParsedResult {
 
 	public static CharSet ch(int ...chars) {
 		return new CharSet(chars);
-	}
-
-	public static Rule rule(String ruleName, ParsingExpression expr) {
-		return new Rule(ruleName, expr);
-	}
-
-	public static Rule rule(String ruleName) {
-		return new Rule(ruleName, null);
 	}
 
 	public static SubExpr sub(ParsingExpression expr) {

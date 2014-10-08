@@ -1,9 +1,9 @@
-package aquarius.runtime.expression;
+package aquarius.combinator.expression;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import aquarius.runtime.ExpressionVisitor;
+import aquarius.combinator.ExpressionVisitor;
 import aquarius.util.IntPair;
 
 /**

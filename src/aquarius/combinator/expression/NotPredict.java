@@ -1,6 +1,6 @@
-package aquarius.runtime.expression;
+package aquarius.combinator.expression;
 
-import aquarius.runtime.ExpressionVisitor;
+import aquarius.combinator.ExpressionVisitor;
 
 /**
 * try to match the expression. if not success, not advance parsing position.

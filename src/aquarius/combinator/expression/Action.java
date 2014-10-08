@@ -1,7 +1,7 @@
-package aquarius.runtime.expression;
+package aquarius.combinator.expression;
 
-import aquarius.runtime.ExpressionVisitor;
-import aquarius.runtime.ParsingAction;
+import aquarius.combinator.ExpressionVisitor;
+import aquarius.combinator.ParsingAction;
 
 /**
 * try to match the expression, if success execute action. preceding expression result

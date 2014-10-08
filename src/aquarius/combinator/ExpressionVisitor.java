@@ -1,21 +1,21 @@
-package aquarius.runtime;
+package aquarius.combinator;
 
-import aquarius.runtime.expression.Action;
-import aquarius.runtime.expression.AndPredict;
-import aquarius.runtime.expression.AndPredictAction;
-import aquarius.runtime.expression.Any;
-import aquarius.runtime.expression.Capture;
-import aquarius.runtime.expression.CharSet;
-import aquarius.runtime.expression.Choice;
-import aquarius.runtime.expression.NotPredict;
-import aquarius.runtime.expression.NotPredictAction;
-import aquarius.runtime.expression.OneMore;
-import aquarius.runtime.expression.Optional;
-import aquarius.runtime.expression.Rule;
-import aquarius.runtime.expression.Sequence;
-import aquarius.runtime.expression.StringLiteral;
-import aquarius.runtime.expression.SubExpr;
-import aquarius.runtime.expression.ZeroMore;
+import aquarius.combinator.expression.Action;
+import aquarius.combinator.expression.AndPredict;
+import aquarius.combinator.expression.AndPredictAction;
+import aquarius.combinator.expression.Any;
+import aquarius.combinator.expression.Capture;
+import aquarius.combinator.expression.CharSet;
+import aquarius.combinator.expression.Choice;
+import aquarius.combinator.expression.NotPredict;
+import aquarius.combinator.expression.NotPredictAction;
+import aquarius.combinator.expression.OneMore;
+import aquarius.combinator.expression.Optional;
+import aquarius.combinator.expression.Rule;
+import aquarius.combinator.expression.Sequence;
+import aquarius.combinator.expression.StringLiteral;
+import aquarius.combinator.expression.SubExpr;
+import aquarius.combinator.expression.ZeroMore;
 
 public interface ExpressionVisitor<T> {
 	public T visitString          (StringLiteral expr);
