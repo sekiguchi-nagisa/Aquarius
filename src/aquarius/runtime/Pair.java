@@ -1,4 +1,4 @@
-package aquarius.bootstrap;
+package aquarius.runtime;
 
 public class Pair <L, R> {
 	private L left;
