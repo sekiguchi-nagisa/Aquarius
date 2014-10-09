@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import aquarius.combinator.ExpressionVisitor;
-import aquarius.util.IntPair;
+import aquarius.util.IntRange;
 
 /**
 * try to match one character from char set. return matched character
@@ -13,21 +13,33 @@ import aquarius.util.IntPair;
 *
 */
 public class CharSet implements ParsingExpression {
-	private List<Integer> charList;
-	private List<IntPair> rangeList;
+	private final int[] chars;
+	private List<IntRange> rangeList;
 
 	public CharSet(int ...chars) {
-		this.charList = new ArrayList<>(chars.length);
-		for(int ch : chars) {
-			this.charList.add(ch);
-		}
+		this.chars = chars;
 	}
 
-	public CharSet ranges(int start, int stop) {
+	/**
+	 * add char range
+	 * @param start
+	 * inclusive
+	 * @param stop
+	 * inclusive
+	 * @return
+	 * this
+	 * @throws IllegalArgumentException
+	 * if start >= stop
+	 */
+	public CharSet range(int start, int stop) throws IllegalArgumentException {
+		if(start >= stop) {
+			throw new IllegalArgumentException(
+					"start is larger than stop. start: " + start + "stop: " + stop);
+		}
 		if(this.rangeList == null) {
 			this.rangeList = new ArrayList<>();
 		}
-		this.rangeList.add(new IntPair(start, stop));
+		this.rangeList.add(new IntRange(start, stop));
 		return this;
 	}
 
@@ -36,8 +48,8 @@ public class CharSet implements ParsingExpression {
 	 * @return
 	 * may be null
 	 */
-	public List<Integer> getCharList() {
-		return this.charList;
+	public int[] getChars() {
+		return this.chars;
 	}
 
 	/**
@@ -45,7 +57,7 @@ public class CharSet implements ParsingExpression {
 	 * @return
 	 * may be null
 	 */
-	public List<IntPair> getRangeList() {
+	public List<IntRange> getRangeList() {
 		return this.rangeList;
 	}
 
@@ -58,16 +70,14 @@ public class CharSet implements ParsingExpression {
 	public String toString() {
 		StringBuilder sBuilder = new StringBuilder();
 		sBuilder.append('[');
-		if(this.charList != null) {
-			for(int ch : this.charList) {
-				sBuilder.append((char) ch);
-			}
+		for(int ch : this.chars) {
+			sBuilder.append((char) ch);
 		}
 		if(this.rangeList != null) {
-			for(IntPair range : this.rangeList) {
-				sBuilder.append((char) range.getLeft());
+			for(IntRange range : this.rangeList) {
+				sBuilder.append((char) range.getStart());
 				sBuilder.append('-');
-				sBuilder.append((char) range.getRight());
+				sBuilder.append((char) range.getStop());
 			}
 		}
 		sBuilder.append(']');

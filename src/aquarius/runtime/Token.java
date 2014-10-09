@@ -28,7 +28,9 @@ public interface Token extends ParsedResult {
 	 * get token text. this is equivalent to Token#getSubText(0, 0)
 	 * @return
 	 */
-	public String getText();
+	public default String getText() {
+		return this.getSubText(0, 0);
+	}
 
 	/**
 	 * get token text. this is equivalent to Token#getText().subString(Token#getStartPos() + startOffset, Token#getStopPos() - stopOffset)

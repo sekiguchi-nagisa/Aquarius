@@ -1,5 +1,6 @@
 package aquarius.runtime.memo;
 
+import aquarius.runtime.Failure;
 import aquarius.runtime.ParsedResult;
 
 public class FixedSizeMemoTableFactory implements MemoTableFactory {
@@ -28,8 +29,9 @@ public class FixedSizeMemoTableFactory implements MemoTableFactory {
 		@Override
 		public ParsedResult set(int ruleIndex, int srcPos, ParsedResult result) {
 			assert(this.resultArray[ruleIndex][srcPos] != null);
+			assert(!(result instanceof Failure));
+
 			return (this.resultArray[ruleIndex][srcPos] = result);
 		}
-		
 	}
 }

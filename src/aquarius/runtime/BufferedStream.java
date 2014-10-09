@@ -94,7 +94,7 @@ public class BufferedStream implements AquariusInputStream {
 			throw new IndexOutOfBoundsException("start position is " + startPos + 
 					", but stop position is " + stopPos);
 		}
-		if(this.fetch() == EOF) {
+		if(stopPos > this.getInputSize()) {
 			throw new IndexOutOfBoundsException("stop position is " + startPos + 
 					"but buffer size is " + this.bufferSize);
 		}
@@ -123,11 +123,6 @@ public class BufferedStream implements AquariusInputStream {
 		@Override
 		public int getSize() {
 			return this.getStopPos() - this.getStartPos();
-		}
-
-		@Override
-		public String getText() {
-			return this.getSubText(0, 0);
 		}
 
 		@Override

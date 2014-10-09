@@ -20,15 +20,15 @@ public interface MemoTable {
 	public ParsedResult get(int ruleIndex, int srcPos);
 
 	/**
-	 * set parsed result
+	 * set parsed result.
 	 * @param ruleIndex
 	 * non negative value
 	 * @param srcPos
 	 * no negative value
 	 * @param result
-	 * parsed result.
+	 * parsed result. not Failure
 	 * @return
-	 * equivalent to result
+	 * equivalent to result.
 	 */
 	public ParsedResult set(int ruleIndex, int srcPos, ParsedResult result);
 }

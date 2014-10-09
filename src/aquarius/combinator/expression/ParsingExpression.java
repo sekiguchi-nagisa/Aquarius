@@ -1,6 +1,7 @@
 package aquarius.combinator.expression;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import aquarius.combinator.ExpressionVisitor;
@@ -91,10 +92,11 @@ abstract class ListExpr implements ParsingExpression {
 	protected final List<ParsingExpression> exprList;
 
 	protected ListExpr(ParsingExpression... exprs) {
-		this.exprList = new ArrayList<>(exprs.length);
+		List<ParsingExpression> list = new ArrayList<>(exprs.length);
 		for(ParsingExpression expr : exprs) {
 			this.exprList.add(expr);
 		}
+		this.exprList = Collections.unmodifiableList(list);
 	}
 
 	public final List<ParsingExpression> getExprList() {

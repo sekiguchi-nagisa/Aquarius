@@ -4,5 +4,5 @@ import aquarius.runtime.ParsedResult;
 
 @FunctionalInterface
 public interface ParsingAction {
-	public ParsedResult invoke(ParsedResult... args);
+	public ParsedResult invoke(ParsedResult arg);
 }

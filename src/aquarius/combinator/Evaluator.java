@@ -1,5 +1,7 @@
 package aquarius.combinator;
 
+import java.util.List;
+
 import aquarius.combinator.expression.Action;
 import aquarius.combinator.expression.AndPredict;
 import aquarius.combinator.expression.AndPredictAction;
@@ -11,13 +13,18 @@ import aquarius.combinator.expression.NotPredict;
 import aquarius.combinator.expression.NotPredictAction;
 import aquarius.combinator.expression.OneMore;
 import aquarius.combinator.expression.Optional;
+import aquarius.combinator.expression.ParsingExpression;
 import aquarius.combinator.expression.Rule;
 import aquarius.combinator.expression.Sequence;
 import aquarius.combinator.expression.StringLiteral;
 import aquarius.combinator.expression.SubExpr;
 import aquarius.combinator.expression.ZeroMore;
 import aquarius.runtime.BaseParser;
+import aquarius.runtime.Failure;
 import aquarius.runtime.ParsedResult;
+import aquarius.runtime.ResultList;
+import aquarius.runtime.ParsedResult.EmptyResult;
+import aquarius.util.IntRange;
 
 public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedResult> {
 	private final Rule[] rules;
@@ -28,98 +35,181 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 
 	@Override
 	public ParsedResult visitString(StringLiteral expr) {
-		// TODO Auto-generated method stub
-		return null;
+		int pos = this.input.getPosition();
+
+		String text = expr.getTarget();
+		final int size = text.length();
+		for(int i = 0; i < size; i++) {
+			if(text.charAt(i) != this.input.consume()) {
+				return new Failure();	//TODO:
+			}
+		}
+		return this.input.createToken(pos);
 	}
 
 	@Override
 	public ParsedResult visitAny(Any expr) {
-		// TODO Auto-generated method stub
-		return null;
+		int pos = this.input.getPosition();
+
+		this.input.consume();
+		return this.input.createToken(pos);
 	}
 
 	@Override
 	public ParsedResult visitCharSet(CharSet expr) {
-		// TODO Auto-generated method stub
-		return null;
+		int pos = this.input.getPosition();
+
+		final int fetchedCh = this.input.consume();
+		// match chars
+		for(int ch : expr.getChars()) {
+			if(fetchedCh == ch) {
+				return this.input.createToken(pos);
+			}
+		}
+		// match char range
+		List<IntRange> rangeList = expr.getRangeList();
+		if(rangeList != null) {
+			for(IntRange range : rangeList) {
+				if(range.withinRange(fetchedCh)) {
+					return this.input.createToken(pos);
+				}
+			}
+		}
+		return new Failure();	//TODO:
 	}
 
 	@Override
 	public ParsedResult visitRule(Rule expr) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.dispatchRule(expr.getRuleIndex());
 	}
 
 	@Override
 	public ParsedResult visitSubExpr(SubExpr expr) {
-		// TODO Auto-generated method stub
-		return null;
+		return expr.getExpr().accept(this);
 	}
 
 	@Override
 	public ParsedResult visitZeroMore(ZeroMore expr) {
-		// TODO Auto-generated method stub
-		return null;
+		ResultList list = new ResultList();
+		while(true) {
+			ParsedResult result = expr.getExpr().accept(this);
+			if(result instanceof Failure) {
+				break;
+			}
+			list.add(result);
+		}
+		return list.isEmpty() ? ParsedResult.NULL_RESULT : list;
 	}
 
 	@Override
 	public ParsedResult visitOneMore(OneMore expr) {
-		// TODO Auto-generated method stub
-		return null;
+		ResultList list = new ResultList();
+		while(true) {
+			ParsedResult result = expr.getExpr().accept(this);
+			if(result instanceof Failure) {
+				break;
+			}
+			list.add(result);
+		}
+		return list.isEmpty() ? new Failure() : list;	// TODO:
 	}
 
 	@Override
 	public ParsedResult visitOptional(Optional expr) {
-		// TODO Auto-generated method stub
-		return null;
+		int pos = this.input.getPosition();
+
+		ParsedResult result = expr.getExpr().accept(this);
+		if(result instanceof Failure) {
+			this.input.setPosition(pos);	// roll back position
+			return ParsedResult.NULL_RESULT;
+		}
+		return result;
 	}
 
 	@Override
 	public ParsedResult visitAndPredict(AndPredict expr) {
-		// TODO Auto-generated method stub
-		return null;
+		int pos = this.input.getPosition();
+
+		ParsedResult predictResult = expr.getExpr().accept(this);
+		if(!(predictResult instanceof Failure)) {
+			this.input.setPosition(pos);
+			return ParsedResult.EMPTY_RESULT;
+		}
+		return new Failure();	//TODO:
 	}
 
 	@Override
 	public ParsedResult visitNotPredict(NotPredict expr) {
-		// TODO Auto-generated method stub
-		return null;
+		int pos = this.input.getPosition();
+
+		ParsedResult predictResult = expr.getExpr().accept(this);
+		if(predictResult instanceof Failure) {
+			this.input.setPosition(pos);
+			return ParsedResult.EMPTY_RESULT;
+		}
+		return new Failure();	//TODO:
 	}
 
 	@Override
 	public ParsedResult visitSeq(Sequence expr) {
-		// TODO Auto-generated method stub
-		return null;
+		ResultList list = new ResultList(expr.getExprList().size());
+		for(ParsingExpression e : expr.getExprList()) {
+			ParsedResult result = e.accept(this);
+			if(result instanceof Failure) {
+				return result;
+			}
+			if(result instanceof EmptyResult) {
+				continue;	// skip EmptyResult
+			}
+			list.add(result);
+		}
+		return list;
 	}
 
 	@Override
 	public ParsedResult visitChoice(Choice expr) {
-		// TODO Auto-generated method stub
-		return null;
+		for(ParsingExpression e : expr.getExprList()) {
+			ParsedResult result = e.accept(this);
+			if(result instanceof Failure) {
+				continue;
+			}
+			return result;
+		}
+		return new Failure();	//TODO:
 	}
 
 	@Override
 	public ParsedResult visitAction(Action expr) {
-		// TODO Auto-generated method stub
-		return null;
+		// evaluate preceding expression
+		ParsedResult result = expr.getExpr().accept(this);
+		if(result instanceof Failure) {
+			return result;
+		}
+
+		// invoke action
+		return expr.getAction().invoke(result);	// may be Failure
 	}
 
 	@Override
 	public ParsedResult visitAndPredictAction(AndPredictAction expr) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new RuntimeException("unsuppored: " + expr.getClass());	//TODO:
 	}
 
 	@Override
 	public ParsedResult visitNotPredictAction(NotPredictAction expr) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new RuntimeException("unsuppored: " + expr.getClass());	//TODO:
 	}
 
 	@Override
 	public ParsedResult visitCapture(Capture expr) {
-		// TODO Auto-generated method stub
-		return null;
+		int pos = this.input.getPosition();
+		for(ParsingExpression e : expr.getExprList()) {
+			ParsedResult result = e.accept(this);
+			if(result instanceof Failure) {
+				return result;
+			}
+		}
+		return this.input.createToken(pos);
 	}
 
 	@Override
@@ -130,11 +220,18 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 	@Override
 	protected ParsedResult dispatchRule(int ruleIndex) throws IndexOutOfBoundsException {
 		int srcPos = this.input.getPosition();
+
 		ParsedResult result = this.memoTable.get(ruleIndex, srcPos);
 		if(result != null) {
 			return result;
 		}
-		return this.memoTable.set(ruleIndex, srcPos, this.rules[ruleIndex].getPattern().accept(this));
+		// if not found previous parsed result, invoke rule
+		result = this.rules[ruleIndex].getPattern().accept(this);
+		if(result instanceof Failure) {
+			this.input.setPosition(srcPos);	// roll back position
+			return result;
+		}
+		return this.memoTable.set(ruleIndex, srcPos, result);
 	}
 
 }

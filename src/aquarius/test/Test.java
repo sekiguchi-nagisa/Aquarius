@@ -21,7 +21,7 @@ enum Ex implements Rule {
 		@Override public void init() {
 			this.expr = action(
 							seq(Add, WhiteSpace, Add), 
-							s -> s[0]);
+							s -> s);
 		}
 	},
 	;

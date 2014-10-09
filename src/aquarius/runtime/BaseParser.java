@@ -62,9 +62,9 @@ public abstract class BaseParser {
 	 * 
 	 * @param ruleIndex
 	 * @return
-	 * parsed result of dispatched rule
+	 * parsed result of dispatched rule. if match is failed, return Failure
 	 * @throws IndexOutOfBoundsException
-	 * if ruleIndex < 0 or ruleIndex >= BasePArser#getRuleIndex()
+	 * if ruleIndex < 0 or ruleIndex >= BaseParser#getRuleSize()
 	 */
 	protected abstract ParsedResult dispatchRule(int ruleIndex) throws IndexOutOfBoundsException;
 }

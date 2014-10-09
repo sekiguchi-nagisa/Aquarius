@@ -4,5 +4,5 @@ import aquarius.runtime.ParsedResult;
 
 @FunctionalInterface
 public interface PredictiveAction {
-	public boolean invoke(ParsedResult... args);
+	public boolean invoke(ParsedResult arg);
 }

@@ -12,9 +12,10 @@ public interface AquariusInputStream {
 	public final static int EOF = -1;
 
 	/**
-	 * save current intput position.
+	 * get current input position.
 	 * @return
 	 * current position.
+	 * pos > -1 && pos <= getInputSize()
 	 */
 	public int getPosition();
 
@@ -28,14 +29,14 @@ public interface AquariusInputStream {
 	public void setPosition(int position) throws IndexOutOfBoundsException;
 
 	/**
-	 * get charactor in current position.
+	 * get character in current position.
 	 * @return
 	 * consumed character. if input is end of file, return EOF.
 	 */
 
 	public int fetch();
 	/**
-	 * consume character in current position. and increment position.
+	 * consume character in current position and increment position.
 	 * @return
 	 * consumed character. if input is end of file, return EOF.
 	 */
@@ -60,9 +61,22 @@ public interface AquariusInputStream {
 	 * @throws IndexOutOfBoundsException
 	 * if startPos >= stopPos
 	 * if startPos < 0
-	 * if AquariusInputStream#fetch() == EOF
+	 * if stopPos > getInputSize()
 	 */
 	public Token createToken(int startPos, int stopPos) throws IndexOutOfBoundsException;
+
+	/**
+	 * create token. it is equivalent to createToken(startPos, getPosition())
+	 * @param startPos
+	 * token start position. inclusive.
+	 * @return
+	 * @throws IndexOutOfBoundsException
+	 * if startPos >= stopPos
+	 * if startPos < 0
+	 */
+	public default Token createToken(int startPos) throws IndexOutOfBoundsException {
+		return this.createToken(startPos, this.getPosition());
+	}
 
 	/**
 	 * 
