@@ -1,5 +1,6 @@
 package aquarius.combinator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import aquarius.combinator.expression.Action;
@@ -45,7 +46,8 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 		final int size = text.length();
 		for(int i = 0; i < size; i++) {
 			if(text.charAt(i) != this.input.consume()) {
-				return new Failure();	//TODO:
+				return new Failure(this.input.getPosition(), "require string: " + text + 
+						", but is " + this.input.createToken(pos, this.input.getPosition()));	//TODO:
 			}
 		}
 		return this.input.createToken(pos);
@@ -56,7 +58,7 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 		int pos = this.input.getPosition();
 
 		if(this.input.consume() == AquariusInputStream.EOF) {
-			return new Failure();	//TODO:
+			return new Failure(this.input.getPosition(), "reach End of File");	//TODO:
 		}
 		return this.input.createToken(pos);
 	}
@@ -67,7 +69,7 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 
 		final int fetchedCh = this.input.consume();
 		if(fetchedCh == AquariusInputStream.EOF) {
-			return new Failure();
+			return new Failure(this.input.getPosition(), "reach End of File");
 		}
 
 		// match chars
@@ -85,7 +87,8 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 				}
 			}
 		}
-		return new Failure();	//TODO:
+		return new Failure(this.input.getPosition(), 
+				"current char is " + (char) fetchedCh + ", but require chars: " + expr);	//TODO:
 	}
 
 	@Override
@@ -123,7 +126,8 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 			ParsedResult result = expr.getExpr().accept(this);
 			if(result instanceof Failure) {
 				if(list.isEmpty()) {
-					return new Failure();	//TODO:
+					return new Failure(this.input.getPosition(), 
+							"require at least one pattern: " + expr.getExpr());	//TODO:
 				}
 				this.input.setPosition(pos);	// roll back position
 				break;
@@ -154,7 +158,8 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 			this.input.setPosition(pos);
 			return ParsedResult.EMPTY_RESULT;
 		}
-		return new Failure();	//TODO:
+		return new Failure(this.input.getPosition(), 
+				"and prediction failed: " + expr.getExpr());	//TODO:
 	}
 
 	@Override
@@ -166,7 +171,8 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 			this.input.setPosition(pos);
 			return ParsedResult.EMPTY_RESULT;
 		}
-		return new Failure();	//TODO:
+		return new Failure(this.input.getPosition(), 
+				"not prediction failed: " + expr.getExpr());	//TODO:
 	}
 
 	@Override
@@ -187,14 +193,26 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 
 	@Override
 	public ParsedResult visitChoice(Choice expr) {
+		// for error report
+		List<Failure> failures = new ArrayList<>(expr.getExprList().size());
+
+		int pos = this.input.getPosition();
 		for(ParsingExpression e : expr.getExprList()) {
 			ParsedResult result = e.accept(this);
 			if(result instanceof Failure) {
+				failures.add((Failure) result);
+				this.input.setPosition(pos);	// roll back position
 				continue;
 			}
 			return result;
 		}
-		return new Failure();	//TODO:
+		Failure longestMatched = failures.get(0);
+		for(Failure failure : failures) {
+			if(failure.getFailurePos() > longestMatched.getFailurePos()) {
+				longestMatched = failure;
+			}
+		}
+		return longestMatched;	// longe
 	}
 
 	@Override
@@ -247,7 +265,6 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 		// if not found previous parsed result, invoke rule
 		result = this.rules[ruleIndex].getPattern().accept(this);
 		if(result instanceof Failure) {
-			this.input.setPosition(srcPos);	// roll back position
 			return result;
 		}
 		return this.memoTable.set(ruleIndex, srcPos, result);

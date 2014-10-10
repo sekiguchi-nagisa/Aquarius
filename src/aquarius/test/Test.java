@@ -11,38 +11,80 @@ import static aquarius.combinator.expression.ParsingExpression.*;
 public class Test {
 	public static void main(String[] args) {
 		Evaluator evaluator = new Evaluator(Ex.values());
-		BufferedStream input = new BufferedStream("<sample>", "hfreui35_d");
+		//BufferedStream input = new BufferedStream("<sample>", "hfreui35_d");
+		BufferedStream input = new BufferedStream("<sample>", "12 + 43 * (54 - 32 / 2)");
 		evaluator.setInputStream(input);
-		ParsedResult result = evaluator.parse(Ex.Text.getRuleIndex());
+		//ParsedResult result = evaluator.parse(Ex.Text.getRuleIndex());
+		ParsedResult result = evaluator.parse(Ex.Expr.getRuleIndex());
 		System.out.println(result);
 	}
 }
 
 enum Ex implements Rule {
 	EOF {
-		@Override public void init() {
-			this.expr = not(any());
+		@Override public void init() { this.expr = 
+			not(any());
 		}
 	},
-	WhiteSpace {
-		@Override public void init() {
-			this.expr = zeroMore(ch(' ', '\t', '\n', '\r'));
+	__ {
+		@Override public void init() { this.expr = 
+			choice(zeroMore(ch(' ', '\t', '\n', '\r')), EOF);
 		}
 	},
-	Add {
-		@Override public void init() {
-			this.expr = action(
-							seq(Add, WhiteSpace, Add), 
-							s -> s);
+	hoge {
+		@Override public void init() { this.expr = 
+			action(
+				seq(hoge, __, hoge), 
+				s -> s);
 		}
 	},
 	Text {
-		@Override public void init() {
-			this.expr = 
-					capture(
-						seq(
-							ch('_')._$('a', 'z')._$('A', 'Z'),
-							zeroMore(ch('_')._$('a', 'z')._$('A', 'Z')._$('0', '9'))));
+		@Override public void init() { this.expr = 
+			capture(
+				seq(
+					ch('_')._$('a', 'z')._$('A', 'Z'),
+					zeroMore(ch('_')._$('a', 'z')._$('A', 'Z')._$('0', '9'))));
+		}
+	},
+	Expr {
+		@Override public void init() { this.expr = 
+			seq(__, Add, __);
+		}
+	},
+	Add {
+		@Override public void init() { this.expr = 
+			capture(
+				choice(
+					seq(Mul, __, string("+"), __, Add),
+					seq(Mul, __, string("-"), __, Add),
+					Mul
+				)
+			);
+		}
+	},
+	Mul {
+		@Override public void init() { this.expr = 
+			choice(
+				seq(Primary, __, string("*"), __, Mul),
+				seq(Primary, __, string("/"), __, Mul),
+				Primary
+			);
+		}
+	},
+	Primary {
+		@Override public void init() { this.expr = 
+			choice(
+				seq(string("("), __, Add, __, string(")")),
+				Num
+			);
+		}
+	},
+	Num {
+		@Override public void init() { this.expr = 
+			choice(
+				string("0"),
+				seq(ch()._$('1', '9'), zeroMore(ch()._$('0', '9')))
+			);
 		}
 	},
 	;
@@ -61,6 +103,7 @@ enum Ex implements Rule {
 		return this.expr;
 	}
 
+	@Override
 	public int getRuleIndex() {
 		return this.ordinal();
 	}
