@@ -1,10 +1,10 @@
 package aquarius.runtime;
 
 import aquarius.combinator.expression.AndPredict;
+import aquarius.combinator.expression.Any;
 import aquarius.combinator.expression.CharSet;
 import aquarius.combinator.expression.NotPredict;
 import aquarius.combinator.expression.OneMore;
-import aquarius.combinator.expression.ParsingExpression;
 import aquarius.combinator.expression.StringLiteral;
 
 public class Failure implements ParsedResult {
@@ -34,10 +34,25 @@ public class Failure implements ParsedResult {
 	}
 
 	// failure creator api
-	public final static Failure inEOF(AquariusInputStream input, ParsingExpression expr) {
-		return new Failure(input.getPosition(), "reach End of File");
+	public final static Failure inEOF(AquariusInputStream input, StringLiteral expr) {
+		StringBuilder sBuilder = new StringBuilder();
+		sBuilder.append("require text: ");
+		sBuilder.append(expr.getTarget());
+		sBuilder.append(", but reach End of File");
+		return new Failure(input.getPosition(), sBuilder.toString());
 	}
 
+	public final static Failure inEOF(AquariusInputStream input, Any expr) {
+		return new Failure(input.getPosition(), "require any character, but reach End of File");
+	}
+
+	public final static Failure inEOF(AquariusInputStream input, CharSet expr) {
+		StringBuilder sBuilder = new StringBuilder();
+		sBuilder.append("require chars: ");
+		sBuilder.append(expr);
+		sBuilder.append(", but reach End of File");
+		return new Failure(input.getPosition(), sBuilder.toString());
+	}
 	public final static Failure inString(AquariusInputStream input, StringLiteral expr, int startPos) {
 		StringBuilder sBuilder = new StringBuilder();
 		sBuilder.append("require text: ");
