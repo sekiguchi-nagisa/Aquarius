@@ -18,7 +18,7 @@ public class Test {
 		BufferedStream input = new BufferedStream("<sample>", "(((((((12345))))))");
 		evaluator.setInputStream(input);
 //		evaluator.setMemoTableFactory(new NullMemoTableFactory());
-		evaluator.setMemoTableFactory(new MapBasedMemoTableFactory());
+//		evaluator.setMemoTableFactory(new MapBasedMemoTableFactory());
 		//ParsedResult result = evaluator.parse(Ex.Text.getRuleIndex());
 		long start = System.currentTimeMillis();
 		ParsedResult result = evaluator.parse(Ex.Expr.getRuleIndex());

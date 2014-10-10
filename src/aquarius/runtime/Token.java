@@ -28,12 +28,21 @@ public interface Token extends ParsedResult {
 	 * get token text. this is equivalent to Token#getSubText(0, 0)
 	 * @return
 	 */
-	public default String getText() {
-		return this.getSubText(0, 0);
+
+	/**
+	 * get token text. this is equivalent to Token#getSubText(srcInput, 0, 0)
+	 * @param srcInput
+	 * token source. not null.
+	 * @return
+	 */
+	public default String getText(AquariusInputStream srcInput) {
+		return this.getSubText(srcInput, 0, 0);
 	}
 
 	/**
 	 * get token text. this is equivalent to Token#getText().subString(Token#getStartPos() + startOffset, Token#getStopPos() - stopOffset)
+	 * @param srcInput
+	 * token source. not null.
 	 * @param startOffset
 	 * not negative value.
 	 * @param stopOffset
@@ -44,11 +53,13 @@ public interface Token extends ParsedResult {
 	 * if stopOffset < 0 or Token#getStopPos() - stopOffset < Token#getStartPos().
 	 * if Token#getStartPos() + startOffset >= Token#getStopPos() - stopOffset.
 	 */
-	public String getSubText(int startOffset, int stopOffset) throws IndexOutOfBoundsException;
+	public String getSubText(AquariusInputStream srcInput, int startOffset, int stopOffset) throws IndexOutOfBoundsException;
 
 	/**
-	 * line number of token
+	 * get line number of token
+	 * @param srcInput
+	 * token source. not null
 	 * @return
 	 */
-	public int getLineNumber();
+	public int getLineNumber(AquariusInputStream srcInput);
 }

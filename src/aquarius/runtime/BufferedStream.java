@@ -101,7 +101,7 @@ public class BufferedStream implements AquariusInputStream {
 		return new GeneralToken(startPos, stopPos);
 	}
 
-	class GeneralToken implements Token {
+	private static class GeneralToken implements Token {
 		private final int startPos;
 		private final int stopPos;
 
@@ -126,7 +126,7 @@ public class BufferedStream implements AquariusInputStream {
 		}
 
 		@Override
-		public String getSubText(int startOffset, int stopOffset)
+		public String getSubText(AquariusInputStream srcInput, int startOffset, int stopOffset)
 				throws IndexOutOfBoundsException {
 			int actualStartPos = this.getStartPos() + startOffset;
 			int actualStopPos = this.getStopPos() - stopOffset;
@@ -145,14 +145,16 @@ public class BufferedStream implements AquariusInputStream {
 						", stopPos is " + this.getStopPos() + ", but startOffset is " + 
 						startOffset + ", stopOffset is " + stopOffset);
 			}
-			return new String(buffer, actualStartPos, size);
+			BufferedStream stream = (BufferedStream) srcInput;
+			return new String(stream.buffer, actualStartPos, size);
 		}
 
 		@Override
-		public int getLineNumber() {
+		public int getLineNumber(AquariusInputStream srcInput) {
+			BufferedStream stream = (BufferedStream) srcInput;
 			int lineNum = 1;
-			for(int i = 0; i < bufferSize; i++) {
-				if(buffer[i] == '\n') {
+			for(int i = 0; i < stream.bufferSize; i++) {
+				if(stream.buffer[i] == '\n') {
 					lineNum++;
 				}
 				if(i == this.getStartPos()) {
@@ -164,7 +166,7 @@ public class BufferedStream implements AquariusInputStream {
 
 		@Override
 		public String toString() {
-			return this.getText();
+			return "token<" + this.startPos + "-" + this.stopPos + ">";
 		}
 	}
 
