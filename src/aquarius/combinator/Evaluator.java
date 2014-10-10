@@ -265,9 +265,6 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 		}
 		// if not found previous parsed result, invoke rule
 		ParsedResult result = this.rules[ruleIndex].getPattern().accept(this);
-		if(result instanceof Failure) {
-			return result;
-		}
 		return this.memoTable.set(ruleIndex, srcPos, result, this.input.getPosition());
 	}
 
