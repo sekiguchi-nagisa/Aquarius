@@ -12,4 +12,19 @@ public class ResultList extends ArrayList<ParsedResult> implements ParsedResult 
 	public ResultList(int size) {
 		super(size);
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sBuilder = new StringBuilder();
+		sBuilder.append('[');
+		final int size = this.size();
+		for(int i = 0; i < size; i++) {
+			if(i > 0) {
+				sBuilder.append(", ");
+			}
+			sBuilder.append(this.get(i));
+		}
+		sBuilder.append(']');
+		return sBuilder.toString();
+	}
 }

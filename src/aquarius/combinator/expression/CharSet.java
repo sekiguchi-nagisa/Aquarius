@@ -31,7 +31,7 @@ public class CharSet implements ParsingExpression {
 	 * @throws IllegalArgumentException
 	 * if start >= stop
 	 */
-	public CharSet range(int start, int stop) throws IllegalArgumentException {
+	public CharSet _$(int start, int stop) throws IllegalArgumentException {
 		if(start >= stop) {
 			throw new IllegalArgumentException(
 					"start is larger than stop. start: " + start + "stop: " + stop);

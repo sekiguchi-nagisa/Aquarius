@@ -19,6 +19,7 @@ import aquarius.combinator.expression.Sequence;
 import aquarius.combinator.expression.StringLiteral;
 import aquarius.combinator.expression.SubExpr;
 import aquarius.combinator.expression.ZeroMore;
+import aquarius.runtime.AquariusInputStream;
 import aquarius.runtime.BaseParser;
 import aquarius.runtime.Failure;
 import aquarius.runtime.ParsedResult;
@@ -31,6 +32,9 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 
 	public Evaluator(Rule[] rules) {
 		this.rules = rules;
+		for(Rule rule : rules) {
+			rule.init();	// initialize rule
+		}
 	}
 
 	@Override
@@ -51,7 +55,9 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 	public ParsedResult visitAny(Any expr) {
 		int pos = this.input.getPosition();
 
-		this.input.consume();
+		if(this.input.consume() == AquariusInputStream.EOF) {
+			return new Failure();	//TODO:
+		}
 		return this.input.createToken(pos);
 	}
 
@@ -60,6 +66,10 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 		int pos = this.input.getPosition();
 
 		final int fetchedCh = this.input.consume();
+		if(fetchedCh == AquariusInputStream.EOF) {
+			return new Failure();
+		}
+
 		// match chars
 		for(int ch : expr.getChars()) {
 			if(fetchedCh == ch) {
@@ -92,8 +102,11 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 	public ParsedResult visitZeroMore(ZeroMore expr) {
 		ResultList list = new ResultList();
 		while(true) {
+			int pos = this.input.getPosition();
+
 			ParsedResult result = expr.getExpr().accept(this);
 			if(result instanceof Failure) {
+				this.input.setPosition(pos);	// roll back position
 				break;
 			}
 			list.add(result);
@@ -105,13 +118,19 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 	public ParsedResult visitOneMore(OneMore expr) {
 		ResultList list = new ResultList();
 		while(true) {
+			int pos = this.input.getPosition();
+
 			ParsedResult result = expr.getExpr().accept(this);
 			if(result instanceof Failure) {
+				if(list.isEmpty()) {
+					return new Failure();	//TODO:
+				}
+				this.input.setPosition(pos);	// roll back position
 				break;
 			}
 			list.add(result);
 		}
-		return list.isEmpty() ? new Failure() : list;	// TODO:
+		return list;
 	}
 
 	@Override

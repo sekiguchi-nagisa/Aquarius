@@ -94,7 +94,7 @@ abstract class ListExpr implements ParsingExpression {
 	protected ListExpr(ParsingExpression... exprs) {
 		List<ParsingExpression> list = new ArrayList<>(exprs.length);
 		for(ParsingExpression expr : exprs) {
-			this.exprList.add(expr);
+			list.add(expr);
 		}
 		this.exprList = Collections.unmodifiableList(list);
 	}

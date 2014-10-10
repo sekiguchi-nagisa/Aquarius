@@ -59,7 +59,7 @@ public class BufferedStream implements AquariusInputStream {
 
 	@Override
 	public void setPosition(int position) throws IndexOutOfBoundsException {
-		if(!this.checkIndexRange(position)) {
+		if(position != this.bufferSize && !this.checkIndexRange(position)) {
 			throw new IndexOutOfBoundsException("position is " + position + 
 					", but buffer size is " + this.bufferSize);
 		}
@@ -160,6 +160,11 @@ public class BufferedStream implements AquariusInputStream {
 				}
 			}
 			return lineNum;
+		}
+
+		@Override
+		public String toString() {
+			return this.getText();
 		}
 	}
 

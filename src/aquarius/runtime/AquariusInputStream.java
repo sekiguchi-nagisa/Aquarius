@@ -24,7 +24,7 @@ public interface AquariusInputStream {
 	 * @param position
 	 * @throws IndexOutOfBoundsException
 	 * if position < 0
-	 * if position >= input size
+	 * if position > input size
 	 */
 	public void setPosition(int position) throws IndexOutOfBoundsException;
 
