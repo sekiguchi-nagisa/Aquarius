@@ -17,7 +17,7 @@ public interface MemoTable {
 	 * @return
 	 * return null if not found parsed result
 	 */
-	public ParsedResult get(int ruleIndex, int srcPos);
+	public MemoEntry get(int ruleIndex, int srcPos);
 
 	/**
 	 * set parsed result.
@@ -27,8 +27,27 @@ public interface MemoTable {
 	 * no negative value
 	 * @param result
 	 * parsed result. not Failure
+	 * @param currentPos
 	 * @return
 	 * equivalent to result.
 	 */
-	public ParsedResult set(int ruleIndex, int srcPos, ParsedResult result);
+	public ParsedResult set(int ruleIndex, int srcPos, ParsedResult result, int currentPos);
+
+	public static class MemoEntry {
+		private final int currentPos;
+		private final ParsedResult result;
+
+		protected MemoEntry(int currentPos, ParsedResult result) {
+			this.currentPos = currentPos;
+			this.result = result;
+		}
+
+		public ParsedResult getResult() {
+			return this.result;
+		}
+
+		public int getCurrentPos() {
+			return this.currentPos;
+		}
+	}
 }

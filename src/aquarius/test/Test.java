@@ -6,6 +6,7 @@ import aquarius.combinator.expression.ParsingExpression;
 import aquarius.combinator.expression.Rule;
 import aquarius.runtime.BufferedStream;
 import aquarius.runtime.ParsedResult;
+import aquarius.runtime.memo.NullMemoTableFactory;
 import static aquarius.combinator.expression.ParsingExpression.*;
 
 public class Test {
@@ -14,8 +15,12 @@ public class Test {
 		//BufferedStream input = new BufferedStream("<sample>", "hfreui35_d");
 		BufferedStream input = new BufferedStream("<sample>", "12 + 43 * (54 - 32 / 2)");
 		evaluator.setInputStream(input);
+//		evaluator.setMemoTableFactory(new NullMemoTableFactory());
 		//ParsedResult result = evaluator.parse(Ex.Text.getRuleIndex());
+		long start = System.currentTimeMillis();
 		ParsedResult result = evaluator.parse(Ex.Expr.getRuleIndex());
+		long stop = System.currentTimeMillis();
+		System.out.println("parse time: " + (stop - start) + "ms");
 		System.out.println(result);
 	}
 }

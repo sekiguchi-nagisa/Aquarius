@@ -88,7 +88,7 @@ public class BufferedStream implements AquariusInputStream {
 			throws IndexOutOfBoundsException {
 		if(!this.checkIndexRange(startPos)) {
 			throw new IndexOutOfBoundsException("start position is " + startPos + 
-					"but buffer size is " + this.bufferSize);
+					", but buffer size is " + this.bufferSize);
 		}
 		if(startPos >= stopPos) {
 			throw new IndexOutOfBoundsException("start position is " + startPos + 
@@ -96,7 +96,7 @@ public class BufferedStream implements AquariusInputStream {
 		}
 		if(stopPos > this.getInputSize()) {
 			throw new IndexOutOfBoundsException("stop position is " + startPos + 
-					"but buffer size is " + this.bufferSize);
+					", but buffer size is " + this.bufferSize);
 		}
 		return new GeneralToken(startPos, stopPos);
 	}

@@ -10,28 +10,30 @@ public class FixedSizeMemoTableFactory implements MemoTableFactory {
 	}
 
 	private static class FixedSizeMemoTable implements MemoTable {
-		private final ParsedResult[][] resultArray;
+		private final MemoEntry[][] resultArray;
 
 		private FixedSizeMemoTable(int ruleSize, int srcSize) {
-			this.resultArray = new ParsedResult[ruleSize][srcSize];
+			int actualSrcSize = srcSize + 1;
+			this.resultArray = new MemoEntry[ruleSize][actualSrcSize];
 			for(int i = 0; i < ruleSize; i++) {
-				for(int j = 0; j < srcSize; j++) {
+				for(int j = 0; j < actualSrcSize; j++) {
 					this.resultArray[i][j] = null;
 				}
 			}
 		}
 
 		@Override
-		public ParsedResult get(int ruleIndex, int srcPos) {
+		public MemoEntry get(int ruleIndex, int srcPos) {
 			return this.resultArray[ruleIndex][srcPos];
 		}
 
 		@Override
-		public ParsedResult set(int ruleIndex, int srcPos, ParsedResult result) {
+		public ParsedResult set(int ruleIndex, int srcPos, ParsedResult result, int currentPos) {
 			assert(this.resultArray[ruleIndex][srcPos] != null);
 			assert(!(result instanceof Failure));
 
-			return (this.resultArray[ruleIndex][srcPos] = result);
+			this.resultArray[ruleIndex][srcPos] = new MemoEntry(currentPos, result);
+			return result;
 		}
 	}
 }

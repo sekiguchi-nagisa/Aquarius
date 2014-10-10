@@ -20,12 +20,13 @@ import aquarius.combinator.expression.Sequence;
 import aquarius.combinator.expression.StringLiteral;
 import aquarius.combinator.expression.SubExpr;
 import aquarius.combinator.expression.ZeroMore;
-import aquarius.runtime.AquariusInputStream;
 import aquarius.runtime.BaseParser;
+import static aquarius.runtime.Failure.*;
 import aquarius.runtime.Failure;
 import aquarius.runtime.ParsedResult;
 import aquarius.runtime.ResultList;
 import aquarius.runtime.ParsedResult.EmptyResult;
+import aquarius.runtime.memo.MemoTable.MemoEntry;
 import aquarius.util.IntRange;
 
 public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedResult> {
@@ -42,12 +43,15 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 	public ParsedResult visitString(StringLiteral expr) {
 		int pos = this.input.getPosition();
 
+		if(pos == this.input.getInputSize()) {
+			return inEOF(this.input, expr);
+		}
+
 		String text = expr.getTarget();
 		final int size = text.length();
 		for(int i = 0; i < size; i++) {
 			if(text.charAt(i) != this.input.consume()) {
-				return new Failure(this.input.getPosition(), "require string: " + text + 
-						", but is " + this.input.createToken(pos, this.input.getPosition()));	//TODO:
+				return inString(this.input, expr, pos);
 			}
 		}
 		return this.input.createToken(pos);
@@ -57,8 +61,8 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 	public ParsedResult visitAny(Any expr) {
 		int pos = this.input.getPosition();
 
-		if(this.input.consume() == AquariusInputStream.EOF) {
-			return new Failure(this.input.getPosition(), "reach End of File");	//TODO:
+		if(pos == this.input.getInputSize()) {
+			return inEOF(this.input, expr);
 		}
 		return this.input.createToken(pos);
 	}
@@ -67,11 +71,11 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 	public ParsedResult visitCharSet(CharSet expr) {
 		int pos = this.input.getPosition();
 
-		final int fetchedCh = this.input.consume();
-		if(fetchedCh == AquariusInputStream.EOF) {
-			return new Failure(this.input.getPosition(), "reach End of File");
+		if(pos == this.input.getInputSize()) {
+			return inEOF(this.input, expr);
 		}
 
+		final int fetchedCh = this.input.consume();
 		// match chars
 		for(int ch : expr.getChars()) {
 			if(fetchedCh == ch) {
@@ -87,8 +91,7 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 				}
 			}
 		}
-		return new Failure(this.input.getPosition(), 
-				"current char is " + (char) fetchedCh + ", but require chars: " + expr);	//TODO:
+		return Failure.inCharSet(this.input, expr, fetchedCh);
 	}
 
 	@Override
@@ -126,8 +129,7 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 			ParsedResult result = expr.getExpr().accept(this);
 			if(result instanceof Failure) {
 				if(list.isEmpty()) {
-					return new Failure(this.input.getPosition(), 
-							"require at least one pattern: " + expr.getExpr());	//TODO:
+					return inOneZore(this.input, expr);
 				}
 				this.input.setPosition(pos);	// roll back position
 				break;
@@ -158,8 +160,7 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 			this.input.setPosition(pos);
 			return ParsedResult.EMPTY_RESULT;
 		}
-		return new Failure(this.input.getPosition(), 
-				"and prediction failed: " + expr.getExpr());	//TODO:
+		return inAnd(this.input, expr);
 	}
 
 	@Override
@@ -171,8 +172,7 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 			this.input.setPosition(pos);
 			return ParsedResult.EMPTY_RESULT;
 		}
-		return new Failure(this.input.getPosition(), 
-				"not prediction failed: " + expr.getExpr());	//TODO:
+		return inNot(this.input, expr);
 	}
 
 	@Override
@@ -258,16 +258,17 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 	protected ParsedResult dispatchRule(int ruleIndex) throws IndexOutOfBoundsException {
 		int srcPos = this.input.getPosition();
 
-		ParsedResult result = this.memoTable.get(ruleIndex, srcPos);
-		if(result != null) {
-			return result;
+		MemoEntry entry = this.memoTable.get(ruleIndex, srcPos);
+		if(entry != null) {
+			this.input.setPosition(entry.getCurrentPos());
+			return entry.getResult();
 		}
 		// if not found previous parsed result, invoke rule
-		result = this.rules[ruleIndex].getPattern().accept(this);
+		ParsedResult result = this.rules[ruleIndex].getPattern().accept(this);
 		if(result instanceof Failure) {
 			return result;
 		}
-		return this.memoTable.set(ruleIndex, srcPos, result);
+		return this.memoTable.set(ruleIndex, srcPos, result, this.input.getPosition());
 	}
 
 }
