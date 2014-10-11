@@ -25,10 +25,6 @@ public interface ParsingExpression extends ParsedResult {
 		return new CharSet(chars);
 	}
 
-	public static SubExpr sub(ParsingExpression expr) {
-		return new SubExpr(expr);
-	}
-
 	public static ZeroMore zeroMore(ParsingExpression expr) {
 		return new ZeroMore(expr);
 	}

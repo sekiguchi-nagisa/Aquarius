@@ -21,7 +21,7 @@ public class Literal implements ParsingExpression {
 
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visitString(this);
+		return visitor.visitLiteral(this);
 	}
 
 	@Override

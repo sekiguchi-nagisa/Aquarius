@@ -14,15 +14,13 @@ import aquarius.combinator.expression.Optional;
 import aquarius.combinator.expression.Rule;
 import aquarius.combinator.expression.Sequence;
 import aquarius.combinator.expression.Literal;
-import aquarius.combinator.expression.SubExpr;
 import aquarius.combinator.expression.ZeroMore;
 
 public interface ExpressionVisitor<T> {
-	public T visitString          (Literal expr);
+	public T visitLiteral         (Literal expr);
 	public T visitAny             (Any expr);
 	public T visitCharSet         (CharSet expr);
 	public T visitRule            (Rule expr);
-	public T visitSubExpr         (SubExpr expr);
 	public T visitZeroMore        (ZeroMore expr);
 	public T visitOneMore         (OneMore expr);
 	public T visitOptional        (Optional expr);

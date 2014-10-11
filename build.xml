@@ -1,6 +1,6 @@
 <project name="aquarius" default="jar">
 	<!-- directory / file definition -->
-	<property name="source_dir" value="src" />
+	<property name="source_dir" value="src/main" />
 	<property name="build_dir"  value="build" />
 	<property name="jar"        value="aquarius.jar" />
 
