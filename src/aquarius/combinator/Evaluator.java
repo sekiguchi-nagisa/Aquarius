@@ -17,7 +17,7 @@ import aquarius.combinator.expression.Optional;
 import aquarius.combinator.expression.ParsingExpression;
 import aquarius.combinator.expression.Rule;
 import aquarius.combinator.expression.Sequence;
-import aquarius.combinator.expression.StringLiteral;
+import aquarius.combinator.expression.Literal;
 import aquarius.combinator.expression.SubExpr;
 import aquarius.combinator.expression.ZeroMore;
 import aquarius.runtime.BaseParser;
@@ -34,13 +34,10 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 
 	public Evaluator(Rule[] rules) {
 		this.rules = rules;
-		for(Rule rule : rules) {
-			rule.init();	// initialize rule
-		}
 	}
 
 	@Override
-	public ParsedResult visitString(StringLiteral expr) {
+	public ParsedResult visitString(Literal expr) {
 		int pos = this.input.getPosition();
 
 		if(pos == this.input.getInputSize()) {
@@ -51,7 +48,7 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 		final int size = text.length();
 		for(int i = 0; i < size; i++) {
 			if(text.charAt(i) != this.input.consume()) {
-				return inString(this.input, expr, pos);
+				return inLiteral(this.input, expr, pos);
 			}
 		}
 		return this.input.createToken(pos);

@@ -5,7 +5,7 @@ import aquarius.combinator.expression.Any;
 import aquarius.combinator.expression.CharSet;
 import aquarius.combinator.expression.NotPredict;
 import aquarius.combinator.expression.OneMore;
-import aquarius.combinator.expression.StringLiteral;
+import aquarius.combinator.expression.Literal;
 
 public class Failure implements ParsedResult {
 	private final String message;
@@ -28,13 +28,14 @@ public class Failure implements ParsedResult {
 	public int getFailurePos() {
 		return this.currentPos;
 	}
+
 	@Override
 	public String toString() {
 		return "failure at " + this.currentPos + ": " + this.message;
 	}
 
 	// failure creator api
-	public final static Failure inEOF(AquariusInputStream input, StringLiteral expr) {
+	public final static Failure inEOF(AquariusInputStream input, Literal expr) {
 		StringBuilder sBuilder = new StringBuilder();
 		sBuilder.append("require text: ");
 		sBuilder.append(expr.getTarget());
@@ -53,7 +54,8 @@ public class Failure implements ParsedResult {
 		sBuilder.append(", but reach End of File");
 		return new Failure(input.getPosition(), sBuilder.toString());
 	}
-	public final static Failure inString(AquariusInputStream input, StringLiteral expr, int startPos) {
+
+	public final static Failure inLiteral(AquariusInputStream input, Literal expr, int startPos) {
 		StringBuilder sBuilder = new StringBuilder();
 		sBuilder.append("require text: ");
 		sBuilder.append(expr.getTarget());

@@ -11,17 +11,13 @@ import aquarius.combinator.ExpressionVisitor;
 public interface Rule extends ParsingExpression {
 	public String getRuleName();
 
-	/**
-	 * initialize inner expression
-	 */
-	public void init();
-
-	/**
-	 * may be null
-	 * @return
-	 */
 	public ParsingExpression getPattern();
 
+	/**
+	 * get unique identifier
+	 * @return
+	 * non negative value
+	 */
 	public int getRuleIndex();
 
 	/**

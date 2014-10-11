@@ -8,10 +8,10 @@ import aquarius.combinator.ExpressionVisitor;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class StringLiteral implements ParsingExpression {
+public class Literal implements ParsingExpression {
 	private final String target;
 
-	public StringLiteral(String target) {
+	public Literal(String target) {
 		this.target = target;
 	}
 

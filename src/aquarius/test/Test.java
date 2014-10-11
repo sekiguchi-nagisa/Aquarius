@@ -7,7 +7,6 @@ import aquarius.combinator.expression.Rule;
 import aquarius.runtime.BufferedStream;
 import aquarius.runtime.ParsedResult;
 import aquarius.runtime.memo.MapBasedMemoTableFactory;
-import aquarius.runtime.memo.NullMemoTableFactory;
 import static aquarius.combinator.expression.ParsingExpression.*;
 
 public class Test {
@@ -18,7 +17,7 @@ public class Test {
 		BufferedStream input = new BufferedStream("<sample>", "(((((((12345))))))");
 		evaluator.setInputStream(input);
 //		evaluator.setMemoTableFactory(new NullMemoTableFactory());
-//		evaluator.setMemoTableFactory(new MapBasedMemoTableFactory());
+		evaluator.setMemoTableFactory(new MapBasedMemoTableFactory());
 		//ParsedResult result = evaluator.parse(Ex.Text.getRuleIndex());
 		long start = System.currentTimeMillis();
 		ParsedResult result = evaluator.parse(Ex.Expr.getRuleIndex());
@@ -29,77 +28,59 @@ public class Test {
 }
 
 enum Ex implements Rule {
-	EOF {
-		@Override public void init() { this.expr = 
-			not(any());
-		}
-	},
-	__ {
-		@Override public void init() { this.expr = 
-			choice(zeroMore(ch(' ', '\t', '\n', '\r')), EOF);
-		}
-	},
-	hoge {
-		@Override public void init() { this.expr = 
+	EOF, __, hoge, Text, Expr, Add, Mul, Primary, Num,;
+	
+	static {
+		EOF.pattern = not(any());
+
+		__.pattern = choice(zeroMore(ch(' ', '\t', '\n', '\r')), EOF);
+
+		hoge.pattern = 
 			action(
 				seq(hoge, __, hoge), 
-				s -> s);
-		}
-	},
-	Text {
-		@Override public void init() { this.expr = 
+				s -> s
+			);
+
+		Text.pattern = 
 			capture(
 				seq(
 					ch('_')._$('a', 'z')._$('A', 'Z'),
-					zeroMore(ch('_')._$('a', 'z')._$('A', 'Z')._$('0', '9'))));
-		}
-	},
-	Expr {
-		@Override public void init() { this.expr = 
-			seq(__, Add, __);
-		}
-	},
-	Add {
-		@Override public void init() { this.expr = 
+					zeroMore(ch('_')._$('a', 'z')._$('A', 'Z')._$('0', '9'))
+				)
+			);
+
+		Expr.pattern = seq(__, Add, __);
+
+		Add.pattern = 
 			capture(
 				choice(
-					seq(Mul, __, string("+"), __, Add),
-					seq(Mul, __, string("-"), __, Add),
+					seq(Mul, __, str("+"), __, Add),
+					seq(Mul, __, str("-"), __, Add),
 					Mul
 				)
 			);
-		}
-	},
-	Mul {
-		@Override public void init() { this.expr = 
+
+		Mul.pattern = 
 			choice(
-				seq(Primary, __, string("*"), __, Mul),
-				seq(Primary, __, string("/"), __, Mul),
+				seq(Primary, __, str("*"), __, Mul),
+				seq(Primary, __, str("/"), __, Mul),
 				Primary
 			);
-		}
-	},
-	Primary {
-		@Override public void init() { this.expr = 
+
+		Primary.pattern = 
 			choice(
-				seq(string("("), __, Add, __, string(")")),
+				seq(str("("), __, Add, __, str(")")),
 				Num
 			);
-		}
-	},
-	Num {
-		@Override public void init() { this.expr = 
+
+		Num.pattern = 
 			choice(
-				string("0"),
+				str("0"),
 				seq(ch()._$('1', '9'), zeroMore(ch()._$('0', '9')))
 			);
-		}
-	},
-	;
+	}
 
-	protected ParsingExpression expr;
-
-	public abstract void init();
+	protected ParsingExpression pattern;
 
 	@Override
 	public String getRuleName() {
@@ -108,7 +89,7 @@ enum Ex implements Rule {
 
 	@Override
 	public ParsingExpression getPattern() {
-		return this.expr;
+		return this.pattern;
 	}
 
 	@Override

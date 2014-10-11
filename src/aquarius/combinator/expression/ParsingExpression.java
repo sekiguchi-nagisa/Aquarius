@@ -13,8 +13,8 @@ public interface ParsingExpression extends ParsedResult {
 	public <T> T accept(ExpressionVisitor<T> visitor);
 
 	// creator api
-	public static StringLiteral string(String target) {
-		return new StringLiteral(target);
+	public static Literal str(String target) {
+		return new Literal(target);
 	}
 
 	public static Any any() {
