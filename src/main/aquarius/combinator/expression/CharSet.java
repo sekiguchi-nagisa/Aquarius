@@ -1,9 +1,15 @@
 package aquarius.combinator.expression;
 
+import static aquarius.runtime.Failure.inEOF;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import aquarius.combinator.ExpressionVisitor;
+import aquarius.combinator.ParserContext;
+import aquarius.runtime.AquariusInputStream;
+import aquarius.runtime.Failure;
+import aquarius.runtime.ParsedResult;
 import aquarius.util.IntRange;
 
 /**
@@ -82,5 +88,33 @@ public class CharSet implements ParsingExpression {
 		}
 		sBuilder.append(']');
 		return sBuilder.toString();
+	}
+
+	@Override
+	public ParsedResult parse(ParserContext context) {
+		AquariusInputStream input = context.getInput();
+		int pos = input.getPosition();
+
+		if(pos == input.getInputSize()) {
+			return inEOF(input, this);
+		}
+
+		final int fetchedCh = input.consume();
+		// match chars
+		for(int ch : this.getChars()) {
+			if(fetchedCh == ch) {
+				return input.createToken(pos);
+			}
+		}
+		// match char range
+		List<IntRange> rangeList = this.getRangeList();
+		if(rangeList != null) {
+			for(IntRange range : rangeList) {
+				if(range.withinRange(fetchedCh)) {
+					return input.createToken(pos);
+				}
+			}
+		}
+		return Failure.inCharSet(input, this, fetchedCh);
 	}
 }

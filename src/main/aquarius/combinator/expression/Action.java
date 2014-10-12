@@ -1,7 +1,10 @@
 package aquarius.combinator.expression;
 
 import aquarius.combinator.ExpressionVisitor;
+import aquarius.combinator.ParserContext;
 import aquarius.combinator.ParsingAction;
+import aquarius.runtime.Failure;
+import aquarius.runtime.ParsedResult;
 
 /**
 * try to match the expression, if success execute action. preceding expression result
@@ -35,5 +38,17 @@ public class Action implements ParsingExpression {	// extended expression type
 	@Override
 	public String toString() {
 		return this.expr + "{ action }";
+	}
+
+	@Override
+	public ParsedResult parse(ParserContext context) {
+		// evaluate preceding expression
+		ParsedResult result = this.getExpr().parse(context);
+		if(result instanceof Failure) {
+			return result;
+		}
+
+		// invoke action
+		return this.getAction().invoke(result);	// may be Failure
 	}
 }

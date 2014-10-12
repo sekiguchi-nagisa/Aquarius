@@ -1,7 +1,9 @@
 package aquarius.combinator.expression;
 
 import aquarius.combinator.ExpressionVisitor;
+import aquarius.combinator.ParserContext;
 import aquarius.combinator.PredictiveAction;
+import aquarius.runtime.ParsedResult;
 
 /**
 * execute semantic action. if return value is not failed, not advance parsing position.
@@ -29,5 +31,10 @@ public class AndPredictAction implements ParsingExpression {	// extended express
 	@Override
 	public String toString() {
 		return "&{ action }";
+	}
+
+	@Override
+	public ParsedResult parse(ParserContext context) {
+		throw new RuntimeException("unsuppored: " + this.getClass());	//TODO:
 	}
 }

@@ -1,6 +1,10 @@
 package aquarius.combinator.expression;
 
 import aquarius.combinator.ExpressionVisitor;
+import aquarius.combinator.ParserContext;
+import aquarius.runtime.Failure;
+import aquarius.runtime.ParsedResult;
+import aquarius.runtime.ResultList;
 
 /**
 * try to match the sequence of expressions and return matched results as array.
@@ -29,5 +33,21 @@ public class Sequence extends ListExpr {
 			sBuilder.append(this.exprList.get(i));
 		}
 		return sBuilder.toString();
+	}
+
+	@Override
+	public ParsedResult parse(ParserContext context) {
+		ResultList list = new ResultList(this.getExprList().size());
+		for(ParsingExpression e : this.getExprList()) {
+			ParsedResult result = e.parse(context);
+			if(result instanceof Failure) {
+				return result;
+			}
+			if(result instanceof EmptyResult) {
+				continue;	// skip EmptyResult
+			}
+			list.add(result);
+		}
+		return list;
 	}
 }

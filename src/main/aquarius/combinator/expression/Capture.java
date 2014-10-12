@@ -1,6 +1,10 @@
 package aquarius.combinator.expression;
 
 import aquarius.combinator.ExpressionVisitor;
+import aquarius.combinator.ParserContext;
+import aquarius.runtime.AquariusInputStream;
+import aquarius.runtime.Failure;
+import aquarius.runtime.ParsedResult;
 
 /**
 * try to match sub expression sequence and return matched result as one string.
@@ -31,5 +35,18 @@ public class Capture extends ListExpr {	// extended expression type
 		}
 		sBuilder.append('>');
 		return sBuilder.toString();
+	}
+
+	@Override
+	public ParsedResult parse(ParserContext context) {
+		AquariusInputStream input = context.getInput();
+		int pos = input.getPosition();
+		for(ParsingExpression e : this.getExprList()) {
+			ParsedResult result = e.parse(context);
+			if(result instanceof Failure) {
+				return result;
+			}
+		}
+		return input.createToken(pos);
 	}
 }

@@ -13,12 +13,12 @@ public class EvalLiteralTest extends EvalTestBase {
 	@Before
 	public void prepare() {
 		this.expr = str(text);
-		this.initEvaluator(text + "hfieur");
+		this.initContext(text + "hfieur");
 	}
 	@Test
 	public void test() {
 		ParsedResult expected = this.input.createToken(0, text.length());
-		ParsedResult result = this.expr.accept(this.evaluator);
+		ParsedResult result = this.expr.parse(this.context);
 		assertEquals("mismatched result", expected, result);
 	}
 }

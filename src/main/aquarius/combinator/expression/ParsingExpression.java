@@ -5,12 +5,15 @@ import java.util.Collections;
 import java.util.List;
 
 import aquarius.combinator.ExpressionVisitor;
+import aquarius.combinator.ParserContext;
 import aquarius.combinator.ParsingAction;
 import aquarius.combinator.PredictiveAction;
 import aquarius.runtime.ParsedResult;
 
 public interface ParsingExpression extends ParsedResult {
 	public <T> T accept(ExpressionVisitor<T> visitor);
+
+	public ParsedResult parse(ParserContext context);
 
 	// creator api
 	public static Literal str(String target) {

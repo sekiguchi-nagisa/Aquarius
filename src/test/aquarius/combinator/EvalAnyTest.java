@@ -14,13 +14,13 @@ public class EvalAnyTest extends EvalTestBase {
 	@Before
 	public void prepare() {
 		this.expr = any();
-		this.initEvaluator("G");
+		this.initContext("G");
 	}
 
 	@Test
 	public void test() {
 		ParsedResult expected = this.input.createToken(0, 1);
-		ParsedResult result = this.expr.accept(this.evaluator);
+		ParsedResult result = this.expr.parse(this.context);
 		assertEquals("mismatched result", expected, result);
 	}
 }

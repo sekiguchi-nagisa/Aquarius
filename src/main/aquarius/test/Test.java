@@ -1,26 +1,19 @@
 package aquarius.test;
 
-import aquarius.combinator.Evaluator;
-import aquarius.combinator.ExpressionVisitor;
+import aquarius.combinator.ParserContext;
 import aquarius.combinator.expression.ParsingExpression;
 import aquarius.combinator.expression.Rule;
 import aquarius.runtime.CommonStream;
 import aquarius.runtime.ParsedResult;
-import aquarius.runtime.memo.MapBasedMemoTableFactory;
 import static aquarius.combinator.expression.ParsingExpression.*;
 
 public class Test {
 	public static void main(String[] args) {
-		Evaluator evaluator = new Evaluator(Ex.values());
-		//BufferedStream input = new BufferedStream("<sample>", "hfreui35_d");
-		//BufferedStream input = new BufferedStream("<sample>", "((((12 + 43 * (54 - 32 / 2)))))");
 		CommonStream input = new CommonStream("<sample>", "(((((((12345))))))");
-		evaluator.setInputStream(input);
-//		evaluator.setMemoTableFactory(new NullMemoTableFactory());
-		evaluator.setMemoTableFactory(new MapBasedMemoTableFactory());
-		//ParsedResult result = evaluator.parse(Ex.Text.getRuleIndex());
+		ParserContext context = new ParserContext(input, Ex.values().length);
+
 		long start = System.currentTimeMillis();
-		ParsedResult result = evaluator.parse(Ex.Expr.getRuleIndex());
+		ParsedResult result = Ex.Expr.parse(context);
 		long stop = System.currentTimeMillis();
 		System.out.println("parse time: " + (stop - start) + "ms");
 		System.out.println(result);
@@ -95,10 +88,5 @@ enum Ex implements Rule {
 	@Override
 	public int getRuleIndex() {
 		return this.ordinal();
-	}
-
-	@Override
-	public <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visitRule(this);
 	}
 }
