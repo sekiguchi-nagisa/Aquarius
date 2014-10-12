@@ -5,19 +5,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
-public class BufferedStream implements AquariusInputStream {
+/**
+ * input stream for common usage.
+ * @author skgchxngsxyz-opensuse
+ *
+ */
+public class CommonStream implements AquariusInputStream {
 	private String sourceName;
 	private final byte[] buffer;
 	private final int bufferSize;
 	private int currentPos = 0;
 	
-	public BufferedStream(String sourceName, String source) {
+	public CommonStream(String sourceName, String source) {
 		this.sourceName = sourceName;
 		this.buffer = source.getBytes(Charset.forName("UTF-8"));
 		this.bufferSize = this.buffer.length;
 	}
 
-	public BufferedStream(String sourceName, InputStream inputStream, boolean close) {
+	public CommonStream(String sourceName, InputStream inputStream, boolean close) {
 		this.sourceName = sourceName;
 		ByteArrayOutputStream bufStream = new ByteArrayOutputStream();
 		final int size = 512;
@@ -98,14 +103,14 @@ public class BufferedStream implements AquariusInputStream {
 			throw new IndexOutOfBoundsException("stop position is " + startPos + 
 					", but buffer size is " + this.bufferSize);
 		}
-		return new GeneralToken(startPos, stopPos);
+		return new CommonToken(startPos, stopPos);
 	}
 
-	private static class GeneralToken implements Token {
+	private static class CommonToken implements Token {
 		private final int startPos;
 		private final int stopPos;
 
-		private GeneralToken(int startPos, int stopPos) {
+		private CommonToken(int startPos, int stopPos) {
 			this.startPos = startPos;
 			this.stopPos = stopPos;
 		}
@@ -118,11 +123,6 @@ public class BufferedStream implements AquariusInputStream {
 		@Override
 		public int getStopPos() {
 			return this.stopPos;
-		}
-
-		@Override
-		public int getSize() {
-			return this.getStopPos() - this.getStartPos();
 		}
 
 		@Override
@@ -145,13 +145,13 @@ public class BufferedStream implements AquariusInputStream {
 						", stopPos is " + this.getStopPos() + ", but startOffset is " + 
 						startOffset + ", stopOffset is " + stopOffset);
 			}
-			BufferedStream stream = (BufferedStream) srcInput;
+			CommonStream stream = (CommonStream) srcInput;
 			return new String(stream.buffer, actualStartPos, size);
 		}
 
 		@Override
 		public int getLineNumber(AquariusInputStream srcInput) {
-			BufferedStream stream = (BufferedStream) srcInput;
+			CommonStream stream = (CommonStream) srcInput;
 			int lineNum = 1;
 			for(int i = 0; i < stream.bufferSize; i++) {
 				if(stream.buffer[i] == '\n') {
@@ -167,6 +167,16 @@ public class BufferedStream implements AquariusInputStream {
 		@Override
 		public String toString() {
 			return "token<" + this.startPos + "-" + this.stopPos + ">";
+		}
+
+		@Override
+		public boolean equals(Object target) {
+			if(target instanceof Token) {
+				Token token = (Token) target;
+				return this.getStartPos() == token.getStartPos() && 
+						this.getStopPos() == token.getStopPos();
+			}
+			return false;
 		}
 	}
 

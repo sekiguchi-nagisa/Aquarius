@@ -23,11 +23,9 @@ public interface Token extends ParsedResult {
 	 * get token text size. this is equivalent to Token#getStopPos() - Token#getStartPos()
 	 * @return
 	 */
-	public int getSize();
-	/**
-	 * get token text. this is equivalent to Token#getSubText(0, 0)
-	 * @return
-	 */
+	public default int getSize() {
+		return this.getStopPos() - this.getStartPos();
+	}
 
 	/**
 	 * get token text. this is equivalent to Token#getSubText(srcInput, 0, 0)

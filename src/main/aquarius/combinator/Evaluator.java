@@ -60,6 +60,7 @@ public class Evaluator extends BaseParser implements ExpressionVisitor<ParsedRes
 		if(pos == this.input.getInputSize()) {
 			return inEOF(this.input, expr);
 		}
+		this.input.consume();
 		return this.input.createToken(pos);
 	}
 

@@ -1,6 +1,5 @@
 package aquarius.combinator;
 
-
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -9,17 +8,16 @@ import org.junit.Test;
 import aquarius.runtime.ParsedResult;
 import static aquarius.combinator.expression.ParsingExpression.*;
 
-public class EvalAnyTest extends EvalTestBase {
-
+public class EvalLiteralTest extends EvalTestBase {
+	private final String text = "hello world";
 	@Before
 	public void prepare() {
-		this.expr = any();
-		this.initEvaluator("G");
+		this.expr = str(text);
+		this.initEvaluator(text + "hfieur");
 	}
-
 	@Test
 	public void test() {
-		ParsedResult expected = this.input.createToken(0, 1);
+		ParsedResult expected = this.input.createToken(0, text.length());
 		ParsedResult result = this.expr.accept(this.evaluator);
 		assertEquals("mismatched result", expected, result);
 	}

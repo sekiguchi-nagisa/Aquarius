@@ -4,7 +4,7 @@ import aquarius.combinator.Evaluator;
 import aquarius.combinator.ExpressionVisitor;
 import aquarius.combinator.expression.ParsingExpression;
 import aquarius.combinator.expression.Rule;
-import aquarius.runtime.BufferedStream;
+import aquarius.runtime.CommonStream;
 import aquarius.runtime.ParsedResult;
 import aquarius.runtime.memo.MapBasedMemoTableFactory;
 import static aquarius.combinator.expression.ParsingExpression.*;
@@ -14,7 +14,7 @@ public class Test {
 		Evaluator evaluator = new Evaluator(Ex.values());
 		//BufferedStream input = new BufferedStream("<sample>", "hfreui35_d");
 		//BufferedStream input = new BufferedStream("<sample>", "((((12 + 43 * (54 - 32 / 2)))))");
-		BufferedStream input = new BufferedStream("<sample>", "(((((((12345))))))");
+		CommonStream input = new CommonStream("<sample>", "(((((((12345))))))");
 		evaluator.setInputStream(input);
 //		evaluator.setMemoTableFactory(new NullMemoTableFactory());
 		evaluator.setMemoTableFactory(new MapBasedMemoTableFactory());
@@ -76,7 +76,7 @@ enum Ex implements Rule {
 		Num.pattern = 
 			choice(
 				str("0"),
-				seq(ch()._$('1', '9'), zeroMore(ch()._$('0', '9')))
+				seq(opt(ch('-', '+')), ch()._$('1', '9'), zeroMore(ch()._$('0', '9')))
 			);
 	}
 

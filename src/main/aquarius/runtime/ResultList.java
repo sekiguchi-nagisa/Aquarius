@@ -27,4 +27,22 @@ public class ResultList extends ArrayList<ParsedResult> implements ParsedResult 
 		sBuilder.append(']');
 		return sBuilder.toString();
 	}
+
+	@Override
+	public boolean equals(Object target) {
+		if(target instanceof ResultList) {
+			ResultList list = (ResultList) target;
+			if(this.size() != list.size()) {
+				return false;
+			}
+			final int size = this.size();
+			for(int i = 0; i < size; i++) {
+				if(!this.get(i).equals(list.get(i))) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
 }
