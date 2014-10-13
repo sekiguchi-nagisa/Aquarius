@@ -1,5 +1,7 @@
 package aquarius.test;
 
+import java.text.DecimalFormat;
+
 import aquarius.combinator.Grammar;
 import aquarius.combinator.ParserContext;
 import aquarius.combinator.expression.Rule;
@@ -10,6 +12,8 @@ import static aquarius.combinator.expression.ParsingExpression.*;
 
 public class Test {
 	public static void main(String[] args) {
+		showMemory("before parsing");
+
 		SampleGrammar g = new SampleGrammar();
 
 		CommonStream input = new CommonStream("<sample>", "(((((((12345))))))");
@@ -18,8 +22,29 @@ public class Test {
 		long start = System.currentTimeMillis();
 		Result<Token> result = g.Expr.parse(context);
 		long stop = System.currentTimeMillis();
+		showMemory("after parsing");
 		System.out.println("parse time: " + (stop - start) + "ms");
 		System.out.println(result);
+		
+	}
+
+	private final static DecimalFormat f = new DecimalFormat("#,###KB");
+	private final static DecimalFormat f2 = new DecimalFormat("##,#");
+
+	private static void showMemory(String message) {
+		long total = Runtime.getRuntime().totalMemory() / 1024;
+		long free = Runtime.getRuntime().freeMemory() / 1024;
+		long max = Runtime.getRuntime().maxMemory() / 1024;
+		long used = total - free;
+		double ratio = used * 100 / (double) total;
+
+		System.err.println(message);
+
+		System.err.println("total memory: " + f.format(total));
+		System.err.println("free  memory: " + f.format(free));
+		System.err.println("used  memory: " + f.format(used) + " (" + f2.format(ratio) + "%)");
+		System.err.println("max   memory: " + f.format(max));
+		System.err.println();
 	}
 }
 
