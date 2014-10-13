@@ -3,8 +3,9 @@ package aquarius.combinator.expression;
 import aquarius.combinator.ExpressionVisitor;
 import aquarius.combinator.ParserContext;
 import aquarius.runtime.AquariusInputStream;
-import aquarius.runtime.Failure;
-import aquarius.runtime.ParsedResult;
+import aquarius.runtime.Result;
+import static aquarius.runtime.Result.*;
+import aquarius.runtime.Token;
 
 /**
 * try to match sub expression sequence and return matched result as one string.
@@ -12,41 +13,48 @@ import aquarius.runtime.ParsedResult;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class Capture extends ListExpr {	// extended expression type
-	public Capture(ParsingExpression... exprs) {
-		super(exprs);
+public class Capture implements ParsingExpression<Token> {	// extended expression type
+	private final ParsingExpression<?>[] exprs;
+
+	public Capture(ParsingExpression<?>... exprs) {
+		this.exprs = exprs;
 	}
 
-	@Override
-	public <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visitCapture(this);
+	public ParsingExpression<?>[] getExprs() {
+		return this.exprs;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sBuilder = new StringBuilder();
 		sBuilder.append('<');
-		final int size = this.exprList.size();
+		final int size = this.exprs.length;
 		for(int i = 0; i < size; i++) {
 			if(i > 0) {
 				sBuilder.append(' ');
 			}
-			sBuilder.append(this.exprList.get(i));
+			sBuilder.append(this.exprs[i]);
 		}
 		sBuilder.append('>');
 		return sBuilder.toString();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public ParsedResult parse(ParserContext context) {
+	public Result<Token> parse(ParserContext context) {
 		AquariusInputStream input = context.getInput();
 		int pos = input.getPosition();
-		for(ParsingExpression e : this.getExprList()) {
-			ParsedResult result = e.parse(context);
-			if(result instanceof Failure) {
-				return result;
+		for(ParsingExpression<?> e : this.exprs) {
+			Result<?> result = e.parse(context);
+			if(result.isFailure()) {
+				return (Result<Token>) result;
 			}
 		}
-		return input.createToken(pos);
+		return of(input.createToken(pos));
+	}
+
+	@Override
+	public <T> T accept(ExpressionVisitor<T> visitor) {
+		return visitor.visitCapture(this);
 	}
 }

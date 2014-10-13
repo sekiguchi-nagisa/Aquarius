@@ -1,19 +1,15 @@
 package aquarius.combinator.expression;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import aquarius.combinator.ExpressionVisitor;
 import aquarius.combinator.ParserContext;
 import aquarius.combinator.ParsingAction;
 import aquarius.combinator.PredictiveAction;
-import aquarius.runtime.ParsedResult;
+import aquarius.runtime.Result;
 
-public interface ParsingExpression extends ParsedResult {
+public interface ParsingExpression<R> {
 	public <T> T accept(ExpressionVisitor<T> visitor);
 
-	public ParsedResult parse(ParserContext context);
+	public Result<R> parse(ParserContext context);
 
 	// creator api
 	public static Literal str(String target) {
@@ -28,78 +24,71 @@ public interface ParsingExpression extends ParsedResult {
 		return new CharSet(chars);
 	}
 
-	public static ZeroMore zeroMore(ParsingExpression expr) {
-		return new ZeroMore(expr);
+	public static <R> ZeroMore<R> zeroMore(ParsingExpression<R> expr) {
+		return new ZeroMore<R>(expr);
 	}
 
-	public static OneMore oneMore(ParsingExpression expr) {
-		return new OneMore(expr);
+	public static <R> OneMore<R> oneMore(ParsingExpression<R> expr) {
+		return new OneMore<R>(expr);
 	}
 
-	public static Optional opt(ParsingExpression expr) {
-		return new Optional(expr);
+	public static <R> Optional<R> opt(ParsingExpression<R> expr) {
+		return new Optional<R>(expr);
 	}
 
-	public static AndPredict and(ParsingExpression expr) {
+	public static AndPredict and(ParsingExpression<?> expr) {
 		return new AndPredict(expr);
 	}
 
-	public static NotPredict not(ParsingExpression expr) {
+	public static NotPredict not(ParsingExpression<?> expr) {
 		return new NotPredict(expr);
 	}
 
-	public static Sequence seq(ParsingExpression... exprs) {
-		return new Sequence(exprs);
+	@SafeVarargs
+	public static <R> Sequence<R> seq(ParsingExpression<R>... exprs) {
+		return new Sequence<R>(exprs);
 	}
 
-	public static Choice choice(ParsingExpression... exprs) {
-		return new Choice(exprs);
+	public static <A, B> Sequence2<A, B> seq2(ParsingExpression<A> a, ParsingExpression<B> b) {
+		return new Sequence2<A, B>(a, b);
 	}
 
-	public static Action action(ParsingExpression expr, ParsingAction action) {
-		return new Action(expr, action);
+	public static <A, B, C> Sequence3<A, B, C> seq3(ParsingExpression<A> a, 
+			ParsingExpression<B> b, ParsingExpression<C> c) {
+		return new Sequence3<A, B, C>(a, b, c);
 	}
 
-	public static AndPredictAction andAction(PredictiveAction action) {
-		return new AndPredictAction(action);
+	public static <A, B, C, D> Sequence4<A, B, C, D> seq4(ParsingExpression<A> a, 
+			ParsingExpression<B> b, ParsingExpression<C> c, ParsingExpression<D> d) {
+		return new Sequence4<A, B, C, D>(a, b, c, d);
 	}
 
-	public static NotPredictAction notAction(PredictiveAction action) {
-		return new NotPredictAction(action);
+	public static <A, B, C, D, E> Sequence5<A, B, C, D, E> seq5(ParsingExpression<A> a, 
+			ParsingExpression<B> b, ParsingExpression<C> c, 
+			ParsingExpression<D> d, ParsingExpression<E> e) {
+		return new Sequence5<A, B, C, D, E>(a, b, c, d, e);
 	}
 
-	public static Capture capture(ParsingExpression... exprs) {
+	@SafeVarargs
+	public static <R> Choice<R> choice(ParsingExpression<R>... exprs) {
+		return new Choice<R>(exprs);
+	}
+
+	public static <R, A> Action<R, A> action(ParsingExpression<A> expr, ParsingAction<A, R> action) {
+		return new Action<R, A>(expr, action);
+	}
+
+	public static <A> AndPredictAction<A> andAction(PredictiveAction<A> action) {
+		return new AndPredictAction<A>(action);
+	}
+
+	public static <A> NotPredictAction<A> notAction(PredictiveAction<A> action) {
+		return new NotPredictAction<A>(action);
+	}
+
+	public static Capture $(ParsingExpression<?>... exprs) {
 		return new Capture(exprs);
 	}
 }
 
-
-abstract class CompoundExpr implements ParsingExpression {
-	protected final ParsingExpression expr;
-
-	protected CompoundExpr(ParsingExpression expr) {
-		this.expr = expr;
-	}
-
-	public final ParsingExpression getExpr() {
-		return this.expr;
-	}
-}
-
-
-abstract class ListExpr implements ParsingExpression {
-	protected final List<ParsingExpression> exprList;
-
-	protected ListExpr(ParsingExpression... exprs) {
-		List<ParsingExpression> list = new ArrayList<>(exprs.length);
-		for(ParsingExpression expr : exprs) {
-			list.add(expr);
-		}
-		this.exprList = Collections.unmodifiableList(list);
-	}
-
-	public final List<ParsingExpression> getExprList() {
-		return this.exprList;
-	}
-}
 

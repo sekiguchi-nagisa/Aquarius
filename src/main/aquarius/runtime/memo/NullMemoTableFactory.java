@@ -1,6 +1,6 @@
 package aquarius.runtime.memo;
 
-import aquarius.runtime.ParsedResult;
+import aquarius.runtime.Result;
 
 /**
  * non memoization
@@ -20,7 +20,7 @@ public class NullMemoTableFactory implements MemoTableFactory {
 		}
 
 		@Override
-		public ParsedResult set(int ruleIndex, int srcPos, ParsedResult result, int currentPos) {
+		public <R> Result<R> set(int ruleIndex, int srcPos, Result<R> result, int currentPos) {
 			return result;
 		}
 	}

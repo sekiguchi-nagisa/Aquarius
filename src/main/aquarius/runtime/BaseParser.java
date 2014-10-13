@@ -53,7 +53,7 @@ public abstract class BaseParser {
 		this.memoTable = null;
 	}
 
-	public ParsedResult parse(int ruleIndex) {
+	public Result<?> parse(int ruleIndex) {
 		this.memoTable = this.factory.newMemoTable(this.getRuleSize(), this.input.getInputSize());
 		return this.dispatchRule(ruleIndex);
 	}
@@ -66,5 +66,5 @@ public abstract class BaseParser {
 	 * @throws IndexOutOfBoundsException
 	 * if ruleIndex < 0 or ruleIndex >= BaseParser#getRuleSize()
 	 */
-	protected abstract ParsedResult dispatchRule(int ruleIndex) throws IndexOutOfBoundsException;
+	protected abstract Result<?> dispatchRule(int ruleIndex) throws IndexOutOfBoundsException;
 }

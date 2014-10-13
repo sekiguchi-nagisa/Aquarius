@@ -1,53 +1,61 @@
 package aquarius.combinator.expression;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import aquarius.combinator.ExpressionVisitor;
 import aquarius.combinator.ParserContext;
-import aquarius.runtime.Failure;
-import aquarius.runtime.ParsedResult;
-import aquarius.runtime.ResultList;
+import aquarius.runtime.Result;
+import static aquarius.runtime.Result.*;
 
 /**
 * try to match the sequence of expressions and return matched results as array.
 * -> expr1 expr2 ... exprN
 * @author skgchxngsxyz-opensuse
+ * @param <R>
 *
 */
-public class Sequence extends ListExpr {
-	public Sequence(ParsingExpression... exprs) {
-		super(exprs);
+public class Sequence<R> implements ParsingExpression<List<R>> {
+	private final ParsingExpression<R>[] exprs;
+
+	@SafeVarargs
+	public Sequence(ParsingExpression<R>... exprs) {
+		this.exprs = exprs;
 	}
 
-	@Override
-	public <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visitSeq(this);
+	public ParsingExpression<R>[] getExprs() {
+		return this.exprs;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sBuilder = new StringBuilder();
-		final int size = this.exprList.size();
+		final int size = this.exprs.length;
 		for(int i = 0; i < size; i++) {
 			if(i > 0) {
 				sBuilder.append(' ');
 			}
-			sBuilder.append(this.exprList.get(i));
+			sBuilder.append(this.exprs[i]);
 		}
 		return sBuilder.toString();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public ParsedResult parse(ParserContext context) {
-		ResultList list = new ResultList(this.getExprList().size());
-		for(ParsingExpression e : this.getExprList()) {
-			ParsedResult result = e.parse(context);
-			if(result instanceof Failure) {
-				return result;
+	public Result<List<R>> parse(ParserContext context) {
+		List<R> list = new ArrayList<>(this.exprs.length);
+		for(ParsingExpression<R> e : this.exprs) {
+			Result<R> result = e.parse(context);
+			if(result.isFailure()) {
+				return (Result<List<R>>) result;
 			}
-			if(result instanceof EmptyResult) {
-				continue;	// skip EmptyResult
-			}
-			list.add(result);
+			list.add(result.get());
 		}
-		return list;
+		return of(list);
+	}
+
+	@Override
+	public <T> T accept(ExpressionVisitor<T> visitor) {
+		return visitor.visitSequence(this);
 	}
 }

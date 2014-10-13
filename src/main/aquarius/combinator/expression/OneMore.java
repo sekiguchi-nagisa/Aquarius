@@ -1,27 +1,30 @@
 package aquarius.combinator.expression;
 
-import static aquarius.runtime.Failure.inOneZore;
+import java.util.ArrayList;
+import java.util.List;
+
 import aquarius.combinator.ExpressionVisitor;
 import aquarius.combinator.ParserContext;
 import aquarius.runtime.AquariusInputStream;
-import aquarius.runtime.Failure;
-import aquarius.runtime.ParsedResult;
-import aquarius.runtime.ResultList;
+import aquarius.runtime.Result;
+import static aquarius.runtime.Result.*;
 
 /**
 * match one or more repetition of the expression. return matched results as array
 * -> expr +
 * @author skgchxngsxyz-opensuse
+ * @param <R>
 *
 */
-public class OneMore extends CompoundExpr {
-	public OneMore(ParsingExpression expr) {
-		super(expr);
+public class OneMore<R> implements ParsingExpression<List<R>> {
+	private final ParsingExpression<R> expr;
+
+	public OneMore(ParsingExpression<R> expr) {
+		this.expr = expr;
 	}
 
-	@Override
-	public <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visitOneMore(this);
+	public ParsingExpression<R> getExpr() {
+		return this.expr;
 	}
 
 	@Override
@@ -30,22 +33,27 @@ public class OneMore extends CompoundExpr {
 	}
 
 	@Override
-	public ParsedResult parse(ParserContext context) {
+	public Result<List<R>> parse(ParserContext context) {
 		AquariusInputStream input = context.getInput();
-		ResultList list = new ResultList();
+		List<R> list = new ArrayList<>();
 		while(true) {
 			int pos = input.getPosition();
 
-			ParsedResult result = this.getExpr().parse(context);
-			if(result instanceof Failure) {
+			Result<R> result = this.expr.parse(context);
+			if(result.isFailure()) {
 				if(list.isEmpty()) {
-					return inOneZore(input, this);
+					return inOneMore(input, this);
 				}
 				input.setPosition(pos);	// roll back position
 				break;
 			}
-			list.add(result);
+			list.add(result.get());
 		}
-		return list;
+		return of(list);
+	}
+
+	@Override
+	public <T> T accept(ExpressionVisitor<T> visitor) {
+		return visitor.visitOneMore(this);
 	}
 }

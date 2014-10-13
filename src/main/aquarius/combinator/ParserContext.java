@@ -2,7 +2,7 @@ package aquarius.combinator;
 
 import aquarius.combinator.expression.Rule;
 import aquarius.runtime.AquariusInputStream;
-import aquarius.runtime.ParsedResult;
+import aquarius.runtime.Result;
 import aquarius.runtime.memo.MapBasedMemoTableFactory;
 import aquarius.runtime.memo.MemoTable;
 import aquarius.runtime.memo.MemoTableFactory;
@@ -47,21 +47,23 @@ public class ParserContext {
 
 	/**
 	 * 
+	 * @param <R>
 	 * @param rule
 	 * @return
 	 * parsed result of dispatched rule. if match is failed, return Failure
 	 */
-	public ParsedResult dispatchRule(Rule rule) {
+	@SuppressWarnings("unchecked")
+	public <R> Result<R> dispatchRule(Rule<R> rule) {
 		final int ruleIndex = rule.getRuleIndex();
 		final int srcPos = this.input.getPosition();
 
 		MemoEntry entry = this.memoTable.get(ruleIndex, srcPos);
 		if(entry != null) {
 			this.input.setPosition(entry.getCurrentPos());
-			return entry.getResult();
+			return (Result<R>) entry.getResult();
 		}
 		// if not found previous parsed result, invoke rule
-		ParsedResult result = rule.getPattern().parse(this);
+		Result<R> result = rule.getPattern().parse(this);
 		return this.memoTable.set(ruleIndex, srcPos, result, this.input.getPosition());
 	}
 }

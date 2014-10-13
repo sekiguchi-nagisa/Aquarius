@@ -1,11 +1,11 @@
 package aquarius.combinator.expression;
 
-import static aquarius.runtime.Failure.inEOF;
-import static aquarius.runtime.Failure.inLiteral;
 import aquarius.combinator.ExpressionVisitor;
 import aquarius.combinator.ParserContext;
 import aquarius.runtime.AquariusInputStream;
-import aquarius.runtime.ParsedResult;
+import aquarius.runtime.Result;
+import static aquarius.runtime.Result.*;
+import aquarius.runtime.Token;
 
 /**
 * try to match string literal. return matched string
@@ -13,7 +13,7 @@ import aquarius.runtime.ParsedResult;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class Literal implements ParsingExpression {
+public class Literal implements ParsingExpression<Token> {
 	private final String target;
 
 	public Literal(String target) {
@@ -25,17 +25,12 @@ public class Literal implements ParsingExpression {
 	}
 
 	@Override
-	public <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visitLiteral(this);
-	}
-
-	@Override
 	public String toString() {
 		return "'" + this.target + "'";
 	}
 
 	@Override
-	public ParsedResult parse(ParserContext context) {
+	public Result<Token> parse(ParserContext context) {
 		AquariusInputStream input = context.getInput();
 		int pos = input.getPosition();
 
@@ -50,6 +45,11 @@ public class Literal implements ParsingExpression {
 				return inLiteral(input, this, pos);
 			}
 		}
-		return input.createToken(pos);
+		return of(input.createToken(pos));
+	}
+
+	@Override
+	public <T> T accept(ExpressionVisitor<T> visitor) {
+		return visitor.visitLiteral(this);
 	}
 }

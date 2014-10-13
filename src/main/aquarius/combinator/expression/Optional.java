@@ -3,23 +3,25 @@ package aquarius.combinator.expression;
 import aquarius.combinator.ExpressionVisitor;
 import aquarius.combinator.ParserContext;
 import aquarius.runtime.AquariusInputStream;
-import aquarius.runtime.Failure;
-import aquarius.runtime.ParsedResult;
+import aquarius.runtime.Result;
+import static aquarius.runtime.Result.*;
 
 /**
 * try to match the expression. return matched result or null
 * -> expr ?
 * @author skgchxngsxyz-opensuse
+ * @param <E>
 *
 */
-public class Optional extends CompoundExpr {
-	public Optional(ParsingExpression expr) {
-		super(expr);
+public class Optional<E> implements ParsingExpression<E> {
+	private final ParsingExpression<E> expr;
+
+	public Optional(ParsingExpression<E> expr) {
+		this.expr = expr;
 	}
 
-	@Override
-	public <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visitOptional(this);
+	public ParsingExpression<E> getExpr() {
+		return this.expr;
 	}
 
 	@Override
@@ -28,15 +30,20 @@ public class Optional extends CompoundExpr {
 	}
 
 	@Override
-	public ParsedResult parse(ParserContext context) {
+	public Result<E> parse(ParserContext context) {
 		AquariusInputStream input = context.getInput();
 		int pos = input.getPosition();
 
-		ParsedResult result = this.getExpr().parse(context);
-		if(result instanceof Failure) {
+		Result<E> result = this.expr.parse(context);
+		if(result.isFailure()) {
 			input.setPosition(pos);	// roll back position
-			return ParsedResult.NULL_RESULT;
+			return empty();
 		}
 		return result;
+	}
+
+	@Override
+	public <T> T accept(ExpressionVisitor<T> visitor) {
+		return visitor.visitOptional(this);
 	}
 }

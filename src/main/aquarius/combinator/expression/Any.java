@@ -1,10 +1,11 @@
 package aquarius.combinator.expression;
 
-import static aquarius.runtime.Failure.inEOF;
 import aquarius.combinator.ExpressionVisitor;
 import aquarius.combinator.ParserContext;
 import aquarius.runtime.AquariusInputStream;
-import aquarius.runtime.ParsedResult;
+import aquarius.runtime.Result;
+import static aquarius.runtime.Result.*;
+import aquarius.runtime.Token;
 
 /**
 * try to match any one character. return mached character
@@ -12,19 +13,14 @@ import aquarius.runtime.ParsedResult;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class Any implements ParsingExpression {
-	@Override
-	public <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visitAny(this);
-	}
-
+public class Any implements ParsingExpression<Token> {
 	@Override
 	public String toString() {
 		return ".";
 	}
 
 	@Override
-	public ParsedResult parse(ParserContext context) {
+	public Result<Token> parse(ParserContext context) {
 		AquariusInputStream input = context.getInput();
 		int pos = input.getPosition();
 
@@ -32,6 +28,11 @@ public class Any implements ParsingExpression {
 			return inEOF(input, this);
 		}
 		input.consume();
-		return input.createToken(pos);
+		return of(input.createToken(pos));
+	}
+
+	@Override
+	public <T> T accept(ExpressionVisitor<T> visitor) {
+		return visitor.visitAny(this);
 	}
 }

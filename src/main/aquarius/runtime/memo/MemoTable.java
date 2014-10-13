@@ -1,6 +1,6 @@
 package aquarius.runtime.memo;
 
-import aquarius.runtime.ParsedResult;
+import aquarius.runtime.Result;
 
 /**
  * for memoization
@@ -21,6 +21,7 @@ public interface MemoTable {
 
 	/**
 	 * set parsed result.
+	 * @param <R>
 	 * @param ruleIndex
 	 * non negative value
 	 * @param srcPos
@@ -31,18 +32,18 @@ public interface MemoTable {
 	 * @return
 	 * equivalent to result.
 	 */
-	public ParsedResult set(int ruleIndex, int srcPos, ParsedResult result, int currentPos);
+	public <R> Result<R> set(int ruleIndex, int srcPos, Result<R> result, int currentPos);
 
 	public static class MemoEntry {
 		private final int currentPos;
-		private final ParsedResult result;
+		private final Result<?> result;
 
-		protected MemoEntry(int currentPos, ParsedResult result) {
+		protected MemoEntry(int currentPos, Result<?> result) {
 			this.currentPos = currentPos;
 			this.result = result;
 		}
 
-		public ParsedResult getResult() {
+		public Result<?> getResult() {
 			return this.result;
 		}
 

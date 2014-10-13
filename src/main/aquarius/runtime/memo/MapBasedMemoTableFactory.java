@@ -2,7 +2,7 @@ package aquarius.runtime.memo;
 
 import java.util.HashMap;
 
-import aquarius.runtime.ParsedResult;
+import aquarius.runtime.Result;
 
 public class MapBasedMemoTableFactory implements MemoTableFactory {
 	@Override
@@ -24,7 +24,7 @@ public class MapBasedMemoTableFactory implements MemoTableFactory {
 		}
 
 		@Override
-		public ParsedResult set(int ruleIndex, int srcPos, ParsedResult result, int currentPos) {
+		public <R> Result<R> set(int ruleIndex, int srcPos, Result<R> result, int currentPos) {
 			this.put(toUniqueId(ruleIndex, srcPos), new MemoEntry(currentPos, result));
 			return result;
 		}

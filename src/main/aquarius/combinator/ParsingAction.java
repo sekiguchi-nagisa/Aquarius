@@ -1,8 +1,8 @@
 package aquarius.combinator;
 
-import aquarius.runtime.ParsedResult;
+import aquarius.runtime.Result;
 
 @FunctionalInterface
-public interface ParsingAction {
-	public ParsedResult invoke(ParsedResult arg);
+public interface ParsingAction<A, R> {
+	public Result<R> invoke(A arg);
 }

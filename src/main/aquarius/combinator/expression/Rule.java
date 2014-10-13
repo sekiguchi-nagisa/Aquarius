@@ -2,34 +2,47 @@ package aquarius.combinator.expression;
 
 import aquarius.combinator.ExpressionVisitor;
 import aquarius.combinator.ParserContext;
-import aquarius.runtime.ParsedResult;
+import aquarius.runtime.Result;
 
 /**
 * try to match rule. return matched result
 * -> rule
 * @author skgchxngsxyz-opensuse
+ * @param <R>
 *
 */
-public interface Rule extends ParsingExpression {
-	public String getRuleName();
+public class Rule<R> implements ParsingExpression<R> {
+	private final String ruleName;
+	private final int ruleIndex;
+	private ParsingExpression<R> pattern;
 
-	public ParsingExpression getPattern();
-
-	/**
-	 * get unique identifier
-	 * @return
-	 * non negative value
-	 */
-	public int getRuleIndex();
-
-	/**
-	 * must not override
-	 */
-	public default <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visitRule(this);
+	public Rule(String ruleName, int ruleIndex) {
+		this.ruleName = ruleName;
+		this.ruleIndex = ruleIndex;
 	}
 
-	public default ParsedResult parse(ParserContext context) {
+	public String getRuleName() {
+		return this.ruleName;
+	}
+
+	public void setPattern(ParsingExpression<R> pattern) {
+		this.pattern = pattern;
+	}
+
+	public ParsingExpression<R> getPattern() {
+		return this.pattern;
+	}
+
+	public int getRuleIndex() {
+		return this.ruleIndex;
+	}
+
+	public Result<R> parse(ParserContext context) {
 		return context.dispatchRule(this);
+	}
+
+	@Override
+	public <T> T accept(ExpressionVisitor<T> visitor) {
+		return visitor.visitRule(this);
 	}
 }

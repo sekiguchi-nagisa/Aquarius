@@ -1,8 +1,6 @@
 package aquarius.combinator;
 
-import aquarius.runtime.ParsedResult;
-
 @FunctionalInterface
-public interface PredictiveAction {
-	public boolean invoke(ParsedResult arg);
+public interface PredictiveAction<A> {
+	public boolean invoke(A arg);
 }

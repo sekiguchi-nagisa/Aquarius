@@ -3,29 +3,25 @@ package aquarius.combinator.expression;
 import aquarius.combinator.ExpressionVisitor;
 import aquarius.combinator.ParserContext;
 import aquarius.combinator.PredictiveAction;
-import aquarius.runtime.ParsedResult;
+import aquarius.runtime.Result;
 
 /**
 * execute semantic action. if return value is failed, not advance parsing position.
 * otherwise, match failed. mpt return value
 * -> ! { action }
 * @author skgchxngsxyz-opensuse
+ * @param <A>
 *
 */
-public class NotPredictAction implements ParsingExpression {	// extended expression type
-	private final PredictiveAction action;
+public class NotPredictAction<A> implements ParsingExpression<Void> {	// extended expression type
+	private final PredictiveAction<A> action;
 
-	public NotPredictAction(PredictiveAction action) {
+	public NotPredictAction(PredictiveAction<A> action) {
 		this.action = action;
 	}
 
-	public PredictiveAction getAction() {
+	public PredictiveAction<A> getAction() {
 		return this.action;
-	}
-
-	@Override
-	public <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visitNotPredictAction(this);
 	}
 
 	@Override
@@ -34,7 +30,12 @@ public class NotPredictAction implements ParsingExpression {	// extended express
 	}
 
 	@Override
-	public ParsedResult parse(ParserContext context) {
+	public Result<Void> parse(ParserContext context) {
 		throw new RuntimeException("unsuppored: " + this.getClass());	//TODO:
+	}
+
+	@Override
+	public <T> T accept(ExpressionVisitor<T> visitor) {
+		return visitor.visitNotPredictAction(this);
 	}
 }

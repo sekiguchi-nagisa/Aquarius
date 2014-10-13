@@ -1,11 +1,10 @@
 package aquarius.combinator.expression;
 
-import static aquarius.runtime.Failure.inNot;
 import aquarius.combinator.ExpressionVisitor;
 import aquarius.combinator.ParserContext;
 import aquarius.runtime.AquariusInputStream;
-import aquarius.runtime.Failure;
-import aquarius.runtime.ParsedResult;
+import aquarius.runtime.Result;
+import static aquarius.runtime.Result.*;
 
 /**
 * try to match the expression. if not success, not advance parsing position.
@@ -14,14 +13,15 @@ import aquarius.runtime.ParsedResult;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class NotPredict extends CompoundExpr {
-	public NotPredict(ParsingExpression expr) {
-		super(expr);
+public class NotPredict implements ParsingExpression<Void> {
+	private final ParsingExpression<?> expr;
+
+	public NotPredict(ParsingExpression<?> expr) {
+		this.expr = expr;
 	}
 
-	@Override
-	public <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visitNotPredict(this);
+	public ParsingExpression<?> getExpr() {
+		return this.expr;
 	}
 
 	@Override
@@ -30,15 +30,20 @@ public class NotPredict extends CompoundExpr {
 	}
 
 	@Override
-	public ParsedResult parse(ParserContext context) {
+	public Result<Void> parse(ParserContext context) {
 		AquariusInputStream input = context.getInput();
 		int pos = input.getPosition();
 
-		ParsedResult predictResult = this.getExpr().parse(context);
-		if(predictResult instanceof Failure) {
+		Result<?> predictResult = this.getExpr().parse(context);
+		if(predictResult.isFailure()) {
 			input.setPosition(pos);
-			return ParsedResult.EMPTY_RESULT;
+			return Result.empty();
 		}
 		return inNot(input, this);
+	}
+
+	@Override
+	public <T> T accept(ExpressionVisitor<T> visitor) {
+		return visitor.visitNotPredict(this);
 	}
 }

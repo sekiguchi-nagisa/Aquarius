@@ -1,15 +1,14 @@
 package aquarius.combinator.expression;
 
-import static aquarius.runtime.Failure.inEOF;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import aquarius.combinator.ExpressionVisitor;
 import aquarius.combinator.ParserContext;
 import aquarius.runtime.AquariusInputStream;
-import aquarius.runtime.Failure;
-import aquarius.runtime.ParsedResult;
+import aquarius.runtime.Result;
+import static aquarius.runtime.Result.*;
+import aquarius.runtime.Token;
 import aquarius.util.IntRange;
 
 /**
@@ -18,7 +17,7 @@ import aquarius.util.IntRange;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class CharSet implements ParsingExpression {
+public class CharSet implements ParsingExpression<Token> {
 	private final int[] chars;
 	private List<IntRange> rangeList;
 
@@ -37,7 +36,7 @@ public class CharSet implements ParsingExpression {
 	 * @throws IllegalArgumentException
 	 * if start >= stop
 	 */
-	public CharSet _$(int start, int stop) throws IllegalArgumentException {
+	public CharSet _r(int start, int stop) throws IllegalArgumentException {
 		if(start >= stop) {
 			throw new IllegalArgumentException(
 					"start is larger than stop. start: " + start + "stop: " + stop);
@@ -68,11 +67,6 @@ public class CharSet implements ParsingExpression {
 	}
 
 	@Override
-	public <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visitCharSet(this);
-	}
-
-	@Override
 	public String toString() {
 		StringBuilder sBuilder = new StringBuilder();
 		sBuilder.append('[');
@@ -91,7 +85,7 @@ public class CharSet implements ParsingExpression {
 	}
 
 	@Override
-	public ParsedResult parse(ParserContext context) {
+	public Result<Token> parse(ParserContext context) {
 		AquariusInputStream input = context.getInput();
 		int pos = input.getPosition();
 
@@ -103,7 +97,7 @@ public class CharSet implements ParsingExpression {
 		// match chars
 		for(int ch : this.getChars()) {
 			if(fetchedCh == ch) {
-				return input.createToken(pos);
+				return of(input.createToken(pos));
 			}
 		}
 		// match char range
@@ -111,10 +105,15 @@ public class CharSet implements ParsingExpression {
 		if(rangeList != null) {
 			for(IntRange range : rangeList) {
 				if(range.withinRange(fetchedCh)) {
-					return input.createToken(pos);
+					return of(input.createToken(pos));
 				}
 			}
 		}
-		return Failure.inCharSet(input, this, fetchedCh);
+		return inCharSet(input, this, fetchedCh); //FIXME:
+	}
+
+	@Override
+	public <T> T accept(ExpressionVisitor<T> visitor) {
+		return visitor.visitCharSet(this);
 	}
 }

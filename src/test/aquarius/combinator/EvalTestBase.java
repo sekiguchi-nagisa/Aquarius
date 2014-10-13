@@ -8,12 +8,13 @@ import aquarius.runtime.memo.NullMemoTableFactory;
 /**
  * Base class for EvalTest
  * @author skgchxngsxyz-opensuse
+ * @param <R>
  *
  */
-public abstract class EvalTestBase {
+public abstract class EvalTestBase<R> {
 	protected CommonStream input;
 
-	protected ParsingExpression expr;
+	protected ParsingExpression<R> expr;
 
 	protected ParserContext context;
 
