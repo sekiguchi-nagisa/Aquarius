@@ -13,7 +13,7 @@ import static aquarius.runtime.Result.*;
  * @param <E>
 *
 */
-public class Optional<E> implements ParsingExpression<E> {
+public class Optional<E> implements ParsingExpression<java.util.Optional<E>> {
 	private final ParsingExpression<E> expr;
 
 	public Optional(ParsingExpression<E> expr) {
@@ -30,16 +30,16 @@ public class Optional<E> implements ParsingExpression<E> {
 	}
 
 	@Override
-	public Result<E> parse(ParserContext context) {
+	public Result<java.util.Optional<E>> parse(ParserContext context) {
 		AquariusInputStream input = context.getInput();
 		int pos = input.getPosition();
 
 		Result<E> result = this.expr.parse(context);
 		if(result.isFailure()) {
 			input.setPosition(pos);	// roll back position
-			return empty();
+			return of(java.util.Optional.empty());
 		}
-		return result;
+		return of(java.util.Optional.of(result.get()));
 	}
 
 	@Override
