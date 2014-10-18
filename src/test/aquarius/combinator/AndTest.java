@@ -9,18 +9,16 @@ import aquarius.runtime.Result;
 import aquarius.runtime.Token;
 import static aquarius.combinator.expression.ParsingExpression.*;
 
-public class EvalAnyTest extends EvalTestBase<Token> {
-
+public class AndTest extends TestBase<Token> {
 	@Before
 	public void prepare() {
-		this.expr = any();
-		this.initContext("G");
+		this.expr = $(str("public"), and(zeroMore(ch(' ', '\t'))));
+		this.initContext("public   \t   \t    \t\t");
 	}
-
 	@Test
 	public void test() {
-		Token expected = this.input.createToken(0, 1);
 		Result<Token> result = this.expr.parse(this.context);
-		assertEquals("mismatched result", expected, result.get());
+		assertEquals("mismatched result", 6, this.context.getInput().getPosition());
+		assertEquals("mismatched result", "public", result.get().getText(this.input));
 	}
 }

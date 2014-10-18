@@ -9,7 +9,7 @@ import aquarius.runtime.Result;
 import aquarius.runtime.Token;
 import static aquarius.combinator.expression.ParsingExpression.*;
 
-public class EvalCharSetTest extends EvalTestBase<Token> {
+public class CharSetTest extends TestBase<Token> {
 
 	@Before
 	public void prepare() {

@@ -9,17 +9,16 @@ import aquarius.runtime.Result;
 import aquarius.runtime.Token;
 import static aquarius.combinator.expression.ParsingExpression.*;
 
-public class EvalLiteralTest extends EvalTestBase<Token> {
-	private final String text = "hello world";
+public class NotTest extends TestBase<Token> {
 	@Before
 	public void prepare() {
-		this.expr = str(text);
-		this.initContext(text + "hfieur");
+		this.expr = $(str("public"), not(oneMore(ch()._r('a', 'z')._r('A', 'Z')._r('0', '9'))));
+		this.initContext("public   \t   \t    \t\t");
 	}
 	@Test
 	public void test() {
-		Token expected = this.input.createToken(0, text.length());
 		Result<Token> result = this.expr.parse(this.context);
-		assertEquals("mismatched result", expected, result.get());
+		assertEquals("mismatched result", 6, this.context.getInput().getPosition());
+		assertEquals("mismatched result", "public", result.get().getText(this.input));
 	}
 }
