@@ -3,18 +3,21 @@ package aquarius.runtime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import aquarius.combinator.expression.AndPredict;
-import aquarius.combinator.expression.Any;
-import aquarius.combinator.expression.CharSet;
-import aquarius.combinator.expression.Literal;
-import aquarius.combinator.expression.NotPredict;
-import aquarius.combinator.expression.OneMore;
+import aquarius.matcher.expression.AndPredict;
+import aquarius.matcher.expression.Any;
+import aquarius.matcher.expression.CharSet;
+import aquarius.matcher.expression.Literal;
+import aquarius.matcher.expression.NotPredict;
+import aquarius.matcher.expression.OneMore;
 
 public interface Result<E> {
 	public default boolean isFailure() {
 		return false;
 	}
 
+	public default boolean isEmpty() {
+		return false;
+	}
 	/**
 	 * 
 	 * @return
@@ -27,7 +30,6 @@ public interface Result<E> {
 	public static <E> Result<E> of(E value) {
 		return new ResultImpl<>(value);
 	}
-
 
 	public static <E> Result<E> empty() {
 		return new ResultImpl<E>(null);
@@ -43,6 +45,11 @@ public interface Result<E> {
 		 */
 		private ResultImpl(E value) {
 			this.value = value;
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return this.value == null;
 		}
 
 		@Override

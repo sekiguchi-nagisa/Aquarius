@@ -2,13 +2,13 @@ package aquarius.test;
 
 import java.text.DecimalFormat;
 
-import aquarius.combinator.Grammar;
-import aquarius.combinator.ParserContext;
-import aquarius.combinator.expression.Rule;
+import aquarius.matcher.Grammar;
+import aquarius.matcher.ParserContext;
 import aquarius.runtime.CommonStream;
 import aquarius.runtime.Result;
 import aquarius.runtime.Token;
-import static aquarius.combinator.expression.ParsingExpression.*;
+import aquarius.util.TypeMatch;
+import static aquarius.matcher.expression.ParsingExpression.*;
 
 public class Test {
 	public static void main(String[] args) {
@@ -16,16 +16,23 @@ public class Test {
 
 		SampleGrammar g = new SampleGrammar();
 
-		CommonStream input = new CommonStream("<sample>", "(((((((12345))))))");
-		ParserContext context = new ParserContext(input, g.getIndexSize());
+		CommonStream input = new CommonStream("<sample>", "(((((((12345)))))))");
+		ParserContext context = new ParserContext(g, input);
 
 		long start = System.currentTimeMillis();
-		Result<Token> result = g.Expr.parse(context);
+		Result<Token> result = (Result<Token>) context.parse(g.Expr);
 		long stop = System.currentTimeMillis();
 		showMemory("after parsing");
 		System.out.println("parse time: " + (stop - start) + "ms");
-		System.out.println(result);
-		
+
+		// print result
+		if(result.isFailure()) {
+			System.err.println(result);
+		} else {
+			TypeMatch.match(result.get())
+				.when(Token.class, e -> System.out.println(e.getText(input)))
+				.orElse(e -> System.out.println("undefined class: " + e.getClass()));
+		}
 	}
 
 	private final static DecimalFormat f = new DecimalFormat("#,###KB");
@@ -58,17 +65,17 @@ class SampleGrammar extends Grammar {
 	public final Rule<Token> Num = rule("Num");
 
 	public SampleGrammar() {
-		this.EOF.setPattern(not(any()));
+		def(EOF, not(any()));
 
-		this.__.setPattern(
+		def(__,
 			action(zeroMore(ch(' ', '\t', '\n', '\r')), arg -> Result.empty())
 		);
 
-		this.Expr.setPattern(
+		def(Expr,
 			action(seq3(__, Add, __), arg -> Result.of(arg.get2()))
 		);
 
-		this.Add.setPattern(
+		def(Add,
 			choice(
 				$(seq5(Mul, __, str("+"), __, Add)),
 				$(seq5(Mul, __, str("-"), __, Add)),
@@ -76,7 +83,7 @@ class SampleGrammar extends Grammar {
 			)
 		);
 
-		this.Mul.setPattern(
+		def(Mul,
 			choice(
 				$(seq5(Primary, __, str("*"), __, Mul)),
 				$(seq5(Primary, __, str("/"), __, Mul)),
@@ -84,14 +91,14 @@ class SampleGrammar extends Grammar {
 			)
 		);
 
-		this.Primary.setPattern(
+		def(Primary,
 			choice(
 				$(seq5(str("("), __, Add, __, str(")"))),
 				Num
 			)
 		);
 
-		this.Num.setPattern(
+		def(Num,
 			choice(
 				str("0"),
 				$(seq3(opt(ch('-', '+')), ch()._r('1', '9'), zeroMore(ch()._r('0', '9'))))

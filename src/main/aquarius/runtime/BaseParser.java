@@ -1,27 +1,25 @@
 package aquarius.runtime;
 
-import aquarius.runtime.memo.FixedSizeMemoTableFactory;
-import aquarius.runtime.memo.MemoTable;
-import aquarius.runtime.memo.MemoTableFactory;
+import aquarius.runtime.CacheFactory.CacheKind;
 
 public abstract class BaseParser {
 	/**
 	 * for memo table generation
 	 */
-	private MemoTableFactory factory = new FixedSizeMemoTableFactory();	// default
+	private CacheFactory factory = new CacheFactory(CacheKind.Array);	// default
 
 	/**
 	 * for memoization
 	 */
-	protected MemoTable memoTable;
+	protected ResultCache memoTable;
 
 	protected AquariusInputStream input;
 
-	public void setMemoTableFactory(MemoTableFactory factory) {
+	public void setMemoTableFactory(CacheFactory factory) {
 		this.factory = factory;
 	}
 
-	public MemoTableFactory getMemoTableFactory() {
+	public CacheFactory getMemoTableFactory() {
 		return this.factory;
 	}
 
@@ -54,7 +52,7 @@ public abstract class BaseParser {
 	}
 
 	public Result<?> parse(int ruleIndex) {
-		this.memoTable = this.factory.newMemoTable(this.getRuleSize(), this.input.getInputSize());
+		this.memoTable = this.factory.newCache(this.getRuleSize(), this.input.getInputSize());
 		return this.dispatchRule(ruleIndex);
 	}
 
