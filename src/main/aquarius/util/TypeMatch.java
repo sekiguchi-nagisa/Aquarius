@@ -25,7 +25,9 @@ public final class TypeMatch {
 					}
 				}
 				try {
-					action.apply(Optional.ofNullable(value));
+					if(action != null) {
+						action.apply(Optional.ofNullable(value));
+					}
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
@@ -34,8 +36,8 @@ public final class TypeMatch {
 	}
 
 	protected static class When<T> implements Comparable<When<?>> {
-		private final Class<T> targetClass;
-		private final WhenAction<T> action;
+		final Class<T> targetClass;
+		final WhenAction<T> action;
 
 		When(Class<T> targetClass, WhenAction<T> action) {
 			this.targetClass = targetClass;
@@ -46,7 +48,9 @@ public final class TypeMatch {
 		public boolean match(Object value) {
 			if(this.targetClass.isInstance(value)) {
 				try {
-					this.action.apply((T) value);
+					if(this.action != null) {
+						this.action.apply((T) value);
+					}
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}

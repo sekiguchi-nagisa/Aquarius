@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import aquarius.runtime.Result;
 import aquarius.runtime.Token;
+import aquarius.runtime.Result.Failure;
 import static aquarius.matcher.expression.ParsingExpression.*;
 
 public class NotTest extends TestBase<Token> {
@@ -18,7 +19,14 @@ public class NotTest extends TestBase<Token> {
 	@Test
 	public void test() {
 		Result<Token> result = this.expr.parse(this.context);
-		assertEquals("mismatched result", 6, this.context.getInputStream().getPosition());
-		assertEquals("mismatched result", "public", result.get().getText(this.input));
+		assertEquals(6, this.context.getInputStream().getPosition());
+		assertEquals("public", result.get().getText(this.input));
+
+		// failure test
+		this.initContext("publicd  ");
+		result = this.expr.parse(this.context);
+		assertTrue(result.isFailure());
+		assertEquals(7, ((Failure<?>) result).getFailurePos());
+		assertEquals(0, this.input.getPosition());
 	}
 }

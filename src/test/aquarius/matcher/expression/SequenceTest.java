@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import aquarius.runtime.Result;
 import aquarius.runtime.Token;
+import aquarius.runtime.Result.Failure;
 
 public class SequenceTest extends TestBase<List<Token>> {
 	@Before
@@ -21,11 +22,19 @@ public class SequenceTest extends TestBase<List<Token>> {
 	@Test
 	public void test() {
 		Result<List<Token>> result = this.expr.parse(this.context);
-		assertEquals("mismatched result", 4,       result.get().size());
-		assertEquals("mismatched result", "\t",    result.get().get(0).getText(this.input));
-		assertEquals("mismatched result", "hello", result.get().get(1).getText(this.input));
-		assertEquals("mismatched result", " ",     result.get().get(2).getText(this.input));
-		assertEquals("mismatched result", "world", result.get().get(3).getText(this.input));
+		assertEquals(4,       result.get().size());
+		assertEquals("\t",    result.get().get(0).getText(this.input));
+		assertEquals("hello", result.get().get(1).getText(this.input));
+		assertEquals(" ",     result.get().get(2).getText(this.input));
+		assertEquals("world", result.get().get(3).getText(this.input));
+		assertEquals(12, this.input.getPosition());
+
+		// failure test
+		this.initContext("\thello w");
+		result = this.expr.parse(this.context);
+		assertTrue(result.isFailure());
+		assertEquals(8, ((Failure<?>) result).getFailurePos());
+		assertEquals(0, this.input.getPosition());
 	}
 
 }

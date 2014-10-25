@@ -93,10 +93,11 @@ public class CharSet implements ParsingExpression<Token> {
 			return inEOF(input, this);
 		}
 
-		final int fetchedCh = input.consume();
+		final int fetchedCh = input.fetch();
 		// match chars
 		for(int ch : this.getChars()) {
 			if(fetchedCh == ch) {
+				input.consume();
 				return of(input.createToken(pos));
 			}
 		}
@@ -105,11 +106,12 @@ public class CharSet implements ParsingExpression<Token> {
 		if(rangeList != null) {
 			for(IntRange range : rangeList) {
 				if(range.withinRange(fetchedCh)) {
+					input.consume();
 					return of(input.createToken(pos));
 				}
 			}
 		}
-		return inCharSet(input, this, fetchedCh); //FIXME:
+		return inCharSet(input, this); //FIXME:
 	}
 
 	@Override

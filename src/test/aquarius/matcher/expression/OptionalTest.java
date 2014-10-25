@@ -23,13 +23,15 @@ public class OptionalTest extends TestBase<Optional<Token>> {
 	public void test() {
 		// test 1
 		Result<Optional<Token>> result = this.expr.parse(this.context);
-		assertEquals("mismatched result", false, result.get().isPresent());
+		assertEquals(false, result.get().isPresent());
+		assertEquals(0, this.input.getPosition());
 
 		// test 2
 		this.initContext("hello");
 		Token expected = this.input.createToken(0, 5);
 		result = this.expr.parse(this.context);
-		assertEquals("mismatched result", expected, result.get().get());
+		assertEquals(expected, result.get().get());
+		assertEquals(5, this.input.getPosition());
 	}
 
 }

@@ -109,20 +109,22 @@ public interface Result<E> {
 
 	public static Failure<Token> inLiteral(AquariusInputStream input, Literal expr, int startPos) {
 		StringBuilder sBuilder = new StringBuilder();
+		int pos = input.getPosition();
 		sBuilder.append("require text: ");
 		sBuilder.append(expr.getTarget());
 		sBuilder.append(", but is: ");
-		sBuilder.append(input.createToken(startPos));
-		return new Failure<Token>(input.getPosition(), sBuilder.toString());
+		sBuilder.append(input.createToken(startPos, pos == startPos ? startPos + 1 : pos));
+		return new Failure<Token>(pos, sBuilder.toString());
 	}
 
-	public static Failure<Token> inCharSet(AquariusInputStream input, CharSet expr, int ch) {
+	public static Failure<Token> inCharSet(AquariusInputStream input, CharSet expr) {
 		StringBuilder sBuilder = new StringBuilder();
+		int pos = input.getPosition();
 		sBuilder.append("require chars: ");
 		sBuilder.append(expr);
 		sBuilder.append(", but is: ");
-		sBuilder.append((char) ch);
-		return new Failure<Token>(input.getPosition(), sBuilder.toString());
+		sBuilder.append(input.createToken(pos, pos + 1));
+		return new Failure<Token>(pos, sBuilder.toString());
 	}
 
 	public static <R> Failure<List<R>> inOneMore(AquariusInputStream input, OneMore<R> expr) {

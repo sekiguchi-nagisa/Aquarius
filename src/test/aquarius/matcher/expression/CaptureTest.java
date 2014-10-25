@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import aquarius.runtime.Result;
 import aquarius.runtime.Token;
+import aquarius.runtime.Result.Failure;
 
 public class CaptureTest extends TestBase<Token> {
 	@Before
@@ -20,6 +21,14 @@ public class CaptureTest extends TestBase<Token> {
 	public void test() {
 		Token expectedToken = this.input.createToken(0, 4);
 		Result<Token> result = this.expr.parse(this.context);
-		assertEquals("mismatched result", expectedToken, result.get());
+		assertEquals(expectedToken, result.get());
+		assertEquals(4, this.input.getPosition());
+
+		// failure test
+		this.initContext("1f4D");
+		result = this.expr.parse(this.context);
+		assertTrue(result.isFailure());
+		assertEquals(3, ((Failure<?>)result).getFailurePos());
+		assertEquals(0, this.input.getPosition());
 	}
 }

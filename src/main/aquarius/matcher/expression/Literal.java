@@ -41,9 +41,10 @@ public class Literal implements ParsingExpression<Token> {
 		String text = this.getTarget();
 		final int size = text.length();
 		for(int i = 0; i < size; i++) {
-			if(text.charAt(i) != input.consume()) {
+			if(text.charAt(i) != input.fetch()) {
 				return inLiteral(input, this, pos);
 			}
+			input.consume();
 		}
 		return of(input.createToken(pos));
 	}

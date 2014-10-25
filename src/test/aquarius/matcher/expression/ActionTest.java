@@ -22,6 +22,7 @@ public class ActionTest extends TestBase<Integer> {
 	@Test
 	public void test() {
 		Result<Integer> result = this.expr.parse(this.context);
-		assertEquals("mismatched result", 46, result.get().intValue());
+		assertEquals(46, result.get().intValue());
+		assertEquals(5, this.input.getPosition());
 	}
 }
