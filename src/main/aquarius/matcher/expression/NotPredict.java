@@ -39,7 +39,11 @@ public class NotPredict implements ParsingExpression<Void> {
 			input.setPosition(pos);
 			return Result.empty();
 		}
-		return inNot(input, this);
+		try {
+			return inNot(pos, this);
+		} finally {
+			input.setPosition(pos);
+		}
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package aquarius.runtime;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import aquarius.matcher.expression.AndPredict;
@@ -8,7 +7,6 @@ import aquarius.matcher.expression.Any;
 import aquarius.matcher.expression.CharSet;
 import aquarius.matcher.expression.Literal;
 import aquarius.matcher.expression.NotPredict;
-import aquarius.matcher.expression.OneMore;
 
 public interface Result<E> {
 	public default boolean isFailure() {
@@ -127,15 +125,11 @@ public interface Result<E> {
 		return new Failure<Token>(pos, sBuilder.toString());
 	}
 
-	public static <R> Failure<List<R>> inOneMore(AquariusInputStream input, OneMore<R> expr) {
-		return new Failure<List<R>>(input.getPosition(), "require at least one pattern: " + expr);
+	public static Failure<Void> inAnd(int pos, AndPredict expr) {
+		return new Failure<Void>(pos, "failed And predicate");
 	}
 
-	public static Failure<Void> inAnd(AquariusInputStream input, AndPredict expr) {
-		return new Failure<Void>(input.getPosition(), "failed And predicate");
-	}
-
-	public static Failure<Void> inNot(AquariusInputStream input, NotPredict expr) {
-		return new Failure<Void>(input.getPosition(), "failed Not predicate");
+	public static Failure<Void> inNot(int pos, NotPredict expr) {
+		return new Failure<Void>(pos, "failed Not predicate");
 	}
 }

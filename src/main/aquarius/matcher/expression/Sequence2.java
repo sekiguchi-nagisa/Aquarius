@@ -2,6 +2,7 @@ package aquarius.matcher.expression;
 
 import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.ParserContext;
+import aquarius.runtime.AquariusInputStream;
 import aquarius.runtime.Result;
 import aquarius.util.Tuple2;
 import static aquarius.runtime.Result.*;
@@ -29,16 +30,27 @@ public class Sequence2<A, B> implements ParsingExpression<Tuple2<A, B>> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Result<Tuple2<A, B>> parse(ParserContext context) {
+		AquariusInputStream input = context.getInputStream();
+		int pos = input.getPosition();
+
 		// 1
 		Result<A> result1 = this.exprs.get1().parse(context);
 		if(result1.isFailure()) {
-			return (Result<Tuple2<A, B>>) result1;
+			try {
+				return (Result<Tuple2<A, B>>) result1;
+			} finally {
+				input.setPosition(pos);
+			}
 		}
 
 		// 2
 		Result<B> result2 = this.exprs.get2().parse(context);
 		if(result2.isFailure()) {
-			return (Result<Tuple2<A, B>>) result2;
+			try {
+				return (Result<Tuple2<A, B>>) result2;
+			} finally {
+				input.setPosition(pos);
+			}
 		}
 		return of(new Tuple2<>(result1.get(), result2.get()));
 	}

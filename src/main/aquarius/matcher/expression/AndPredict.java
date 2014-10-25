@@ -40,7 +40,11 @@ public class AndPredict implements ParsingExpression<Void> {
 			input.setPosition(pos);
 			return empty();
 		}
-		return inAnd(input, this);
+		try {
+			return inAnd(pos, this);
+		} finally {
+			input.setPosition(pos);
+		}
 	}
 
 	@Override

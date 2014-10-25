@@ -47,7 +47,11 @@ public class Capture implements ParsingExpression<Token> {	// extended expressio
 		for(ParsingExpression<?> e : this.exprs) {
 			Result<?> result = e.parse(context);
 			if(result.isFailure()) {
-				return (Result<Token>) result;
+				try {
+					return (Result<Token>) result;
+				} finally {
+					input.setPosition(pos);
+				}
 			}
 		}
 		return of(input.createToken(pos));

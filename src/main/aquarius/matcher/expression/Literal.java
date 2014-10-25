@@ -42,7 +42,11 @@ public class Literal implements ParsingExpression<Token> {
 		final int size = text.length();
 		for(int i = 0; i < size; i++) {
 			if(text.charAt(i) != input.fetch()) {
-				return inLiteral(input, this, pos);
+				try {
+					return inLiteral(input, this, pos);
+				} finally {
+					input.setPosition(pos);
+				}
 			}
 			input.consume();
 		}

@@ -32,6 +32,7 @@ public class OneMore<R> implements ParsingExpression<List<R>> {
 		return this.expr.toString() + "+";
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Result<List<R>> parse(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
@@ -42,7 +43,7 @@ public class OneMore<R> implements ParsingExpression<List<R>> {
 			Result<R> result = this.expr.parse(context);
 			if(result.isFailure()) {
 				if(list.isEmpty()) {
-					return inOneMore(input, this);
+					return (Result<List<R>>) result;
 				}
 				input.setPosition(pos);	// roll back position
 				break;

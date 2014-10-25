@@ -26,7 +26,7 @@ public class NotTest extends TestBase<Token> {
 		this.initContext("publicd  ");
 		result = this.expr.parse(this.context);
 		assertTrue(result.isFailure());
-		assertEquals(7, ((Failure<?>) result).getFailurePos());
+		assertEquals(6, ((Failure<?>) result).getFailurePos());
 		assertEquals(0, this.input.getPosition());
 	}
 }

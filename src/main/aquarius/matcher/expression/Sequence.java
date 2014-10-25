@@ -43,11 +43,16 @@ public class Sequence<R> implements ParsingExpression<List<R>> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Result<List<R>> parse(ParserContext context) {
+		int pos = context.getInputStream().getPosition();
 		List<R> list = new ArrayList<>(this.exprs.length);
 		for(ParsingExpression<R> e : this.exprs) {
 			Result<R> result = e.parse(context);
 			if(result.isFailure()) {
-				return (Result<List<R>>) result;
+				try {
+					return (Result<List<R>>) result;
+				} finally {
+					context.getInputStream().setPosition(pos);
+				}
 			}
 			list.add(result.get());
 		}
