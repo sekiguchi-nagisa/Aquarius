@@ -2,6 +2,8 @@ package aquarius.runtime;
 
 import java.util.NoSuchElementException;
 
+import aquarius.matcher.FailedActionException;
+import aquarius.matcher.expression.Action;
 import aquarius.matcher.expression.AndPredict;
 import aquarius.matcher.expression.Any;
 import aquarius.matcher.expression.CharSet;
@@ -131,5 +133,9 @@ public interface Result<E> {
 
 	public static Failure<Void> inNot(int pos, NotPredict expr) {
 		return new Failure<Void>(pos, "failed Not predicate");
+	}
+
+	public static <A, R> Failure<R> inAction(int pos, Action<R, A> expr, FailedActionException e) {
+		return new Failure<>(pos, e.getMessage());
 	}
 }

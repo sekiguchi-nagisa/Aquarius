@@ -1,9 +1,12 @@
 package aquarius.matcher.expression;
 
 import aquarius.matcher.ExpressionVisitor;
+import aquarius.matcher.FailedActionException;
 import aquarius.matcher.ParserContext;
 import aquarius.matcher.ParsingAction;
+import aquarius.runtime.AquariusInputStream;
 import aquarius.runtime.Result;
+import static aquarius.runtime.Result.*;
 
 /**
 * try to match the expression, if success execute action. preceding expression result
@@ -38,14 +41,25 @@ public class Action<R, A> implements ParsingExpression<R> {	// extended expressi
 	@SuppressWarnings("unchecked")
 	@Override
 	public Result<R> parse(ParserContext context) {
+		AquariusInputStream input = context.getInputStream();
+		int pos = input.getPosition();
+
 		// evaluate preceding expression
 		Result<A> result = this.getExpr().parse(context);
 		if(result.isFailure()) {
 			return (Result<R>) result;
 		}
+		int curPos = input.getPosition();
 
 		// invoke action
-		return this.getAction().invoke(result.get());	// may be Failure
+		try {
+			return this.getAction().invoke(context, result.get());
+		} catch(FailedActionException e) {
+			input.setPosition(pos);
+			return inAction(curPos, this, e);
+		} catch(Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
