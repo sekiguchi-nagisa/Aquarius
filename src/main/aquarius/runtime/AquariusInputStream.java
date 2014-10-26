@@ -33,8 +33,8 @@ public interface AquariusInputStream {
 	 * @return
 	 * consumed character. if input is end of file, return EOF.
 	 */
-
 	public int fetch();
+
 	/**
 	 * consume character in current position and increment position.
 	 * @return
