@@ -9,6 +9,7 @@ import aquarius.matcher.expression.Any;
 import aquarius.matcher.expression.CharSet;
 import aquarius.matcher.expression.Literal;
 import aquarius.matcher.expression.NotPredict;
+import aquarius.util.Utf8Util;
 
 public interface Result<E> {
 	public default boolean isFailure() {
@@ -90,7 +91,7 @@ public interface Result<E> {
 	public static Failure<Token> inEOF(AquariusInputStream input, Literal expr) {
 		StringBuilder sBuilder = new StringBuilder();
 		sBuilder.append("require text: ");
-		sBuilder.append(expr.getTarget());
+		sBuilder.append(expr);
 		sBuilder.append(", but reach End of File");
 		return new Failure<Token>(input.getPosition(), sBuilder.toString());
 	}
@@ -111,19 +112,19 @@ public interface Result<E> {
 		StringBuilder sBuilder = new StringBuilder();
 		int pos = input.getPosition();
 		sBuilder.append("require text: ");
-		sBuilder.append(expr.getTarget());
+		sBuilder.append(expr);
 		sBuilder.append(", but is: ");
-		sBuilder.append(input.createToken(startPos, pos == startPos ? startPos + 1 : pos));
+		sBuilder.append(input.createToken(startPos, pos == startPos ? startPos + 1 : pos).getText(input));
 		return new Failure<Token>(pos, sBuilder.toString());
 	}
 
-	public static Failure<Token> inCharSet(AquariusInputStream input, CharSet expr) {
+	public static Failure<Token> inCharSet(AquariusInputStream input, CharSet expr, int ch) {
 		StringBuilder sBuilder = new StringBuilder();
 		int pos = input.getPosition();
 		sBuilder.append("require chars: ");
 		sBuilder.append(expr);
 		sBuilder.append(", but is: ");
-		sBuilder.append(input.createToken(pos, pos + 1));
+		sBuilder.append(Utf8Util.codeToString(ch));
 		return new Failure<Token>(pos, sBuilder.toString());
 	}
 

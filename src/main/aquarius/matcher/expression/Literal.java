@@ -5,6 +5,7 @@ import aquarius.matcher.ParserContext;
 import aquarius.runtime.AquariusInputStream;
 import aquarius.runtime.Result;
 import static aquarius.runtime.Result.*;
+import static aquarius.util.Utf8Util.*;
 import aquarius.runtime.Token;
 
 /**
@@ -14,19 +15,23 @@ import aquarius.runtime.Token;
 *
 */
 public class Literal implements ParsingExpression<Token> {
-	private final String target;
+	private final int[] targetCodes;
 
 	public Literal(String target) {
-		this.target = target;
+		this.targetCodes = toUtfCodes(target);
+	}
+
+	public int[] getTargetCodes() {
+		return this.targetCodes;
 	}
 
 	public String getTarget() {
-		return this.target;
+		return codesToString(this.targetCodes);
 	}
 
 	@Override
 	public String toString() {
-		return "'" + this.target + "'";
+		return "'" + this.getTarget() + "'";
 	}
 
 	@Override
@@ -38,10 +43,8 @@ public class Literal implements ParsingExpression<Token> {
 			return inEOF(input, this);
 		}
 
-		String text = this.getTarget();
-		final int size = text.length();
-		for(int i = 0; i < size; i++) {
-			if(text.charAt(i) != input.fetch()) {
+		for(int code : this.targetCodes) {
+			if(code != input.fetch()) {
 				try {
 					return inLiteral(input, this, pos);
 				} finally {

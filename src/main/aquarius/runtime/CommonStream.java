@@ -3,7 +3,8 @@ package aquarius.runtime;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
+
+import static aquarius.util.Utf8Util.*;
 
 /**
  * input stream for common usage.
@@ -18,7 +19,7 @@ public class CommonStream implements AquariusInputStream {
 	
 	public CommonStream(String sourceName, String source) {
 		this.sourceName = sourceName;
-		this.buffer = source.getBytes(Charset.forName("UTF-8"));
+		this.buffer = source.getBytes(DEFAULT_CHARSET);
 		this.bufferSize = this.buffer.length;
 	}
 
@@ -73,19 +74,25 @@ public class CommonStream implements AquariusInputStream {
 
 	@Override
 	public int fetch() {
-		if(!this.checkIndexRange(this.currentPos)) {
+		int pos = this.currentPos;
+		if(pos == this.bufferSize) {
 			return EOF;
 		}
-		return this.buffer[this.currentPos];
+		return toUtf8Code(this.buffer, pos, getUtf8Length(this.buffer[pos]));
 	}
 
 	@Override
-	public int consume() {
-		int ch = this.fetch();
-		if(ch != EOF) {
-			this.currentPos++;
+	public void consume() {
+		if(this.currentPos == this.bufferSize) {
+			return;
 		}
-		return ch;
+		int pos = this.getPosition();
+		byte ch = this.buffer[pos];
+		pos = getUtf8NextPos(pos, ch);
+		if(pos > this.bufferSize) {
+			throw new RuntimeException("broken buffer");
+		}
+		this.currentPos = pos;
 	}
 
 	@Override
@@ -100,7 +107,7 @@ public class CommonStream implements AquariusInputStream {
 					", but stop position is " + stopPos);
 		}
 		if(stopPos > this.getInputSize()) {
-			throw new IndexOutOfBoundsException("stop position is " + startPos + 
+			throw new IndexOutOfBoundsException("stop position is " + stopPos + 
 					", but buffer size is " + this.bufferSize);
 		}
 		return new CommonToken(startPos, stopPos);
@@ -146,7 +153,7 @@ public class CommonStream implements AquariusInputStream {
 						startOffset + ", stopOffset is " + stopOffset);
 			}
 			CommonStream stream = (CommonStream) srcInput;
-			return new String(stream.buffer, actualStartPos, size);
+			return new String(stream.buffer, actualStartPos, size, DEFAULT_CHARSET);
 		}
 
 		@Override

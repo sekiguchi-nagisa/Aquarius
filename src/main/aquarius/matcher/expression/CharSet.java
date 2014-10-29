@@ -21,6 +21,11 @@ public class CharSet implements ParsingExpression<Token> {
 	private final int[] chars;
 	private List<IntRange> rangeList;
 
+	/**
+	 * 
+	 * @param chars
+	 * must be utf8 character
+	 */
 	public CharSet(int ...chars) {
 		this.chars = chars;
 	}
@@ -28,9 +33,9 @@ public class CharSet implements ParsingExpression<Token> {
 	/**
 	 * add char range
 	 * @param start
-	 * inclusive
+	 * inclusive. must be utf8 character.
 	 * @param stop
-	 * inclusive
+	 * inclusive. must be utf8 character.
 	 * @return
 	 * this
 	 * @throws IllegalArgumentException
@@ -111,7 +116,7 @@ public class CharSet implements ParsingExpression<Token> {
 				}
 			}
 		}
-		return inCharSet(input, this); //FIXME:
+		return inCharSet(input, this, fetchedCh); //FIXME:
 	}
 
 	@Override

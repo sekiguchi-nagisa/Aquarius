@@ -16,7 +16,7 @@ public class Test {
 
 		SampleGrammar g = new SampleGrammar();
 
-		CommonStream input = new CommonStream("<sample>", "(((((((12345)))))))");
+		CommonStream input = new CommonStream("<sample>", "(((((((12345))))))");
 		ParserContext context = new ParserContext(g, input);
 
 		long start = System.currentTimeMillis();
