@@ -10,4 +10,9 @@ public class FailedActionException extends RuntimeException {
 	public FailedActionException(String message) {
 		super(message);
 	}
+
+	@Override
+	public Throwable fillInStackTrace() {
+		return this;	// not create stack trace
+	}
 }
