@@ -68,11 +68,11 @@ class SampleGrammar extends Grammar {
 		def(EOF, not(any()));
 
 		def(__,
-			zeroMore(ch(' ', '\t', '\n', '\r')).action((ctx, arg) -> Result.empty())
+			zeroMore(ch(' ', '\t', '\n', '\r')).action((ctx, arg) -> null)
 		);
 
 		def(Expr,
-			seq3(__, Add, __).action((ctx, arg) -> Result.of(arg.get2()))
+			seq3(__, Add, __).action((ctx, arg) -> arg.get2())
 		);
 
 		def(Add,

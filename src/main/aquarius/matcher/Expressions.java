@@ -1,6 +1,5 @@
 package aquarius.matcher;
 
-import aquarius.matcher.expression.Action;
 import aquarius.matcher.expression.AndPredict;
 import aquarius.matcher.expression.AndPredictAction;
 import aquarius.matcher.expression.Any;
@@ -9,6 +8,7 @@ import aquarius.matcher.expression.CharSet;
 import aquarius.matcher.expression.Choice;
 import aquarius.matcher.expression.Empty;
 import aquarius.matcher.expression.Literal;
+import aquarius.matcher.expression.NoneArgAction;
 import aquarius.matcher.expression.NotPredict;
 import aquarius.matcher.expression.NotPredictAction;
 import aquarius.matcher.expression.OneMore;
@@ -21,6 +21,11 @@ import aquarius.matcher.expression.Sequence4;
 import aquarius.matcher.expression.Sequence5;
 import aquarius.matcher.expression.ZeroMore;
 
+/**
+ * helper methods for parsing expression construction
+ * @author skgchxngsxyz-opensuse
+ *
+ */
 public final class Expressions {
 	private Expressions(){}
 
@@ -98,7 +103,7 @@ public final class Expressions {
 		return new Capture(exprs);
 	}
 
-	public final static <R> Action<R, Void> action(ParsingAction<Void, R> action) {
-		return new Action<>(Empty.EMPTY, action);
+	public final static <R> NoneArgAction<R> action(ParsingActionWithoutArg<R> action) {
+		return new NoneArgAction<>(action);
 	}
 }

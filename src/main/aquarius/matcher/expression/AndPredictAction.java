@@ -14,16 +14,16 @@ import aquarius.runtime.Result;
 *
 */
 public class AndPredictAction<A> implements ParsingExpression<A> {	// extended expression type
-	private final ParsingExpression<A> expr;
+	private final ParsingExpression<A> precedingExpr;
 	private final PredictiveAction<A> action;
 
-	public AndPredictAction(ParsingExpression<A> expr, PredictiveAction<A> action) {
-		this.expr = expr;
+	public AndPredictAction(ParsingExpression<A> precedingExpr, PredictiveAction<A> action) {
+		this.precedingExpr = precedingExpr;
 		this.action = action;
 	}
 
-	public ParsingExpression<A> getExpr() {
-		return this.expr;
+	public ParsingExpression<A> getPrecedingExpr() {
+		return this.precedingExpr;
 	}
 
 	public PredictiveAction<A> getAction() {

@@ -10,6 +10,7 @@ import aquarius.matcher.expression.CharSet;
 import aquarius.matcher.expression.Choice;
 import aquarius.matcher.expression.Empty;
 import aquarius.matcher.expression.Literal;
+import aquarius.matcher.expression.NoneArgAction;
 import aquarius.matcher.expression.NotPredict;
 import aquarius.matcher.expression.NotPredictAction;
 import aquarius.matcher.expression.OneMore;
@@ -31,6 +32,7 @@ public interface ExpressionVisitor<T> {
 	public             <R> T visitChoice          (Choice<R> expr);
 	public                 T visitEmpty           (Empty expr);
 	public                 T visitLiteral         (Literal expr);
+	public             <R> T visitNoneArgAction   (NoneArgAction<R> expr);
 	public             <R> T visitNotPredict      (NotPredict<R> expr);
 	public             <A> T visitNotPredictAction(NotPredictAction<A> expr);
 	public             <R> T visitOneMore         (OneMore<R> expr);

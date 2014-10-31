@@ -8,6 +8,7 @@ import aquarius.matcher.expression.AndPredict;
 import aquarius.matcher.expression.Any;
 import aquarius.matcher.expression.CharSet;
 import aquarius.matcher.expression.Literal;
+import aquarius.matcher.expression.NoneArgAction;
 import aquarius.matcher.expression.NotPredict;
 import aquarius.util.Utf8Util;
 
@@ -137,6 +138,10 @@ public interface Result<E> {
 	}
 
 	public static <A, R> Failure<R> inAction(int pos, Action<R, A> expr, FailedActionException e) {
+		return new Failure<>(pos, e.getMessage());
+	}
+
+	public static <R> Failure<R> inAction(int pos, NoneArgAction<R> expr, FailedActionException e) {
 		return new Failure<>(pos, e.getMessage());
 	}
 }

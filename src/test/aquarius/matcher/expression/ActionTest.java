@@ -17,7 +17,7 @@ public class ActionTest extends TestBase<Integer> {
 				(ctx, a) -> {
 					int left = Integer.parseInt(a.get(0).getText(input));
 					int right = Integer.parseInt(a.get(2).getText(input));
-					return Result.of(left + right);
+					return left + right;
 				});
 		this.initContext("12+34");
 	}
