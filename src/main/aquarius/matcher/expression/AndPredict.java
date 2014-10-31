@@ -12,38 +12,56 @@ import static aquarius.runtime.Result.*;
 * otherwise, match failed
 * -> & expr 
 * @author skgchxngsxyz-opensuse
+ * @param <R>
 *
 */
-public class AndPredict implements ParsingExpression<Void> {
-	private final ParsingExpression<?> expr;
+public class AndPredict<R> implements ParsingExpression<R> {
+	private final ParsingExpression<R> precedingExpr;
+	private final ParsingExpression<?> predictiveExpr;
 
-	public AndPredict(ParsingExpression<?> expr) {
-		this.expr = expr;
+	public AndPredict(ParsingExpression<R> precedingExpr, ParsingExpression<?> predictiveExpr) {
+		this.precedingExpr = precedingExpr;
+		this.predictiveExpr = predictiveExpr;
 	}
 
-	public ParsingExpression<?> getExpr() {
-		return this.expr;
+	public ParsingExpression<R> getPrecedingExpr() {
+		return this.precedingExpr;
+	}
+
+	public ParsingExpression<?> getPredictiveExpr() {
+		return this.predictiveExpr;
 	}
 
 	@Override
 	public String toString() {
-		return "&" + this.expr.toString();
+		return "&" + this.predictiveExpr.toString();
 	}
 
 	@Override
-	public Result<Void> parse(ParserContext context) {
+	public Result<R> parse(ParserContext context) {
+		// parse preceding expression
+		int precedingPos = context.getInputStream().getPosition();
+		Result<R> precedingResult = this.precedingExpr.parse(context);
+		if(precedingResult.isFailure()) {
+			return precedingResult;
+		}
+
+		// parse prediction
 		AquariusInputStream input = context.getInputStream();
 		int pos = input.getPosition();
 
-		Result<?> predictResult = this.getExpr().parse(context);
+		Result<?> predictResult = this.predictiveExpr.parse(context);
 		if(!(predictResult.isFailure())) {
+			/**
+			 * if prediction is success, return preceding result 
+			 */
 			input.setPosition(pos);
-			return empty();
+			return precedingResult;
 		}
 		try {
 			return inAnd(pos, this);
 		} finally {
-			input.setPosition(pos);
+			input.setPosition(precedingPos);
 		}
 	}
 

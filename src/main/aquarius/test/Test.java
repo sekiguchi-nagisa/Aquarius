@@ -8,7 +8,7 @@ import aquarius.runtime.CommonStream;
 import aquarius.runtime.Result;
 import aquarius.runtime.Token;
 import aquarius.util.TypeMatch;
-import static aquarius.matcher.expression.ParsingExpression.*;
+import static aquarius.matcher.Expressions.*;
 
 public class Test {
 	public static void main(String[] args) {
@@ -68,11 +68,11 @@ class SampleGrammar extends Grammar {
 		def(EOF, not(any()));
 
 		def(__,
-			action(zeroMore(ch(' ', '\t', '\n', '\r')), (ctx, arg) -> Result.empty())
+			zeroMore(ch(' ', '\t', '\n', '\r')).action((ctx, arg) -> Result.empty())
 		);
 
 		def(Expr,
-			action(seq3(__, Add, __), (ctx, arg) -> Result.of(arg.get2()))
+			seq3(__, Add, __).action((ctx, arg) -> Result.of(arg.get2()))
 		);
 
 		def(Add,

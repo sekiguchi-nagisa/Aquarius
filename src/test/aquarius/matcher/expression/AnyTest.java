@@ -8,7 +8,7 @@ import org.junit.Test;
 import aquarius.runtime.Result;
 import aquarius.runtime.Result.Failure;
 import aquarius.runtime.Token;
-import static aquarius.matcher.expression.ParsingExpression.*;
+import static aquarius.matcher.Expressions.*;
 
 public class AnyTest extends TestBase<Token> {
 

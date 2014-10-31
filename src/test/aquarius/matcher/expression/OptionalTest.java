@@ -1,6 +1,6 @@
 package aquarius.matcher.expression;
 
-import static aquarius.matcher.expression.ParsingExpression.*;
+import static aquarius.matcher.Expressions.*;
 import static org.junit.Assert.*;
 
 import java.util.Optional;

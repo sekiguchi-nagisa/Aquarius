@@ -8,12 +8,12 @@ import org.junit.Test;
 import aquarius.matcher.FailedActionException;
 import aquarius.runtime.Result;
 import aquarius.runtime.Result.Failure;
-import static aquarius.matcher.expression.ParsingExpression.*;
+import static aquarius.matcher.Expressions.*;
 
 public class ActionTest extends TestBase<Integer> {
 	@Before
 	public void prepare() {
-		this.expr = action(seq(str("12"), ch('+'), str("34")), 
+		this.expr = seq(str("12"), ch('+'), str("34")).action(
 				(ctx, a) -> {
 					int left = Integer.parseInt(a.get(0).getText(input));
 					int right = Integer.parseInt(a.get(2).getText(input));
@@ -28,7 +28,7 @@ public class ActionTest extends TestBase<Integer> {
 		assertEquals(5, this.input.getPosition());
 
 		// failure test
-		this.expr = action(seq(str("12"), ch('+'), str("34")), 
+		this.expr = seq(str("12"), ch('+'), str("34")).action(
 				(ctx, a) -> {
 					throw new FailedActionException("action failed");
 				});

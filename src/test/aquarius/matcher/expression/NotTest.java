@@ -8,12 +8,12 @@ import org.junit.Test;
 import aquarius.runtime.Result;
 import aquarius.runtime.Token;
 import aquarius.runtime.Result.Failure;
-import static aquarius.matcher.expression.ParsingExpression.*;
+import static aquarius.matcher.Expressions.*;
 
 public class NotTest extends TestBase<Token> {
 	@Before
 	public void prepare() {
-		this.expr = $(str("public"), not(oneMore(ch()._r('a', 'z')._r('A', 'Z')._r('0', '9'))));
+		this.expr = str("public").not(oneMore(ch()._r('a', 'z')._r('A', 'Z')._r('0', '9')));
 		this.initContext("public   \t   \t    \t\t");
 	}
 	@Test

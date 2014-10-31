@@ -8,12 +8,12 @@ import org.junit.Test;
 import aquarius.runtime.Result;
 import aquarius.runtime.Result.Failure;
 import aquarius.runtime.Token;
-import static aquarius.matcher.expression.ParsingExpression.*;
+import static aquarius.matcher.Expressions.*;
 
 public class AndTest extends TestBase<Token> {
 	@Before
 	public void prepare() {
-		this.expr = $(str("public"), and(oneMore(ch(' ', '\t'))));
+		this.expr = str("public").and(oneMore(ch(' ', '\t')));
 		this.initContext("public   \t   \t    \t\t");
 	}
 	@Test

@@ -13,11 +13,17 @@ import aquarius.runtime.Result;
  * @param <A>
 *
 */
-public class NotPredictAction<A> implements ParsingExpression<Void> {	// extended expression type
+public class NotPredictAction<A> implements ParsingExpression<A> {	// extended expression type
+	private final ParsingExpression<A> expr;
 	private final PredictiveAction<A> action;
 
-	public NotPredictAction(PredictiveAction<A> action) {
+	public NotPredictAction(ParsingExpression<A> expr, PredictiveAction<A> action) {
+		this.expr = expr;
 		this.action = action;
+	}
+
+	public ParsingExpression<A> getExpr() {
+		return this.expr;
 	}
 
 	public PredictiveAction<A> getAction() {
@@ -30,7 +36,7 @@ public class NotPredictAction<A> implements ParsingExpression<Void> {	// extende
 	}
 
 	@Override
-	public Result<Void> parse(ParserContext context) {
+	public Result<A> parse(ParserContext context) {
 		throw new RuntimeException("unsuppored: " + this.getClass());	//TODO:
 	}
 

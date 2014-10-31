@@ -128,12 +128,12 @@ public interface Result<E> {
 		return new Failure<Token>(pos, sBuilder.toString());
 	}
 
-	public static Failure<Void> inAnd(int pos, AndPredict expr) {
-		return new Failure<Void>(pos, "failed And predicate");
+	public static <R> Failure<R> inAnd(int pos, AndPredict<R> expr) {
+		return new Failure<R>(pos, "failed And predicate");
 	}
 
-	public static Failure<Void> inNot(int pos, NotPredict expr) {
-		return new Failure<Void>(pos, "failed Not predicate");
+	public static <R> Failure<R> inNot(int pos, NotPredict<R> expr) {
+		return new Failure<R>(pos, "failed Not predicate");
 	}
 
 	public static <A, R> Failure<R> inAction(int pos, Action<R, A> expr, FailedActionException e) {
