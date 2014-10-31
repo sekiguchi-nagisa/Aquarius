@@ -1,4 +1,4 @@
-package aquarius.util;
+package aquarius.misc;
 
 import static org.junit.Assert.*;
 
@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import aquarius.util.TypeMatch.When;
+import aquarius.misc.TypeMatch.When;
 
 public class TypeMatchTest {
 

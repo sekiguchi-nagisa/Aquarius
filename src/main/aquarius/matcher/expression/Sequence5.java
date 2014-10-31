@@ -2,9 +2,9 @@ package aquarius.matcher.expression;
 
 import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.ParserContext;
+import aquarius.misc.Tuple5;
 import aquarius.runtime.AquariusInputStream;
 import aquarius.runtime.Result;
-import aquarius.util.Tuple5;
 import static aquarius.runtime.Result.*;
 
 public class Sequence5<A, B, C, D, E> implements ParsingExpression<Tuple5<A, B, C, D, E>> {

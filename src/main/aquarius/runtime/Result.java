@@ -5,12 +5,14 @@ import java.util.NoSuchElementException;
 import aquarius.matcher.FailedActionException;
 import aquarius.matcher.expression.Action;
 import aquarius.matcher.expression.AndPredict;
+import aquarius.matcher.expression.AndPredictAction;
 import aquarius.matcher.expression.Any;
 import aquarius.matcher.expression.CharSet;
 import aquarius.matcher.expression.Literal;
 import aquarius.matcher.expression.NoneArgAction;
 import aquarius.matcher.expression.NotPredict;
-import aquarius.util.Utf8Util;
+import aquarius.matcher.expression.NotPredictAction;
+import aquarius.misc.Utf8Util;
 
 public interface Result<E> {
 	public default boolean isFailure() {
@@ -133,7 +135,15 @@ public interface Result<E> {
 		return new Failure<R>(pos, "failed And predicate");
 	}
 
+	public static <R> Failure<R> inAnd(int pos, AndPredictAction<R> expr) {
+		return new Failure<R>(pos, "failed And predicate");
+	}
+
 	public static <R> Failure<R> inNot(int pos, NotPredict<R> expr) {
+		return new Failure<R>(pos, "failed Not predicate");
+	}
+
+	public static <R> Failure<R> inNot(int pos, NotPredictAction<R> expr) {
 		return new Failure<R>(pos, "failed Not predicate");
 	}
 

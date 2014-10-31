@@ -1,4 +1,4 @@
-package aquarius.util;
+package aquarius.misc;
 
 import java.util.Optional;
 import java.util.Set;

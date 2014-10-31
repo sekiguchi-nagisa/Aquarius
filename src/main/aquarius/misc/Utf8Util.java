@@ -1,4 +1,4 @@
-package aquarius.util;
+package aquarius.misc;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.Charset;

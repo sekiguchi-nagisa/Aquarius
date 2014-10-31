@@ -1,4 +1,4 @@
-package aquarius.util;
+package aquarius.misc;
 
 public class IntRange {
 	private final int start;	// inclusive

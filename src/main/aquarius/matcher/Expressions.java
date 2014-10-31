@@ -29,16 +29,19 @@ import aquarius.matcher.expression.ZeroMore;
 public final class Expressions {
 	private Expressions(){}
 
+	public final static Empty EMPTY = new Empty();
+	public final static Any ANY = new Any();
+
 	public final static Literal str(String target) {
 		return new Literal(target);
 	}
 
-	public final static Any any() {
-		return new Any();
-	}
-
 	public final static CharSet ch(int ...chars) {
 		return new CharSet(chars);
+	}
+
+	public final static CharSet r(int start, int stop) {
+		return new CharSet().r(start, stop);
 	}
 
 	public final static <R> ZeroMore<R> zeroMore(ParsingExpression<R> expr) {
@@ -49,16 +52,24 @@ public final class Expressions {
 		return new OneMore<>(expr);
 	}
 
+	public final static <R> ZeroMore<R> more0(ParsingExpression<R> expr) {
+		return zeroMore(expr);
+	}
+
+	public final static <R> OneMore<R> more1(ParsingExpression<R> expr) {
+		return oneMore(expr);
+	}
+
 	public final static <R> Optional<R> opt(ParsingExpression<R> expr) {
 		return new Optional<>(expr);
 	}
 
 	public final static AndPredict<Void> and(ParsingExpression<?> expr) {
-		return new AndPredict<>(Empty.EMPTY, expr);
+		return new AndPredict<>(EMPTY, expr);
 	}
 
 	public final static NotPredict<Void> not(ParsingExpression<?> expr) {
-		return new NotPredict<>(Empty.EMPTY, expr);
+		return new NotPredict<>(EMPTY, expr);
 	}
 
 	@SafeVarargs
@@ -92,11 +103,11 @@ public final class Expressions {
 	}
 
 	public final static AndPredictAction<Void> andAction(PredictiveAction<Void> action) {
-		return new AndPredictAction<>(Empty.EMPTY, action);
+		return new AndPredictAction<>(EMPTY, action);
 	}
 
 	public final static NotPredictAction<Void> notAction(PredictiveAction<Void> action) {
-		return new NotPredictAction<>(Empty.EMPTY, action);
+		return new NotPredictAction<>(EMPTY, action);
 	}
 
 	public final static Capture $(ParsingExpression<?>... exprs) {

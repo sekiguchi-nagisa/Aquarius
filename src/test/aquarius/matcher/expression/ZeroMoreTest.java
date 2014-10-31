@@ -15,7 +15,7 @@ import org.junit.Test;
 public class ZeroMoreTest extends TestBase<List<Token>>{
 	@Before
 	public void prepare() {
-		this.expr = zeroMore(ch()._r('a', 'c'));
+		this.expr = zeroMore(ch().r('a', 'c'));
 		this.initContext("8");
 	}
 

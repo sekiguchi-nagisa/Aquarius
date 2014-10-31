@@ -2,9 +2,9 @@ package aquarius.matcher.expression;
 
 import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.ParserContext;
+import aquarius.misc.Tuple4;
 import aquarius.runtime.AquariusInputStream;
 import aquarius.runtime.Result;
-import aquarius.util.Tuple4;
 import static aquarius.runtime.Result.*;
 
 public class Sequence4<A, B, C, D> implements ParsingExpression<Tuple4<A, B, C, D>> {

@@ -5,11 +5,11 @@ import java.util.List;
 
 import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.ParserContext;
+import aquarius.misc.IntRange;
 import aquarius.runtime.AquariusInputStream;
 import aquarius.runtime.Result;
 import static aquarius.runtime.Result.*;
 import aquarius.runtime.Token;
-import aquarius.util.IntRange;
 
 /**
 * try to match one character from char set. return matched character
@@ -41,7 +41,7 @@ public class CharSet implements ParsingExpression<Token> {
 	 * @throws IllegalArgumentException
 	 * if start >= stop
 	 */
-	public CharSet _r(int start, int stop) throws IllegalArgumentException {
+	public CharSet r(int start, int stop) throws IllegalArgumentException {
 		if(start >= stop) {
 			throw new IllegalArgumentException(
 					"start is larger than stop. start: " + start + "stop: " + stop);

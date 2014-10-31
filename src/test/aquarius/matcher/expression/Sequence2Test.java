@@ -6,10 +6,10 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import aquarius.misc.Tuple2;
 import aquarius.runtime.Result;
 import aquarius.runtime.Token;
 import aquarius.runtime.Result.Failure;
-import aquarius.util.Tuple2;
 
 public class Sequence2Test extends TestBase<Tuple2<Token, Token>> {
 	@Before

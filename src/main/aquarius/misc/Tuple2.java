@@ -1,4 +1,4 @@
-package aquarius.util;
+package aquarius.misc;
 
 public class Tuple2<A, B> {
 	private final A a;

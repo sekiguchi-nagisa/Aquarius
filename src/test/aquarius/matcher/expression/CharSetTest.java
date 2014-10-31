@@ -9,14 +9,14 @@ import aquarius.runtime.Result;
 import aquarius.runtime.Result.Failure;
 import aquarius.runtime.Token;
 import static aquarius.matcher.Expressions.*;
-import static aquarius.util.Utf8Util.*;
+import static aquarius.misc.Utf8Util.*;
 
 public class CharSetTest extends TestBase<Token> {
 
 	@Before
 	public void prepare() {
 		this.expr = ch('@', '$', toUtf8Code('ω'), 
-				toUtf8Code('あ'),toUtf8Code(0x21c56))._r('a', 'd')._r('3', '5');
+				toUtf8Code('あ'),toUtf8Code(0x21c56)).r('a', 'd').r('3', '5');
 		this.initContext("@");
 	}
 

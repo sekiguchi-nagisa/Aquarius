@@ -6,15 +6,15 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import aquarius.misc.Tuple4;
 import aquarius.runtime.Result;
 import aquarius.runtime.Token;
 import aquarius.runtime.Result.Failure;
-import aquarius.util.Tuple4;
 
 public class Sequence4Test extends TestBase<Tuple4<Token, Token, Token, Token>> {
 	@Before
 	public void prepare() {
-		this.expr = seq4(str("1234"), str("abc"), any(), ch('a', '2'));
+		this.expr = seq4(str("1234"), str("abc"), ANY, ch('a', '2'));
 		this.initContext("1234abc32");
 	}
 

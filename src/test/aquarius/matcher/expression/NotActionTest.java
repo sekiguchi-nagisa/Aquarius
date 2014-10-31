@@ -1,6 +1,5 @@
 package aquarius.matcher.expression;
 
-import static aquarius.matcher.Expressions.*;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -9,26 +8,26 @@ import org.junit.Test;
 import aquarius.runtime.Result;
 import aquarius.runtime.Token;
 import aquarius.runtime.Result.Failure;
+import static aquarius.matcher.Expressions.*;
 
-public class CaptureTest extends TestBase<Token> {
+public class NotActionTest extends TestBase<Token> {
 	@Before
 	public void prepare() {
-		this.expr = $(str("1"), ch().r('a', 'z'), ANY, ch('A', 'Z', 'E'));
-		this.initContext("1f4Z");
+		this.expr = str("public").not((ctx, a) -> false);
+		this.initContext("public   \t   \t    \t\t");
 	}
-
 	@Test
 	public void test() {
-		Token expectedToken = this.input.createToken(0, 4);
 		Result<Token> result = this.expr.parse(this.context);
-		assertEquals(expectedToken, result.get());
-		assertEquals(4, this.input.getPosition());
+		assertEquals(6, this.context.getInputStream().getPosition());
+		assertEquals("public", result.get().getText(this.input));
 
 		// failure test
-		this.initContext("1f4D");
+		this.expr = str("public").not((ctx, a) -> true);
+		this.initContext("publicd  ");
 		result = this.expr.parse(this.context);
 		assertTrue(result.isFailure());
-		assertEquals(3, ((Failure<?>)result).getFailurePos());
+		assertEquals(6, ((Failure<?>) result).getFailurePos());
 		assertEquals(0, this.input.getPosition());
 	}
 }

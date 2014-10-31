@@ -1,18 +1,17 @@
 package aquarius.test;
 
-import java.text.DecimalFormat;
-
 import aquarius.matcher.Grammar;
 import aquarius.matcher.ParserContext;
+import aquarius.misc.TypeMatch;
+import aquarius.misc.Utils;
 import aquarius.runtime.CommonStream;
 import aquarius.runtime.Result;
 import aquarius.runtime.Token;
-import aquarius.util.TypeMatch;
 import static aquarius.matcher.Expressions.*;
 
 public class Test {
 	public static void main(String[] args) {
-		showMemory("before parsing");
+		Utils.showMemory("before parsing");
 
 		SampleGrammar g = new SampleGrammar();
 
@@ -22,7 +21,7 @@ public class Test {
 		long start = System.currentTimeMillis();
 		Result<Token> result = (Result<Token>) context.parse(g.Expr);
 		long stop = System.currentTimeMillis();
-		showMemory("after parsing");
+		Utils.showMemory("after parsing");
 		System.out.println("parse time: " + (stop - start) + "ms");
 
 		// print result
@@ -33,25 +32,6 @@ public class Test {
 				.when(Token.class, e -> System.out.println(e.getText(input)))
 				.orElse(e -> System.out.println("undefined class: " + e.getClass()));
 		}
-	}
-
-	private final static DecimalFormat f = new DecimalFormat("#,###KB");
-	private final static DecimalFormat f2 = new DecimalFormat("##,#");
-
-	private static void showMemory(String message) {
-		long total = Runtime.getRuntime().totalMemory() / 1024;
-		long free = Runtime.getRuntime().freeMemory() / 1024;
-		long max = Runtime.getRuntime().maxMemory() / 1024;
-		long used = total - free;
-		double ratio = used * 100 / (double) total;
-
-		System.err.println(message);
-
-		System.err.println("total memory: " + f.format(total));
-		System.err.println("free  memory: " + f.format(free));
-		System.err.println("used  memory: " + f.format(used) + " (" + f2.format(ratio) + "%)");
-		System.err.println("max   memory: " + f.format(max));
-		System.err.println();
 	}
 }
 
@@ -65,7 +45,7 @@ class SampleGrammar extends Grammar {
 	public final Rule<Token> Num = rule("Num");
 
 	public SampleGrammar() {
-		def(EOF, not(any()));
+		def(EOF, not(ANY));
 
 		def(__,
 			zeroMore(ch(' ', '\t', '\n', '\r')).action((ctx, arg) -> null)
@@ -77,23 +57,23 @@ class SampleGrammar extends Grammar {
 
 		def(Add,
 			choice(
-				$(seq5(Mul, __, str("+"), __, Add)),
-				$(seq5(Mul, __, str("-"), __, Add)),
+				$(Mul, __, str("+"), __, Add),
+				$(Mul, __, str("-"), __, Add),
 				Mul
 			)
 		);
 
 		def(Mul,
 			choice(
-				$(seq5(Primary, __, str("*"), __, Mul)),
-				$(seq5(Primary, __, str("/"), __, Mul)),
+				$(Primary, __, str("*"), __, Mul),
+				$(Primary, __, str("/"), __, Mul),
 				Primary
 			)
 		);
 
 		def(Primary,
 			choice(
-				$(seq5(str("("), __, Add, __, str(")"))),
+				$(str("("), __, Add, __, str(")")),
 				Num
 			)
 		);
@@ -101,7 +81,7 @@ class SampleGrammar extends Grammar {
 		def(Num,
 			choice(
 				str("0"),
-				$(seq3(opt(ch('-', '+')), ch()._r('1', '9'), zeroMore(ch()._r('0', '9'))))
+				$(opt(ch('-', '+')), r('1', '9'), zeroMore(r('0', '9')))
 			)
 		);
 	}

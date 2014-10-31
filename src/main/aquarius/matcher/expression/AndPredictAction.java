@@ -1,8 +1,10 @@
 package aquarius.matcher.expression;
 
+import static aquarius.runtime.Result.*;
 import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.ParserContext;
 import aquarius.matcher.PredictiveAction;
+import aquarius.runtime.AquariusInputStream;
 import aquarius.runtime.Result;
 
 /**
@@ -37,7 +39,33 @@ public class AndPredictAction<A> implements ParsingExpression<A> {	// extended e
 
 	@Override
 	public Result<A> parse(ParserContext context) {
-		throw new RuntimeException("unsuppored: " + this.getClass());	//TODO:
+		// parse preceding expression
+		int precedingPos = context.getInputStream().getPosition();
+		Result<A> precedingResult = this.precedingExpr.parse(context);
+		if(precedingResult.isFailure()) {
+			return precedingResult;
+		}
+
+		// invoke action
+		AquariusInputStream input = context.getInputStream();
+		int pos = input.getPosition();
+
+		try {
+			if(this.action.invoke(context, precedingResult.get())) {
+				/**
+				 * if prediction is success, return preceding result 
+				 */
+				input.setPosition(pos);
+				return precedingResult;
+			}
+			try {
+				return inAnd(pos, this);
+			} finally {
+				input.setPosition(precedingPos);
+			}
+		} catch(Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override

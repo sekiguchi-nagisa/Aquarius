@@ -11,15 +11,13 @@ import static aquarius.runtime.Result.*;
  *
  */
 public class Empty implements ParsingExpression<Void> {
-	public final static Empty EMPTY = new Empty();
+	@Override
+	public Result<Void> parse(ParserContext context) {
+		return empty();
+	}
 
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitEmpty(this);
-	}
-
-	@Override
-	public Result<Void> parse(ParserContext context) {
-		return empty();
 	}
 }

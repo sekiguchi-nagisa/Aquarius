@@ -15,7 +15,7 @@ import aquarius.runtime.Result.Failure;
 public class SequenceTest extends TestBase<List<Token>> {
 	@Before
 	public void prepare() {
-		this.expr = seq(ch('\t', ' '), str("hello"), any(), str("world"));
+		this.expr = seq(ch('\t', ' '), str("hello"), ANY, str("world"));
 		this.initContext("\thello world");
 	}
 

@@ -14,7 +14,7 @@ public class AnyTest extends TestBase<Token> {
 
 	@Before
 	public void prepare() {
-		this.expr = any();
+		this.expr = ANY;
 		this.initContext("@");
 	}
 

@@ -1,4 +1,4 @@
-package aquarius.util;
+package aquarius.misc;
 
 public class Tuple5<A, B, C, D, E> extends Tuple4<A, B, C, D> {
 	private final E e;

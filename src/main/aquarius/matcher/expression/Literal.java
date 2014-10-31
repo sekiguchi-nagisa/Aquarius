@@ -4,8 +4,8 @@ import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.ParserContext;
 import aquarius.runtime.AquariusInputStream;
 import aquarius.runtime.Result;
+import static aquarius.misc.Utf8Util.*;
 import static aquarius.runtime.Result.*;
-import static aquarius.util.Utf8Util.*;
 import aquarius.runtime.Token;
 
 /**

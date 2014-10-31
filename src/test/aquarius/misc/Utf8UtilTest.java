@@ -1,7 +1,6 @@
-package aquarius.util;
+package aquarius.misc;
 
-import static aquarius.util.Utf8Util.*;
-
+import static aquarius.misc.Utf8Util.*;
 import static org.junit.Assert.*;
 
 import org.junit.Test;

@@ -6,15 +6,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import aquarius.runtime.Result;
-import aquarius.runtime.Token;
 import aquarius.runtime.Result.Failure;
+import aquarius.runtime.Token;
 import static aquarius.matcher.Expressions.*;
 
-public class NotTest extends TestBase<Token> {
+public class AndActionTest extends TestBase<Token> {
 	@Before
 	public void prepare() {
-		this.expr = str("public").not(oneMore(ch().r('a', 'z').r('A', 'Z').r('0', '9')));
-		this.initContext("public   \t   \t    \t\t");
+		this.expr = str("public").and((ctx, a) -> true);
+		this.initContext("public ");
 	}
 	@Test
 	public void test() {
@@ -23,10 +23,11 @@ public class NotTest extends TestBase<Token> {
 		assertEquals("public", result.get().getText(this.input));
 
 		// failure test
-		this.initContext("publicd  ");
+		this.expr = str("public").and((ctx, a) -> false);
+		this.initContext("public3  ");
 		result = this.expr.parse(this.context);
 		assertTrue(result.isFailure());
-		assertEquals(6, ((Failure<?>) result).getFailurePos());
 		assertEquals(0, this.input.getPosition());
+		assertEquals(6, ((Failure<?>) result).getFailurePos());
 	}
 }
