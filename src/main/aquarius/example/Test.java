@@ -1,4 +1,6 @@
-package aquarius.test;
+package aquarius.example;
+
+import java.io.IOException;
 
 import aquarius.matcher.Grammar;
 import aquarius.matcher.ParserContext;
@@ -10,7 +12,12 @@ import aquarius.runtime.Token;
 import static aquarius.matcher.Expressions.*;
 
 public class Test {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+		test1();
+		test2(args);
+	}
+
+	private static void test1() {
 		Utils.showMemory("before parsing");
 
 		SampleGrammar g = new SampleGrammar();
@@ -19,7 +26,7 @@ public class Test {
 		ParserContext context = new ParserContext(g, input);
 
 		long start = System.currentTimeMillis();
-		Result<Token> result = (Result<Token>) context.parse(g.Expr);
+		Result<Token> result = context.parse(g.Expr);
 		long stop = System.currentTimeMillis();
 		Utils.showMemory("after parsing");
 		System.out.println("parse time: " + (stop - start) + "ms");
@@ -32,6 +39,29 @@ public class Test {
 				.when(Token.class, e -> System.out.println(e.getText(input)))
 				.orElse(e -> System.out.println("undefined class: " + e.getClass()));
 		}
+		System.out.println();
+	}
+
+	private static void test2(String[] args) throws IOException {
+		// json
+		Utils.showMemory("before parsing");
+
+		JSONGrammar jsonGrammar = new JSONGrammar();
+		CommonStream input = new CommonStream(args[0]);
+		ParserContext context = new ParserContext(jsonGrammar, input);
+
+		long start = System.currentTimeMillis();
+		Result<JSON> result = context.parse(jsonGrammar.json);
+		long stop = System.currentTimeMillis();
+		Utils.showMemory("after parsing");
+		System.out.println("parse time: " + (stop - start) + "ms");
+
+		if(result.isFailure()) {
+			System.err.println(result);
+		} else {
+			System.out.println("success");
+		}
+		System.out.println();
 	}
 }
 

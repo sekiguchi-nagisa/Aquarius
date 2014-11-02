@@ -9,7 +9,7 @@ import java.text.DecimalFormat;
  */
 public class Utils {
 	private final static DecimalFormat f = new DecimalFormat("#,###KB");
-	private final static DecimalFormat f2 = new DecimalFormat("##,#");
+	private final static DecimalFormat f2 = new DecimalFormat("##.#");
 
 	/**
 	 * show memory

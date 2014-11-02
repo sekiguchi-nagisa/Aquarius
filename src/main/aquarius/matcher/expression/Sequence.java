@@ -18,9 +18,10 @@ import static aquarius.runtime.Result.*;
 public class Sequence<R> implements ParsingExpression<List<R>> {
 	private final ParsingExpression<R>[] exprs;
 
+	@SuppressWarnings("unchecked")
 	@SafeVarargs
-	public Sequence(ParsingExpression<R>... exprs) {
-		this.exprs = exprs;
+	public Sequence(ParsingExpression<? extends R>... exprs) {
+		this.exprs = (ParsingExpression<R>[]) exprs;
 	}
 
 	public ParsingExpression<R>[] getExprs() {

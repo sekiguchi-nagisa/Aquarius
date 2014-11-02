@@ -20,9 +20,10 @@ import aquarius.runtime.Result.Failure;
 public class Choice<R> implements ParsingExpression<R> {
 	private final ParsingExpression<R>[] exprs;
 
+	@SuppressWarnings("unchecked")
 	@SafeVarargs
-	public Choice(ParsingExpression<R> ...exprs) {
-		this.exprs = exprs;
+	public Choice(ParsingExpression<? extends R> ...exprs) {
+		this.exprs = (ParsingExpression<R>[]) exprs;
 	}
 
 	@Override

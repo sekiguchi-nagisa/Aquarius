@@ -27,7 +27,7 @@
 			<fileset dir="${build_dir}" includes="**/*.class" />
 			<!-- <exclude name="**/*Test.class" /> -->
 			<manifest>
-				<attribute name="Main-Class" value="aquarius.test.Test" />
+				<attribute name="Main-Class" value="aquarius.example.Test" />
 			</manifest>
 		</jar>
 	</target>

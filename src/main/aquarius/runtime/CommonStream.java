@@ -3,6 +3,8 @@ package aquarius.runtime;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static aquarius.misc.Utf8Util.*;
 
@@ -18,13 +20,24 @@ public class CommonStream implements AquariusInputStream {
 	private int currentPos = 0;
 	
 	public CommonStream(String sourceName, String source) {
-		this.sourceName = sourceName;
-		this.buffer = source.getBytes(DEFAULT_CHARSET);
-		this.bufferSize = this.buffer.length;
+		this(sourceName, source.getBytes(DEFAULT_CHARSET));
+	}
+
+	public CommonStream(String fileName) throws IOException {
+		this(fileName, Files.readAllBytes(Paths.get(fileName)));
 	}
 
 	public CommonStream(String sourceName, InputStream inputStream, boolean close) {
+		this(sourceName, readBytes(inputStream, close));
+	}
+
+	private CommonStream(String sourceName, byte[] buffer) {
 		this.sourceName = sourceName;
+		this.buffer = buffer;
+		this.bufferSize = buffer.length;
+	}
+
+	private static byte[] readBytes(InputStream inputStream, boolean close) {
 		ByteArrayOutputStream bufStream = new ByteArrayOutputStream();
 		final int size = 512;
 		byte[] buf = new byte[size];
@@ -40,9 +53,7 @@ public class CommonStream implements AquariusInputStream {
 			e.printStackTrace();
 			System.exit(1);
 		}
-
-		this.buffer = bufStream.toByteArray();
-		this.bufferSize = this.buffer.length;
+		return bufStream.toByteArray();
 	}
 
 	@Override

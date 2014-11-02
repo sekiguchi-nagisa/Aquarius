@@ -73,7 +73,7 @@ public final class Expressions {
 	}
 
 	@SafeVarargs
-	public final static <R> Sequence<R> seq(ParsingExpression<R>... exprs) {
+	public final static <R> Sequence<R> seq(ParsingExpression<? extends R>... exprs) {
 		return new Sequence<>(exprs);
 	}
 
@@ -98,7 +98,7 @@ public final class Expressions {
 	}
 
 	@SafeVarargs
-	public final static <R> Choice<R> choice(ParsingExpression<R>... exprs) {
+	public final static <R> Choice<R> choice(ParsingExpression<? extends R>... exprs) {
 		return new Choice<>(exprs);
 	}
 
