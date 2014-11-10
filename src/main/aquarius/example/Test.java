@@ -6,11 +6,9 @@ import java.util.List;
 import aquarius.matcher.Grammar;
 import aquarius.matcher.ParserContext;
 import aquarius.misc.Utils;
-import aquarius.runtime.CacheFactory;
 import aquarius.runtime.CommonStream;
 import aquarius.runtime.Failure;
 import aquarius.runtime.Token;
-import aquarius.runtime.CacheFactory.CacheKind;
 import static aquarius.matcher.Expressions.*;
 
 public class Test {

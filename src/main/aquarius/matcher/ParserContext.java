@@ -42,7 +42,7 @@ public class ParserContext {
 	 * size of target rules
 	 */
 	public ParserContext(Grammar grammar, AquariusInputStream input) {
-		this(grammar, input, new CacheFactory(CacheKind.Map));
+		this(grammar, input, new CacheFactory(CacheKind.Limit));
 	}
 
 	public AquariusInputStream getInputStream() {
