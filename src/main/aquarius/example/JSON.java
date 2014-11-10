@@ -12,7 +12,7 @@ public interface JSON {
 		private static final long serialVersionUID = 4227513440823211948L;
 
 		public void add(Tuple2<JSONString, JSON> entry) {
-			this.put(entry.get1(), entry.get2());
+			this.put(entry.get0(), entry.get1());
 		}
 	}
 

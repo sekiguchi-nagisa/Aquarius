@@ -53,7 +53,7 @@ public class JSONGrammar extends Grammar {
 		def(json, 
 			seq(ws, choice(object, array))
 				.action((ctx, a) -> 
-					a.get2()
+					a.get1()
 				)
 		);
 
@@ -62,8 +62,8 @@ public class JSONGrammar extends Grammar {
 				seq(objectOpen, keyValue, zeroMore(seq(valueSep, keyValue)), objectClose)
 					.action((ctx, a) -> {
 						JSONObject object = new JSONObject();
-						for(Tuple2<Void, Tuple2<JSONString, JSON>> t : a.get3()) {
-							object.add(t.get2());
+						for(Tuple2<Void, Tuple2<JSONString, JSON>> t : a.get2()) {
+							object.add(t.get1());
 						}
 						return object;
 					}),
@@ -79,8 +79,8 @@ public class JSONGrammar extends Grammar {
 				seq(arrayOpen, value, zeroMore(seq(valueSep, value)), arrayClose)
 					.action((ctx, a) -> {
 						JSONArray array = new JSONArray();
-						for(Tuple2<Void, JSON> t : a.get3()) {
-							array.add(t.get2());
+						for(Tuple2<Void, JSON> t : a.get2()) {
+							array.add(t.get1());
 						}
 						return array;
 					}),
@@ -93,8 +93,8 @@ public class JSONGrammar extends Grammar {
 
 		def(keyValue,
 			seq(string, keyValueSep, value, ws)
-				.action((ctx, a) 
-					-> new Tuple2<>(a.get1(), a.get3())
+				.action((ctx, a) -> 
+					new Tuple2<>(a.get0(), a.get2())
 				)
 		);
 
@@ -108,7 +108,7 @@ public class JSONGrammar extends Grammar {
 				str("false").action((ctx, a) -> new JSONBool(false)),
 				str("null").action((ctx, a) -> new JSONNull())
 			), ws).action((ctx, a) -> 
-				a.get1()
+				a.get0()
 			)
 		);
 
@@ -122,7 +122,7 @@ public class JSONGrammar extends Grammar {
 				escape, 
 				seqN(not(ch('"', '\\')), ANY)
 			)), 
-			str("\"")).action((ctx, a) -> new JSONString(a.getText(ctx.getInputStream())))
+			str("\"")).action((ctx, a) -> new JSONString(ctx.createTokenText(a)))
 		);
 	
 		Rule<Void> integer = rule("integer",
@@ -140,12 +140,12 @@ public class JSONGrammar extends Grammar {
 			choice(
 				$(opt(str("-")), integer, str("."), oneMore(r('0', '9')), opt(exp))
 					.action((ctx, a) -> 
-						new JSONNumber(Double.parseDouble(a.getText(ctx.getInputStream()))
+						new JSONNumber(Double.parseDouble(ctx.createTokenText(a))
 					)
 				),
 				$(opt(str("-")), integer)
 					.action((ctx, a) -> 
-						new JSONNumber(Long.parseLong(a.getText(ctx.getInputStream()))
+						new JSONNumber(Long.parseLong(ctx.createTokenText(a))
 					)
 				)
 			)

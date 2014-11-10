@@ -21,9 +21,9 @@ public class Sequence2<A, B> implements ParsingExpression<Tuple2<A, B>> {
 	@Override
 	public String toString() {
 		StringBuilder sBuilder = new StringBuilder();
-		sBuilder.append(this.exprs.get1());
+		sBuilder.append(this.exprs.get0());
 		sBuilder.append(' ');
-		sBuilder.append(this.exprs.get2());
+		sBuilder.append(this.exprs.get1());
 		return sBuilder.toString();
 	}
 
@@ -33,7 +33,7 @@ public class Sequence2<A, B> implements ParsingExpression<Tuple2<A, B>> {
 		int pos = input.getPosition();
 
 		// 1
-		if(!this.exprs.get1().parse(context)) {
+		if(!this.exprs.get0().parse(context)) {
 			input.setPosition(pos);
 			return false;
 		}
@@ -41,7 +41,7 @@ public class Sequence2<A, B> implements ParsingExpression<Tuple2<A, B>> {
 		A a = (A) context.popValue();
 
 		// 2
-		if(!this.exprs.get2().parse(context)) {
+		if(!this.exprs.get1().parse(context)) {
 			input.setPosition(pos);
 			return false;
 		}

@@ -7,6 +7,7 @@ import aquarius.runtime.CacheEntry;
 import aquarius.runtime.CacheFactory;
 import aquarius.runtime.Failure;
 import aquarius.runtime.ResultCache;
+import aquarius.runtime.Token;
 import aquarius.runtime.CacheFactory.CacheKind;
 
 public class ParserContext {
@@ -91,6 +92,15 @@ public class ParserContext {
 		Failure failure = (Failure) this.value;
 		this.value = null;
 		return failure;
+	}
+
+	/**
+	 * helper method for token text generation
+	 * @param token
+	 * @return
+	 */
+	public String createTokenText(Token token) {
+		return token.getText(this.input);
 	}
 
 	public <R> boolean parse(Rule<R> startRule) {

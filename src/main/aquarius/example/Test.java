@@ -75,7 +75,7 @@ class SampleGrammar extends Grammar {
 		);
 
 		def(Expr,
-			seq(__, Add, __).action((ctx, a) -> a.get2())
+			seq(__, Add, __).action((ctx, a) -> a.get1())
 		);
 
 		def(Add,

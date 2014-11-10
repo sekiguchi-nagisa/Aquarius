@@ -25,6 +25,8 @@ public class Sequence5<A, B, C, D, E> implements ParsingExpression<Tuple5<A, B, 
 	@Override
 	public String toString() {
 		StringBuilder sBuilder = new StringBuilder();
+		sBuilder.append(this.exprs.get0());
+		sBuilder.append(' ');
 		sBuilder.append(this.exprs.get1());
 		sBuilder.append(' ');
 		sBuilder.append(this.exprs.get2());
@@ -32,8 +34,6 @@ public class Sequence5<A, B, C, D, E> implements ParsingExpression<Tuple5<A, B, 
 		sBuilder.append(this.exprs.get3());
 		sBuilder.append(' ');
 		sBuilder.append(this.exprs.get4());
-		sBuilder.append(' ');
-		sBuilder.append(this.exprs.get5());
 		return sBuilder.toString();
 	}
 
@@ -43,7 +43,7 @@ public class Sequence5<A, B, C, D, E> implements ParsingExpression<Tuple5<A, B, 
 		int pos = input.getPosition();
 
 		// 1
-		if(!this.exprs.get1().parse(context)) {
+		if(!this.exprs.get0().parse(context)) {
 			input.setPosition(pos);
 			return false;
 		}
@@ -51,7 +51,7 @@ public class Sequence5<A, B, C, D, E> implements ParsingExpression<Tuple5<A, B, 
 		A a = (A) context.popValue();
 
 		// 2
-		if(!this.exprs.get2().parse(context)) {
+		if(!this.exprs.get1().parse(context)) {
 			input.setPosition(pos);
 			return false;
 		}
@@ -59,7 +59,7 @@ public class Sequence5<A, B, C, D, E> implements ParsingExpression<Tuple5<A, B, 
 		B b = (B) context.popValue();
 
 		// 3
-		if(!this.exprs.get3().parse(context)) {
+		if(!this.exprs.get2().parse(context)) {
 			input.setPosition(pos);
 			return false;
 		}
@@ -67,7 +67,7 @@ public class Sequence5<A, B, C, D, E> implements ParsingExpression<Tuple5<A, B, 
 		C c = (C) context.popValue();
 
 		// 4
-		if(!this.exprs.get4().parse(context)) {
+		if(!this.exprs.get3().parse(context)) {
 			input.setPosition(pos);
 			return false;
 		}
@@ -76,7 +76,7 @@ public class Sequence5<A, B, C, D, E> implements ParsingExpression<Tuple5<A, B, 
 		
 
 		// 5
-		if(!this.exprs.get5().parse(context)) {
+		if(!this.exprs.get4().parse(context)) {
 			input.setPosition(pos);
 			return false;
 		}

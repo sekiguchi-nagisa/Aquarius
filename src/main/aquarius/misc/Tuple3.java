@@ -8,12 +8,12 @@ public class Tuple3<A, B, C> extends Tuple2<A, B> {
 		this.c = c;
 	}
 
-	public C get3() {
+	public C get2() {
 		return this.c;
 	}
 
 	@Override
 	public String toString() {
-		return stringify(this.get1(), this.get2(), this.get3());
+		return stringify(this.get0(), this.get1(), this.get2());
 	}
 }

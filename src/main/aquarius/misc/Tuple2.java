@@ -9,11 +9,11 @@ public class Tuple2<A, B> {
 		this.b = b;
 	}
 
-	public A get1() {
+	public A get0() {
 		return this.a;
 	}
 
-	public B get2() {
+	public B get1() {
 		return this.b;
 	}
 
@@ -32,6 +32,6 @@ public class Tuple2<A, B> {
 
 	@Override
 	public String toString() {
-		return stringify(this.get1(), this.get2());
+		return stringify(this.get0(), this.get1());
 	}
 }
