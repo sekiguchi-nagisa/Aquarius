@@ -6,11 +6,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import aquarius.runtime.Result;
-import aquarius.runtime.Token;
-import aquarius.runtime.Result.Failure;
-
-public class ChoiceTest extends TestBase<Token> {
+public class ChoiceTest extends TestBase<Void> {
 	@Before
 	public void prepare() {
 		this.expr = choice(str("hello"), str("world"), str("good"));
@@ -20,27 +16,27 @@ public class ChoiceTest extends TestBase<Token> {
 	@Test
 	public void test() {
 		// test1
-		String result = this.expr.parse(this.context).get().getText(this.input);
-		assertEquals("hello", result);
+		boolean result = this.expr.parse(this.context);
+		assertTrue(result);
 		assertEquals(5, this.input.getPosition());
 
 		// test2
 		this.initContext("good");
-		result = this.expr.parse(this.context).get().getText(this.input);
-		assertEquals("good", result);
+		result = this.expr.parse(this.context);
+		assertTrue(result);
 		assertEquals(4, this.input.getPosition());
 
 		// test3
 		this.initContext("world");
-		result = this.expr.parse(this.context).get().getText(this.input);
-		assertEquals("world", result);
+		result = this.expr.parse(this.context);
+		assertTrue(result);
 		assertEquals(5, this.input.getPosition());
 
 		// failure test
 		this.initContext("w");
-		Result<Token> result2 = this.expr.parse(this.context);
-		assertTrue(result2.isFailure());
-		assertEquals(1, ((Failure<?>) result2).getFailurePos());
+		boolean result2 = this.expr.parse(this.context);
+		assertTrue(!result2);
+		assertEquals(0, context.popFailure().getFailurePos());
 		assertEquals(0, this.input.getPosition());
 	}
 }

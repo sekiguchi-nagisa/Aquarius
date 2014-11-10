@@ -1,30 +1,23 @@
 package aquarius.matcher.expression;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.ParserContext;
-import aquarius.runtime.Result;
-import static aquarius.runtime.Result.*;
 
 /**
 * try to match the sequence of expressions and return matched results as array.
 * -> expr1 expr2 ... exprN
 * @author skgchxngsxyz-opensuse
- * @param <R>
 *
 */
-public class Sequence<R> implements ParsingExpression<List<R>> {
-	private final ParsingExpression<R>[] exprs;
+public class Sequence implements ParsingExpression<Void> {
+	private final ParsingExpression<?>[] exprs;
 
-	@SuppressWarnings("unchecked")
 	@SafeVarargs
-	public Sequence(ParsingExpression<? extends R>... exprs) {
-		this.exprs = (ParsingExpression<R>[]) exprs;
+	public Sequence(ParsingExpression<?>... exprs) {
+		this.exprs = exprs;
 	}
 
-	public ParsingExpression<R>[] getExprs() {
+	public ParsingExpression<?>[] getExprs() {
 		return this.exprs;
 	}
 
@@ -41,27 +34,25 @@ public class Sequence<R> implements ParsingExpression<List<R>> {
 		return sBuilder.toString();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Result<List<R>> parse(ParserContext context) {
+	public boolean parse(ParserContext context) {
 		int pos = context.getInputStream().getPosition();
-		List<R> list = new ArrayList<>(this.exprs.length);
-		for(ParsingExpression<R> e : this.exprs) {
-			Result<R> result = e.parse(context);
-			if(result.isFailure()) {
-				try {
-					return (Result<List<R>>) result;
-				} finally {
-					context.getInputStream().setPosition(pos);
-				}
+		for(ParsingExpression<?> e : this.exprs) {
+			if(!e.parse(context)) {
+				context.getInputStream().setPosition(pos);
+				return false;
 			}
-			list.add(result.get());
 		}
-		return of(list);
+		return true;
 	}
 
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitSequence(this);
+	}
+
+	@Override
+	public boolean isReturnable() {
+		return false;
 	}
 }

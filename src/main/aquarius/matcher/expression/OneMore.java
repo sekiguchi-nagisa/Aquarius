@@ -6,8 +6,6 @@ import java.util.List;
 import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.ParserContext;
 import aquarius.runtime.AquariusInputStream;
-import aquarius.runtime.Result;
-import static aquarius.runtime.Result.*;
 
 /**
 * match one or more repetition of the expression. return matched results as array
@@ -18,9 +16,11 @@ import static aquarius.runtime.Result.*;
 */
 public class OneMore<R> implements ParsingExpression<List<R>> {
 	private final ParsingExpression<R> expr;
+	private final boolean returnable;
 
 	public OneMore(ParsingExpression<R> expr) {
 		this.expr = expr;
+		this.returnable = expr.isReturnable();
 	}
 
 	public ParsingExpression<R> getExpr() {
@@ -34,27 +34,35 @@ public class OneMore<R> implements ParsingExpression<List<R>> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Result<List<R>> parse(ParserContext context) {
+	public boolean parse(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
-		List<R> list = new ArrayList<>();
+		int count = 0;
+		List<R> result = this.returnable ? new ArrayList<>() : null;
 		while(true) {
 			int pos = input.getPosition();
-
-			Result<R> result = this.expr.parse(context);
-			if(result.isFailure()) {
-				if(list.isEmpty()) {
-					return (Result<List<R>>) result;
+			count++;
+			if(!this.expr.parse(context)) {
+				if(count == 1) {
+					return false;
 				}
 				input.setPosition(pos);	// roll back position
 				break;
 			}
-			list.add(result.get());
+			if(this.returnable) {
+				result.add((R) context.popValue());
+			}
 		}
-		return of(list);
+		context.pushValue(result);
+		return true;
 	}
 
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitOneMore(this);
+	}
+
+	@Override
+	public boolean isReturnable() {
+		return this.returnable;
 	}
 }

@@ -32,8 +32,7 @@ public class CacheFactory {
 		}
 
 		@Override
-		public <R> Result<R> set(int ruleIndex, int srcPos, Result<R> result, int currentPos) {
-			return result;
+		public void set(int ruleIndex, int srcPos, Object value, int currentPos) {
 		}
 	}
 
@@ -56,17 +55,14 @@ public class CacheFactory {
 		}
 
 		@Override
-		public <R> Result<R> set(int ruleIndex, int srcPos, Result<R> result, int currentPos) {
+		public void set(int ruleIndex, int srcPos, Object value, int currentPos) {
 			assert(this.resultArray[ruleIndex][srcPos] != null);
-			assert(!(result.isFailure()));
-
-			this.resultArray[ruleIndex][srcPos] = new CacheEntry(currentPos, result);
-			return result;
+			this.resultArray[ruleIndex][srcPos] = CacheEntry.newEntry(currentPos, value);
 		}
 	}
 
 	protected static class MapBasedCache 
-	extends HashMap<Long, ResultCache.CacheEntry>implements ResultCache {
+	extends HashMap<Long, CacheEntry>implements ResultCache {
 		private static final long serialVersionUID = 7917935601725351378L;
 
 		public MapBasedCache(int cap) {
@@ -79,9 +75,8 @@ public class CacheFactory {
 		}
 
 		@Override
-		public <R> Result<R> set(int ruleIndex, int srcPos, Result<R> result, int currentPos) {
-			this.put(toUniqueId(ruleIndex, srcPos), new CacheEntry(currentPos, result));
-			return result;
+		public void set(int ruleIndex, int srcPos, Object value, int currentPos) {
+			this.put(toUniqueId(ruleIndex, srcPos), CacheEntry.newEntry(currentPos, value));
 		}
 
 		protected final static long toUniqueId(int ruleIndex, int srcPos) {

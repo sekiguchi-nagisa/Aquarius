@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import aquarius.misc.Utf8Util;
 import static aquarius.misc.Utf8Util.*;
 
 /**
@@ -107,30 +108,28 @@ public class CommonStream implements AquariusInputStream {
 	}
 
 	@Override
-	public Token createToken(int startPos, int stopPos)
+	public Token createToken(int startPos, int length)
 			throws IndexOutOfBoundsException {
 		if(!this.checkIndexRange(startPos)) {
 			throw new IndexOutOfBoundsException("start position is " + startPos + 
 					", but buffer size is " + this.bufferSize);
 		}
-		if(startPos >= stopPos) {
-			throw new IndexOutOfBoundsException("start position is " + startPos + 
-					", but stop position is " + stopPos);
+		if(length < 0) {
+			throw new IndexOutOfBoundsException("length is non negative: " + length);
 		}
-		if(stopPos > this.getInputSize()) {
-			throw new IndexOutOfBoundsException("stop position is " + stopPos + 
-					", but buffer size is " + this.bufferSize);
+		if(startPos + length > this.getInputSize()) {
+			length = this.bufferSize - startPos;
 		}
-		return new CommonToken(startPos, stopPos);
+		return new CommonToken(startPos, length);
 	}
 
 	private static class CommonToken implements Token {
 		private final int startPos;
-		private final int stopPos;
+		private final int length;
 
-		private CommonToken(int startPos, int stopPos) {
+		private CommonToken(int startPos, int length) {
 			this.startPos = startPos;
-			this.stopPos = stopPos;
+			this.length = length;
 		}
 
 		@Override
@@ -139,32 +138,14 @@ public class CommonStream implements AquariusInputStream {
 		}
 
 		@Override
-		public int getStopPos() {
-			return this.stopPos;
+		public int getSize() {
+			return this.length;
 		}
 
 		@Override
-		public String getSubText(AquariusInputStream srcInput, int startOffset, int stopOffset)
-				throws IndexOutOfBoundsException {
-			int actualStartPos = this.getStartPos() + startOffset;
-			int actualStopPos = this.getStopPos() - stopOffset;
-
-			if(startOffset < 0 || actualStartPos >= this.getStopPos()) {
-				throw new IndexOutOfBoundsException("startPos is " + this.getSize() + 
-						", stopPos is " + this.getStopPos() + ", but startOffset is " + startOffset);
-			}
-			if(stopOffset < 0 || actualStopPos < this.getStartPos()) {
-				throw new IndexOutOfBoundsException("startPos is " + this.getSize() + 
-						", stopPos is " + this.getStopPos() + ", but stopOffset is " + stopOffset);
-			}
-			int size = actualStopPos - actualStartPos;
-			if(size <= 0) {
-				throw new IndexOutOfBoundsException("startPos is " + this.getSize() + 
-						", stopPos is " + this.getStopPos() + ", but startOffset is " + 
-						startOffset + ", stopOffset is " + stopOffset);
-			}
+		public String getText(AquariusInputStream srcInput) {
 			CommonStream stream = (CommonStream) srcInput;
-			return new String(stream.buffer, actualStartPos, size, DEFAULT_CHARSET);
+			return new String(stream.buffer, this.startPos, this.getSize(), DEFAULT_CHARSET);
 		}
 
 		@Override
@@ -183,8 +164,29 @@ public class CommonStream implements AquariusInputStream {
 		}
 
 		@Override
+		public int getPosInLine(AquariusInputStream srcInput) {
+			CommonStream stream = (CommonStream) srcInput;
+			int latestNewLinePos = 0;
+			for(int i = 0; i < stream.bufferSize; i++) {
+				if(stream.buffer[i] == '\n') {
+					latestNewLinePos = i;
+				}
+				if(i == this.getStartPos()) {
+					break;
+				}
+			}
+			int count = 0;
+			int pos = latestNewLinePos;
+			while(pos < this.getStartPos()) {
+				pos = Utf8Util.getUtf8NextPos(pos, stream.buffer[pos]);
+				count++;
+			}
+			return count;
+		}
+
+		@Override
 		public String toString() {
-			return "token<" + this.startPos + "-" + this.stopPos + ">";
+			return "token<" + this.startPos + "-" + this.length + ">";
 		}
 
 		@Override
@@ -192,7 +194,7 @@ public class CommonStream implements AquariusInputStream {
 			if(target instanceof Token) {
 				Token token = (Token) target;
 				return this.getStartPos() == token.getStartPos() && 
-						this.getStopPos() == token.getStopPos();
+						this.getSize() == token.getSize();
 			}
 			return false;
 		}

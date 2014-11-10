@@ -3,10 +3,8 @@ package aquarius.matcher.expression;
 import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.FailedActionException;
 import aquarius.matcher.ParserContext;
-import aquarius.matcher.ParsingActionWithoutArg;
+import aquarius.matcher.ParsingActionNoArg;
 import aquarius.runtime.AquariusInputStream;
-import aquarius.runtime.Result;
-import static aquarius.runtime.Result.*;
 
 /**
 * try to match the expression, if success execute action. preceding expression result
@@ -14,16 +12,20 @@ import static aquarius.runtime.Result.*;
 * -> expr { action }
 * @author skgchxngsxyz-opensuse
  * @param <A>
+ * @param <A>
 *
 */
-public class NoneArgAction<R> implements ParsingExpression<R> {	// extended expression type
-	private final ParsingActionWithoutArg<R> action;
+public class NoArgAction<R> implements ParsingExpression<R> {	// extended expression type
+	private final ParsingActionNoArg<R> action;
+	private final boolean returnable;
 
-	public NoneArgAction(ParsingActionWithoutArg<R> action) {
+	@SafeVarargs
+	public NoArgAction(ParsingActionNoArg<R> action, R... rs) {
 		this.action = action;
+		this.returnable = !rs.getClass().getComponentType().equals(Void.class);
 	}
 
-	public ParsingActionWithoutArg<R> getAction() {
+	public ParsingActionNoArg<R> getAction() {
 		return this.action;
 	}
 
@@ -33,16 +35,18 @@ public class NoneArgAction<R> implements ParsingExpression<R> {	// extended expr
 	}
 
 	@Override
-	public Result<R> parse(ParserContext context) {
+	public boolean parse(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
 		int pos = input.getPosition();
 
 		// invoke action
 		try {
-			return of(this.getAction().invoke(context));
+			context.pushValue(this.getAction().invoke(context));
+			return true;
 		} catch(FailedActionException e) {
 			input.setPosition(pos);
-			return inAction(pos, this, e);
+			context.pushFailure(pos, e);
+			return false;
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -50,6 +54,11 @@ public class NoneArgAction<R> implements ParsingExpression<R> {	// extended expr
 
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visitNoneArgAction(this);
+		return visitor.visitNoArgAction(this);
+	}
+
+	@Override
+	public boolean isReturnable() {
+		return this.returnable;
 	}
 }

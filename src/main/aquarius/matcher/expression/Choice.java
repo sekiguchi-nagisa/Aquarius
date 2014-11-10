@@ -6,8 +6,7 @@ import java.util.List;
 import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.ParserContext;
 import aquarius.runtime.AquariusInputStream;
-import aquarius.runtime.Result;
-import aquarius.runtime.Result.Failure;
+import aquarius.runtime.Failure;
 
 /**
 * try to match first expression and if failed try the second one ...
@@ -19,11 +18,12 @@ import aquarius.runtime.Result.Failure;
 */
 public class Choice<R> implements ParsingExpression<R> {
 	private final ParsingExpression<R>[] exprs;
+	private final boolean returnable;
 
-	@SuppressWarnings("unchecked")
 	@SafeVarargs
-	public Choice(ParsingExpression<? extends R> ...exprs) {
-		this.exprs = (ParsingExpression<R>[]) exprs;
+	public Choice(ParsingExpression<R> ...exprs) {
+		this.exprs = exprs;
+		this.returnable = exprs[0].isReturnable();
 	}
 
 	@Override
@@ -40,32 +40,37 @@ public class Choice<R> implements ParsingExpression<R> {
 	}
 
 	@Override
-	public Result<R> parse(ParserContext context) {
+	public boolean parse(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
 		// for error report
-		List<Failure<R>> failures = new ArrayList<>(this.exprs.length);
+		List<Failure> failures = new ArrayList<>(this.exprs.length);
 
 		int pos = input.getPosition();
 		for(ParsingExpression<R> e : this.exprs) {
-			Result<R> result = e.parse(context);
-			if(result.isFailure()) {
-				failures.add((Failure<R>) result);
+			if(!e.parse(context)) {
+				failures.add(context.popFailure());
 				input.setPosition(pos);	// roll back position
 				continue;
 			}
-			return result;
+			return true;
 		}
-		Failure<R> longestMatched = failures.get(0);
-		for(Failure<R> failure : failures) {
+		Failure longestMatched = failures.get(0);
+		for(Failure failure : failures) {
 			if(failure.getFailurePos() > longestMatched.getFailurePos()) {
 				longestMatched = failure;
 			}
 		}
-		return longestMatched;	// longe	//FIXME:
+		context.pushFailure(longestMatched);
+		return false;
 	}
 
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitChoice(this);
+	}
+
+	@Override
+	public boolean isReturnable() {
+		return this.returnable;
 	}
 }

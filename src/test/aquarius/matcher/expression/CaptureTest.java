@@ -6,9 +6,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import aquarius.runtime.Result;
 import aquarius.runtime.Token;
-import aquarius.runtime.Result.Failure;
 
 public class CaptureTest extends TestBase<Token> {
 	@Before
@@ -19,16 +17,27 @@ public class CaptureTest extends TestBase<Token> {
 
 	@Test
 	public void test() {
+		// test1
 		Token expectedToken = this.input.createToken(0, 4);
-		Result<Token> result = this.expr.parse(this.context);
-		assertEquals(expectedToken, result.get());
+		boolean result = this.expr.parse(this.context);
+		assertTrue(result);
+		assertEquals(expectedToken, this.context.popValue());
 		assertEquals(4, this.input.getPosition());
 
+		// test2
+		this.expr = $();
+		this.initContext("12");
+		result = this.expr.parse(this.context);
+		assertTrue(result);
+		assertEquals("", ((Token) this.context.popValue()).getText(this.input));
+		assertEquals(0, this.input.getPosition());
+
 		// failure test
+		this.expr = $(str("1"), ch().r('a', 'z'), ANY, ch('A', 'Z', 'E'));
 		this.initContext("1f4D");
 		result = this.expr.parse(this.context);
-		assertTrue(result.isFailure());
-		assertEquals(3, ((Failure<?>)result).getFailurePos());
+		assertTrue(!result);
+		assertEquals(3, context.popFailure().getFailurePos());
 		assertEquals(0, this.input.getPosition());
 	}
 }

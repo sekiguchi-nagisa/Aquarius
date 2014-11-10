@@ -3,8 +3,6 @@ package aquarius.matcher.expression;
 import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.ParserContext;
 import aquarius.runtime.AquariusInputStream;
-import aquarius.runtime.Result;
-import static aquarius.runtime.Result.*;
 import aquarius.runtime.Token;
 
 /**
@@ -16,6 +14,7 @@ import aquarius.runtime.Token;
 public class Capture implements ParsingExpression<Token> {	// extended expression type
 	private final ParsingExpression<?>[] exprs;
 
+	@SafeVarargs
 	public Capture(ParsingExpression<?>... exprs) {
 		this.exprs = exprs;
 	}
@@ -39,26 +38,27 @@ public class Capture implements ParsingExpression<Token> {	// extended expressio
 		return sBuilder.toString();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Result<Token> parse(ParserContext context) {
+	public boolean parse(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
 		int pos = input.getPosition();
 		for(ParsingExpression<?> e : this.exprs) {
-			Result<?> result = e.parse(context);
-			if(result.isFailure()) {
-				try {
-					return (Result<Token>) result;
-				} finally {
-					input.setPosition(pos);
-				}
+			if(!e.parse(context)) {
+				input.setPosition(pos);
+				return false;
 			}
 		}
-		return of(input.createToken(pos));
+		context.pushValue(input.createToken(pos));
+		return true;
 	}
 
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitCapture(this);
+	}
+
+	@Override
+	public boolean isReturnable() {
+		return true;
 	}
 }

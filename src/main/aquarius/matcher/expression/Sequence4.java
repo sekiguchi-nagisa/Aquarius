@@ -4,16 +4,17 @@ import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.ParserContext;
 import aquarius.misc.Tuple4;
 import aquarius.runtime.AquariusInputStream;
-import aquarius.runtime.Result;
-import static aquarius.runtime.Result.*;
 
 public class Sequence4<A, B, C, D> implements ParsingExpression<Tuple4<A, B, C, D>> {
 	private final Tuple4<ParsingExpression<A>, ParsingExpression<B>, 
 			ParsingExpression<C>, ParsingExpression<D>> exprs;
+	private final boolean returnable;
 
 	public Sequence4(ParsingExpression<A> a, ParsingExpression<B> b, 
 			ParsingExpression<C> c, ParsingExpression<D> d) {
 		this.exprs = new Tuple4<>(a, b, c, d);
+		this.returnable = a.isReturnable() || b.isReturnable() 
+				|| c.isReturnable() || d.isReturnable();
 	}
 
 	public Tuple4<ParsingExpression<A>, ParsingExpression<B>, 
@@ -34,57 +35,56 @@ public class Sequence4<A, B, C, D> implements ParsingExpression<Tuple4<A, B, C, 
 		return sBuilder.toString();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Result<Tuple4<A, B, C, D>> parse(ParserContext context) {
+	public boolean parse(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
 		int pos = input.getPosition();
 
 		// 1
-		Result<A> result1 = this.exprs.get1().parse(context);
-		if(result1.isFailure()) {
-			try {
-				return (Result<Tuple4<A, B, C, D>>) result1;
-			} finally {
-				input.setPosition(pos);
-			}
+		if(!this.exprs.get1().parse(context)) {
+			input.setPosition(pos);
+			return false;
 		}
+		@SuppressWarnings("unchecked")
+		A a = (A) context.popValue();
 
 		// 2
-		Result<B> result2 = this.exprs.get2().parse(context);
-		if(result2.isFailure()) {
-			try {
-				return (Result<Tuple4<A, B, C, D>>) result2;
-			} finally {
-				input.setPosition(pos);
-			}
+		if(!this.exprs.get2().parse(context)) {
+			input.setPosition(pos);
+			return false;
 		}
+		@SuppressWarnings("unchecked")
+		B b = (B) context.popValue();
 
 		// 3
-		Result<C> result3 = this.exprs.get3().parse(context);
-		if(result3.isFailure()) {
-			try {
-				return (Result<Tuple4<A, B, C, D>>) result3;
-			} finally {
-				input.setPosition(pos);
-			}
+		if(!this.exprs.get3().parse(context)) {
+			input.setPosition(pos);
+			return false;
 		}
+		@SuppressWarnings("unchecked")
+		C c = (C) context.popValue();
 
 		// 4
-		Result<D> result4 = this.exprs.get4().parse(context);
-		if(result4.isFailure()) {
-			try {
-				return (Result<Tuple4<A, B, C, D>>) result4;
-			} finally {
-				input.setPosition(pos);
-			}
+		if(!this.exprs.get4().parse(context)) {
+			input.setPosition(pos);
+			return false;
 		}
-		return of(new Tuple4<>(result1.get(), result2.get(), 
-				result3.get(), result4.get()));
+		@SuppressWarnings("unchecked")
+		D d = (D) context.popValue();
+
+		if(this.returnable) {
+			context.pushValue(new Tuple4<A, B, C, D>(a, b, c, d));
+		}
+		return true;
 	}
 
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitSequence4(this);
+	}
+
+	@Override
+	public boolean isReturnable() {
+		return this.returnable;
 	}
 }

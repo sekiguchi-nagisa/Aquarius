@@ -1,17 +1,23 @@
 package aquarius.matcher;
 
 import aquarius.matcher.Grammar.Rule;
+import aquarius.matcher.expression.ParsingExpression;
 import aquarius.runtime.AquariusInputStream;
+import aquarius.runtime.CacheEntry;
 import aquarius.runtime.CacheFactory;
-import aquarius.runtime.Result;
+import aquarius.runtime.Failure;
 import aquarius.runtime.ResultCache;
 import aquarius.runtime.CacheFactory.CacheKind;
-import aquarius.runtime.ResultCache.CacheEntry;
 
 public class ParserContext {
 	private final AquariusInputStream input;
 	private final ResultCache cache;
 	private final Grammar grammar;
+
+	/**
+	 * result value of action or capture, or failure. may be null
+	 */
+	private Object value;
 
 	/**
 	 * 
@@ -47,7 +53,47 @@ public class ParserContext {
 		return this.cache;
 	}
 
-	public <R> Result<R> parse(Rule<R> startRule) {
+	public void pushValue(Object value) {
+		this.value = value;
+	}
+
+	/**
+	 * remove special result of preceding expression
+	 * @return
+	 * removed value. may be null
+	 */
+	public Object popValue() {
+		Object value = this.value;
+		this.value = null;
+		return value;
+	}
+
+	public void pushFailure(int pos, FailedActionException e) {
+		this.value = Failure.failInAction(pos, e);
+	}
+
+	public void pushFailure(int pos, ParsingExpression<?> expr) {
+		this.value = Failure.failInExpr(pos, expr);
+	}
+
+	public void pushFailure(Failure failure) {
+		assert failure != null;
+		this.value = failure;
+	}
+
+	/**
+	 * 
+	 * @return
+	 * may be null
+	 */
+	public Failure popFailure() {
+		assert this.value != null;
+		Failure failure = (Failure) this.value;
+		this.value = null;
+		return failure;
+	}
+
+	public <R> boolean parse(Rule<R> startRule) {
 		if(!startRule.equals(this.grammar.getRule(startRule.getRuleName()))) {
 			throw new IllegalArgumentException("grammar not include this rule: " + startRule);
 		}
@@ -61,18 +107,19 @@ public class ParserContext {
 	 * @return
 	 * parsed result of dispatched rule. if match is failed, return Failure
 	 */
-	@SuppressWarnings("unchecked")
-	public <R> Result<R> dispatchRule(Rule<R> rule) {
+	public <R> boolean dispatchRule(Rule<R> rule) {
 		final int ruleIndex = rule.getRuleIndex();
 		final int srcPos = this.input.getPosition();
 
 		CacheEntry entry = this.cache.get(ruleIndex, srcPos);
 		if(entry != null) {
 			this.input.setPosition(entry.getCurrentPos());
-			return (Result<R>) entry.getResult();
+			this.value = entry.getValue();
+			return entry.getStatus();
 		}
 		// if not found previous parsed result, invoke rule
-		Result<R> result = rule.getPattern().parse(this);
-		return this.cache.set(ruleIndex, srcPos, result, this.input.getPosition());
+		boolean status = rule.getPattern().parse(this);
+		this.cache.set(ruleIndex, srcPos, this.value, this.input.getPosition());
+		return status;
 	}
 }

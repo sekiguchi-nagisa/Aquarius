@@ -1,14 +1,16 @@
 package aquarius.example;
 
 import java.io.IOException;
+import java.util.List;
 
 import aquarius.matcher.Grammar;
 import aquarius.matcher.ParserContext;
-import aquarius.misc.TypeMatch;
 import aquarius.misc.Utils;
+import aquarius.runtime.CacheFactory;
 import aquarius.runtime.CommonStream;
-import aquarius.runtime.Result;
+import aquarius.runtime.Failure;
 import aquarius.runtime.Token;
+import aquarius.runtime.CacheFactory.CacheKind;
 import static aquarius.matcher.Expressions.*;
 
 public class Test {
@@ -18,56 +20,49 @@ public class Test {
 	}
 
 	private static void test1() {
-		Utils.showMemory("before parsing");
-
 		SampleGrammar g = new SampleGrammar();
 
 		CommonStream input = new CommonStream("<sample>", "(((((((12345))))))");
 		ParserContext context = new ParserContext(g, input);
 
+		Utils.showMemory("before parsing");
 		long start = System.currentTimeMillis();
-		Result<Token> result = context.parse(g.Expr);
+		boolean result = context.parse(g.Expr);
 		long stop = System.currentTimeMillis();
 		Utils.showMemory("after parsing");
 		System.out.println("parse time: " + (stop - start) + "ms");
 
 		// print result
-		if(result.isFailure()) {
-			System.err.println(result);
-		} else {
-			TypeMatch.match(result.get())
-				.when(Token.class, e -> System.out.println(e.getText(input)))
-				.orElse(e -> System.out.println("undefined class: " + e.getClass()));
-		}
-		System.out.println();
+		System.err.println(result ? "sucess" : "failed");
 	}
 
 	private static void test2(String[] args) throws IOException {
 		// json
-		Utils.showMemory("before parsing");
 
 		JSONGrammar jsonGrammar = new JSONGrammar();
 		CommonStream input = new CommonStream(args[0]);
 		ParserContext context = new ParserContext(jsonGrammar, input);
 
+		Utils.showMemory("before parsing");
 		long start = System.currentTimeMillis();
-		Result<JSON> result = context.parse(jsonGrammar.json);
+		boolean result = context.parse(jsonGrammar.json);
 		long stop = System.currentTimeMillis();
 		Utils.showMemory("after parsing");
 		System.out.println("parse time: " + (stop - start) + "ms");
 
-		if(result.isFailure()) {
-			System.err.println(result);
-		} else {
+		// print result
+		if(result) {
 			System.out.println("success");
+		} else {
+			Failure f = context.popFailure();
+			System.err.println(f.getMessage(input));
 		}
-		System.out.println();
 	}
 }
 
 class SampleGrammar extends Grammar {
 	public final Rule<Void> EOF = rule("EOF");
-	public final Rule<Void> __ = rule("__");
+	public final Rule<List<Void>> __ = rule("__");
 	public final Rule<Token> Expr = rule("Expr");
 	public final Rule<Token> Add = rule("Add");
 	public final Rule<Token> Mul = rule("Mul");
@@ -78,11 +73,11 @@ class SampleGrammar extends Grammar {
 		def(EOF, not(ANY));
 
 		def(__,
-			zeroMore(ch(' ', '\t', '\n', '\r')).action((ctx, arg) -> null)
+			zeroMore(ch(' ', '\t', '\n', '\r'))
 		);
 
 		def(Expr,
-			seq3(__, Add, __).action((ctx, arg) -> arg.get2())
+			seq(__, Add, __).action((ctx, a) -> a.get2())
 		);
 
 		def(Add,
@@ -110,7 +105,7 @@ class SampleGrammar extends Grammar {
 
 		def(Num,
 			choice(
-				str("0"),
+				$(str("0")),
 				$(opt(ch('-', '+')), r('1', '9'), zeroMore(r('0', '9')))
 			)
 		);

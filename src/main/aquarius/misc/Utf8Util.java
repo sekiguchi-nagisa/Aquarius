@@ -145,6 +145,19 @@ public final class Utf8Util {
 	}
 
 	/**
+	 * convert utf8 code list to string
+	 * @param utfCodeList
+	 * @return
+	 */
+	public final static String codeListToString(List<Integer> utfCodeList) {
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		for(int code : utfCodeList) {
+			codeToString(buffer, code);
+		}
+		return new String(buffer.toByteArray(), DEFAULT_CHARSET);
+	}
+
+	/**
 	 * convert utf8 code to string
 	 * @param utf8Code
 	 * @return

@@ -3,10 +3,7 @@ package aquarius.matcher.expression;
 import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.ParserContext;
 import aquarius.runtime.AquariusInputStream;
-import aquarius.runtime.Result;
 import static aquarius.misc.Utf8Util.*;
-import static aquarius.runtime.Result.*;
-import aquarius.runtime.Token;
 
 /**
 * try to match string literal. return matched string
@@ -14,7 +11,7 @@ import aquarius.runtime.Token;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class Literal implements ParsingExpression<Token> {
+public class Literal implements ParsingExpression<Void> {
 	private final int[] targetCodes;
 
 	public Literal(String target) {
@@ -35,29 +32,33 @@ public class Literal implements ParsingExpression<Token> {
 	}
 
 	@Override
-	public Result<Token> parse(ParserContext context) {
+	public boolean parse(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
 		int pos = input.getPosition();
 
 		if(pos == input.getInputSize()) {
-			return inEOF(input, this);
+			context.pushFailure(pos, this);
+			return false;
 		}
 
 		for(int code : this.targetCodes) {
 			if(code != input.fetch()) {
-				try {
-					return inLiteral(input, this, pos);
-				} finally {
-					input.setPosition(pos);
-				}
+				context.pushFailure(pos, this);
+				input.setPosition(pos);
+				return false;
 			}
 			input.consume();
 		}
-		return of(input.createToken(pos));
+		return true;
 	}
 
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitLiteral(this);
+	}
+
+	@Override
+	public boolean isReturnable() {
+		return false;
 	}
 }

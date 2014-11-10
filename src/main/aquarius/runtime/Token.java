@@ -14,44 +14,18 @@ public interface Token {
 	public int getStartPos();
 
 	/**
-	 * get token stop position. exclusive.
+	 * get token text size.
 	 * @return
 	 */
-	public int getStopPos();
+	public int getSize();
 
 	/**
-	 * get token text size. this is equivalent to Token#getStopPos() - Token#getStartPos()
-	 * @return
-	 */
-	public default int getSize() {
-		return this.getStopPos() - this.getStartPos();
-	}
-
-	/**
-	 * get token text. this is equivalent to Token#getSubText(srcInput, 0, 0)
+	 * get token text.
 	 * @param srcInput
 	 * token source. not null.
 	 * @return
 	 */
-	public default String getText(AquariusInputStream srcInput) {
-		return this.getSubText(srcInput, 0, 0);
-	}
-
-	/**
-	 * get token text. this is equivalent to Token#getText().subString(Token#getStartPos() + startOffset, Token#getStopPos() - stopOffset)
-	 * @param srcInput
-	 * token source. not null.
-	 * @param startOffset
-	 * not negative value.
-	 * @param stopOffset
-	 * not negative value.
-	 * @return
-	 * @throws IndexOutOfBoundsException
-	 * if startOffset < 0 or Token#getStartPos() + startOffset >= Token#getStopPos().
-	 * if stopOffset < 0 or Token#getStopPos() - stopOffset < Token#getStartPos().
-	 * if Token#getStartPos() + startOffset >= Token#getStopPos() - stopOffset.
-	 */
-	public String getSubText(AquariusInputStream srcInput, int startOffset, int stopOffset) throws IndexOutOfBoundsException;
+	public String getText(AquariusInputStream srcInput);
 
 	/**
 	 * get line number of token
@@ -60,4 +34,12 @@ public interface Token {
 	 * @return
 	 */
 	public int getLineNumber(AquariusInputStream srcInput);
+
+	/**
+	 * get position in line.
+	 * @param srcInput
+	 * not nul;
+	 * @return
+	 */
+	public int getPosInLine(AquariusInputStream srcInput);
 }

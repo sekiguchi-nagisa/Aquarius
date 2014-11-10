@@ -1,6 +1,6 @@
 package aquarius.matcher;
 
 @FunctionalInterface
-public interface ParsingActionWithoutArg<R> {
+public interface ParsingActionNoArg<R> {
 	public R invoke(ParserContext context) throws FailedActionException, Exception;
 }

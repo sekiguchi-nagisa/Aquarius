@@ -7,9 +7,6 @@ import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.ParserContext;
 import aquarius.misc.IntRange;
 import aquarius.runtime.AquariusInputStream;
-import aquarius.runtime.Result;
-import static aquarius.runtime.Result.*;
-import aquarius.runtime.Token;
 
 /**
 * try to match one character from char set. return matched character
@@ -17,7 +14,7 @@ import aquarius.runtime.Token;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class CharSet implements ParsingExpression<Token> {
+public class CharSet implements ParsingExpression<Void> {
 	private final int[] chars;
 	private List<IntRange> rangeList;
 
@@ -76,7 +73,14 @@ public class CharSet implements ParsingExpression<Token> {
 		StringBuilder sBuilder = new StringBuilder();
 		sBuilder.append('[');
 		for(int ch : this.chars) {
-			sBuilder.append((char) ch);
+			switch(ch) {
+			case '\t': sBuilder.append("\\t"); break;
+			case '\n': sBuilder.append("\\n"); break;
+			case '\r': sBuilder.append("\\r"); break;
+			default:
+				sBuilder.append((char) ch);
+			}
+			
 		}
 		if(this.rangeList != null) {
 			for(IntRange range : this.rangeList) {
@@ -90,12 +94,13 @@ public class CharSet implements ParsingExpression<Token> {
 	}
 
 	@Override
-	public Result<Token> parse(ParserContext context) {
+	public boolean parse(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
 		int pos = input.getPosition();
 
 		if(pos == input.getInputSize()) {
-			return inEOF(input, this);
+			context.pushFailure(pos, this);
+			return false;
 		}
 
 		final int fetchedCh = input.fetch();
@@ -103,7 +108,7 @@ public class CharSet implements ParsingExpression<Token> {
 		for(int ch : this.getChars()) {
 			if(fetchedCh == ch) {
 				input.consume();
-				return of(input.createToken(pos));
+				return true;
 			}
 		}
 		// match char range
@@ -112,15 +117,21 @@ public class CharSet implements ParsingExpression<Token> {
 			for(IntRange range : rangeList) {
 				if(range.withinRange(fetchedCh)) {
 					input.consume();
-					return of(input.createToken(pos));
+					return true;
 				}
 			}
 		}
-		return inCharSet(input, this, fetchedCh); //FIXME:
+		context.pushFailure(pos, this);
+		return false;
 	}
 
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitCharSet(this);
+	}
+
+	@Override
+	public boolean isReturnable() {
+		return false;
 	}
 }

@@ -53,27 +53,26 @@ public interface AquariusInputStream {
 	 * create token.
 	 * @param startPos
 	 * token start position. inclusive.
-	 * @param stopPos
-	 * token stop position. exclusive.
+	 * @param length
+	 * token length. may be 0
 	 * @return
 	 * @throws IndexOutOfBoundsException
-	 * if startPos >= stopPos
 	 * if startPos < 0
-	 * if stopPos > getInputSize()
+	 * if length < 0
 	 */
-	public Token createToken(int startPos, int stopPos) throws IndexOutOfBoundsException;
+	public Token createToken(int startPos, int length) throws IndexOutOfBoundsException;
 
 	/**
-	 * create token. it is equivalent to createToken(startPos, getPosition())
+	 * create token. it is equivalent to createToken(startPos, getPosition() - startPos)
 	 * @param startPos
 	 * token start position. inclusive.
 	 * @return
 	 * @throws IndexOutOfBoundsException
-	 * if startPos >= stopPos
+	 * if startPos > getPosition()
 	 * if startPos < 0
 	 */
 	public default Token createToken(int startPos) throws IndexOutOfBoundsException {
-		return this.createToken(startPos, this.getPosition());
+		return this.createToken(startPos, this.getPosition() - startPos);
 	}
 
 	/**

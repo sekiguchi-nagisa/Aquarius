@@ -3,24 +3,24 @@ package aquarius.matcher.expression;
 import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.ParserContext;
 import aquarius.runtime.AquariusInputStream;
-import aquarius.runtime.Result;
-import static aquarius.runtime.Result.*;
 
 /**
 * try to match the expression. return matched result or null
 * -> expr ?
 * @author skgchxngsxyz-opensuse
- * @param <E>
+ * @param <R>
 *
 */
-public class Optional<E> implements ParsingExpression<java.util.Optional<E>> {
-	private final ParsingExpression<E> expr;
+public class Optional<R> implements ParsingExpression<java.util.Optional<R>> {
+	private final ParsingExpression<R> expr;
+	private final boolean returnable;
 
-	public Optional(ParsingExpression<E> expr) {
+	public Optional(ParsingExpression<R> expr) {
 		this.expr = expr;
+		this.returnable = expr.isReturnable();
 	}
 
-	public ParsingExpression<E> getExpr() {
+	public ParsingExpression<R> getExpr() {
 		return this.expr;
 	}
 
@@ -30,20 +30,26 @@ public class Optional<E> implements ParsingExpression<java.util.Optional<E>> {
 	}
 
 	@Override
-	public Result<java.util.Optional<E>> parse(ParserContext context) {
+	public boolean parse(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
 		int pos = input.getPosition();
-
-		Result<E> result = this.expr.parse(context);
-		if(result.isFailure()) {
+		if(!this.expr.parse(context)) {
 			input.setPosition(pos);	// roll back position
-			return of(java.util.Optional.empty());
+			context.popFailure();
 		}
-		return of(java.util.Optional.of(result.get()));
+		if(this.returnable) {
+			context.pushValue(java.util.Optional.ofNullable(context.popValue()));
+		}
+		return true;
 	}
 
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitOptional(this);
+	}
+
+	@Override
+	public boolean isReturnable() {
+		return this.returnable;
 	}
 }

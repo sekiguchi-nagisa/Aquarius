@@ -4,21 +4,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 import aquarius.matcher.expression.ParsingExpression;
-import aquarius.runtime.Result;
 
 public abstract class Grammar {
 	private int ruleIndexCount = 0;
 	private final Map<String, Rule<?>> ruleMap = new HashMap<>();
 
+	@SuppressWarnings("unchecked")
 	protected <R> Rule<R> rule(String ruleName) {
-		return this.rule(ruleName, null);
+		return this.newRule(ruleName, null);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected <R> Rule<R> rule(String ruleName, ParsingExpression<R> pattern) {
+		return this.newRule(ruleName, pattern);
+	}
+
+	@SuppressWarnings("unchecked")
+	private <R> Rule<R> newRule(String ruleName, ParsingExpression<R> pattern, R... rs) {
 		if(this.ruleMap.containsKey(ruleName)) {
 			throw new RuntimeException("already defined rule name: " + ruleName);
 		}
-		Rule<R> rule = new Rule<>(ruleName, this.ruleIndexCount++, pattern);
+		Rule<R> rule = new Rule<>(ruleName, this.ruleIndexCount++, pattern, rs);
 		this.ruleMap.put(ruleName, rule);
 		return rule;
 	}
@@ -50,16 +56,20 @@ public abstract class Grammar {
 	public static class Rule<R> implements ParsingExpression<R> {
 		private final String ruleName;
 		private final int ruleIndex;
+		private final boolean returnable;
 		private ParsingExpression<R> pattern;
 
-		private Rule(String ruleName, int ruleIndex) {
-			this(ruleName, ruleIndex, null);
+		@SafeVarargs
+		private Rule(String ruleName, int ruleIndex, R... rs) {
+			this(ruleName, ruleIndex, null, rs);
 		}
 
-		private Rule(String ruleName, int ruleIndex, ParsingExpression<R> pattern) {
+		@SafeVarargs
+		private Rule(String ruleName, int ruleIndex, ParsingExpression<R> pattern, R... rs) {
 			this.ruleName = ruleName;
 			this.ruleIndex = ruleIndex;
 			this.pattern = pattern;
+			this.returnable = !rs.getClass().getComponentType().equals(Void.class);
 		}
 
 		public String getRuleName() {
@@ -115,13 +125,18 @@ public abstract class Grammar {
 			return true;
 		}
 
-		public Result<R> parse(ParserContext context) {
+		public boolean parse(ParserContext context) {
 			return context.dispatchRule(this);
 		}
 
 		@Override
 		public <T> T accept(ExpressionVisitor<T> visitor) {
 			return visitor.visitRule(this);
+		}
+
+		@Override
+		public boolean isReturnable() {
+			return this.returnable;
 		}
 	}
 }

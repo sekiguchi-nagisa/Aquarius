@@ -11,8 +11,8 @@ public interface JSON {
 	public static class JSONObject extends LinkedHashMap<JSONString, JSON> implements JSON {
 		private static final long serialVersionUID = 4227513440823211948L;
 
-		public void add(Tuple2<JSONString, JSON> tuple2) {
-			this.put(tuple2.get1(), tuple2.get2());
+		public void add(Tuple2<JSONString, JSON> entry) {
+			this.put(entry.get1(), entry.get2());
 		}
 	}
 

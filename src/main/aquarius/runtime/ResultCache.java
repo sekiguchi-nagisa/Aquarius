@@ -20,34 +20,13 @@ public interface ResultCache {
 
 	/**
 	 * set parsed result.
-	 * @param <R>
 	 * @param ruleIndex
 	 * non negative value
 	 * @param srcPos
 	 * no negative value
-	 * @param result
-	 * parsed result. not Failure
+	 * @param value
+	 * parsed result
 	 * @param currentPos
-	 * @return
-	 * equivalent to result.
 	 */
-	public <R> Result<R> set(int ruleIndex, int srcPos, Result<R> result, int currentPos);
-
-	public static class CacheEntry {
-		private final int currentPos;
-		private final Result<?> result;
-
-		protected CacheEntry(int currentPos, Result<?> result) {
-			this.currentPos = currentPos;
-			this.result = result;
-		}
-
-		public Result<?> getResult() {
-			return this.result;
-		}
-
-		public int getCurrentPos() {
-			return this.currentPos;
-		}
-	}
+	public void set(int ruleIndex, int srcPos, Object value, int currentPos);
 }

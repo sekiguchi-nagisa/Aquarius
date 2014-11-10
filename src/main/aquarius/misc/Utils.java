@@ -17,6 +17,7 @@ public class Utils {
 	 * print this message before printing memory
 	 */
 	public final static void showMemory(String message) {
+		System.gc();
 		long total = Runtime.getRuntime().totalMemory() / 1024;
 		long free = Runtime.getRuntime().freeMemory() / 1024;
 		long max = Runtime.getRuntime().maxMemory() / 1024;
