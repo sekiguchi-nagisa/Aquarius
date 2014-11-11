@@ -59,7 +59,7 @@ public class Test {
 }
 
 class SampleGrammar extends Grammar {
-	public final Rule<Void> EOF = rule("EOF");
+	public final Rule<Void> EOF = ruleVoid("EOF");
 	public final Rule<List<Void>> __ = rule("__");
 	public final Rule<Token> Expr = rule("Expr");
 	public final Rule<Token> Add = rule("Add");

@@ -11,7 +11,7 @@ import static aquarius.matcher.Expressions.*;
 public class NoArgActionTest extends TestBase<Void> {
 	@Before
 	public void prepare() {
-		this.expr = action(ctx -> {ctx.getInputStream().consume(); return null;});
+		this.expr = actionNoRet(ctx -> ctx.getInputStream().consume());
 		this.initContext("hfreui");
 	}
 	@Test
@@ -22,7 +22,7 @@ public class NoArgActionTest extends TestBase<Void> {
 		assertEquals(1, this.input.getPosition());
 
 		// failure test
-		this.expr = action(ctx -> {throw new FailedActionException("fail");});
+		this.expr = actionNoRet(ctx -> {throw new FailedActionException("fail");});
 		this.initContext("12+34");
 		result = this.expr.parse(this.context);
 		assertTrue(!result);

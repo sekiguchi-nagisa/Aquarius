@@ -9,22 +9,27 @@ public abstract class Grammar {
 	private int ruleIndexCount = 0;
 	private final Map<String, Rule<?>> ruleMap = new HashMap<>();
 
-	@SuppressWarnings("unchecked")
 	protected <R> Rule<R> rule(String ruleName) {
-		return this.newRule(ruleName, null);
+		return this.rule(ruleName, null);
 	}
 
-	@SuppressWarnings("unchecked")
 	protected <R> Rule<R> rule(String ruleName, ParsingExpression<R> pattern) {
-		return this.newRule(ruleName, pattern);
+		return this.newRule(ruleName, pattern, true);
 	}
 
-	@SuppressWarnings("unchecked")
-	private <R> Rule<R> newRule(String ruleName, ParsingExpression<R> pattern, R... rs) {
+	protected Rule<Void> ruleVoid(String ruleName) {
+		return this.ruleVoid(ruleName, null);
+	}
+
+	protected Rule<Void> ruleVoid(String ruleName, ParsingExpression<Void> pattern) {
+		return this.newRule(ruleName, pattern, false);
+	}
+
+	private <R> Rule<R> newRule(String ruleName, ParsingExpression<R> pattern, boolean returnable) {
 		if(this.ruleMap.containsKey(ruleName)) {
 			throw new RuntimeException("already defined rule name: " + ruleName);
 		}
-		Rule<R> rule = new Rule<>(ruleName, this.ruleIndexCount++, pattern, rs);
+		Rule<R> rule = new Rule<>(ruleName, this.ruleIndexCount++, pattern, returnable);
 		this.ruleMap.put(ruleName, rule);
 		return rule;
 	}
@@ -59,17 +64,19 @@ public abstract class Grammar {
 		private final boolean returnable;
 		private ParsingExpression<R> pattern;
 
-		@SafeVarargs
-		private Rule(String ruleName, int ruleIndex, R... rs) {
-			this(ruleName, ruleIndex, null, rs);
-		}
-
-		@SafeVarargs
-		private Rule(String ruleName, int ruleIndex, ParsingExpression<R> pattern, R... rs) {
+		/**
+		 * 
+		 * @param ruleName
+		 * @param ruleIndex
+		 * @param pattern
+		 * may be null
+		 * @param returnable
+		 */
+		private Rule(String ruleName, int ruleIndex, ParsingExpression<R> pattern, boolean returnable) {
 			this.ruleName = ruleName;
 			this.ruleIndex = ruleIndex;
 			this.pattern = pattern;
-			this.returnable = !rs.getClass().getComponentType().equals(Void.class);
+			this.returnable = returnable;
 		}
 
 		public String getRuleName() {

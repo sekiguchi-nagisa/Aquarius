@@ -4,6 +4,7 @@ import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.FailedActionException;
 import aquarius.matcher.ParserContext;
 import aquarius.matcher.ParsingAction;
+import aquarius.matcher.ParsingAction.*;
 import aquarius.runtime.AquariusInputStream;
 
 /**
@@ -20,11 +21,10 @@ public class Action<R, A> implements ParsingExpression<R> {	// extended expressi
 	private final ParsingAction<R, A> action;
 	private final boolean returnable;
 
-	@SafeVarargs
-	public Action(ParsingExpression<A> expr, ParsingAction<R, A> action, R... rs) {
+	public Action(ParsingExpression<A> expr, ParsingAction<R, A> action) {
 		this.expr = expr;
 		this.action = action;
-		this.returnable = !rs.getClass().getComponentType().equals(Void.class);
+		this.returnable = action instanceof ParsingActionReturn;
 	}
 
 	public ParsingExpression<A> getExpr() {
@@ -53,7 +53,12 @@ public class Action<R, A> implements ParsingExpression<R> {	// extended expressi
 
 		// invoke action
 		try {
-			context.pushValue(this.getAction().invoke(context, (A) context.popValue()));
+			if(this.action instanceof ParsingActionReturn) {
+				context.pushValue(
+					((ParsingActionReturn<R, A>) this.action).invoke(context, (A) context.popValue()));
+			} else {
+				((ParsingActionNoReturn<A>) this.action).invoke(context, (A) context.popValue());
+			}
 			return true;
 		} catch(FailedActionException e) {
 			input.setPosition(pos);

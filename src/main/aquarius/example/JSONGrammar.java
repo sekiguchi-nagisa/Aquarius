@@ -25,27 +25,27 @@ public class JSONGrammar extends Grammar {
 			zeroMore(ch(' ', '\t', '\r', '\n'))
 		);
 
-		Rule<Void> objectOpen = rule("objectOpen",
+		Rule<Void> objectOpen = ruleVoid("objectOpen",
 			seqN(str("{"), ws)
 		);
 
-		Rule<Void> objectClose = rule("objectClose",
+		Rule<Void> objectClose = ruleVoid("objectClose",
 			seqN(str("}"), ws)
 		);
 
-		Rule<Void> arrayOpen = rule("arrayOpen",
+		Rule<Void> arrayOpen = ruleVoid("arrayOpen",
 			seqN(str("["), ws)
 		);
 
-		Rule<Void> arrayClose = rule("arrayClose",
+		Rule<Void> arrayClose = ruleVoid("arrayClose",
 			seqN(str("]"), ws)
 		);
 
-		Rule<Void> keyValueSep = rule("keyValueSep",
+		Rule<Void> keyValueSep = ruleVoid("keyValueSep",
 			seqN(ws, str(":"), ws)
 		);
 
-		Rule<Void> valueSep = rule("valueSep",
+		Rule<Void> valueSep = ruleVoid("valueSep",
 			seqN(str(","), ws)
 		);
 
@@ -112,7 +112,7 @@ public class JSONGrammar extends Grammar {
 			)
 		);
 
-		Rule<Void> escape = rule("escape",
+		Rule<Void> escape = ruleVoid("escape",
 			seqN(str("\\"), ch('"', '\\', '/', 'b', 'f', 'n', 'r', 't'))
 		);
 
@@ -125,7 +125,7 @@ public class JSONGrammar extends Grammar {
 			str("\"")).action((ctx, a) -> new JSONString(ctx.createTokenText(a)))
 		);
 	
-		Rule<Void> integer = rule("integer",
+		Rule<Void> integer = ruleVoid("integer",
 			choice(
 				str("0"),
 				seqN(r('1', '9'), zeroMore(r('0', '9')))

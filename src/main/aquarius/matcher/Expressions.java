@@ -1,5 +1,7 @@
 package aquarius.matcher;
 
+import aquarius.matcher.ParsingActionNoArg.ParsingActionNoArgNoReturn;
+import aquarius.matcher.ParsingActionNoArg.ParsingActionNoArgReturn;
 import aquarius.matcher.expression.AndPredict;
 import aquarius.matcher.expression.NoArgAction;
 import aquarius.matcher.expression.PredictAction;
@@ -88,7 +90,7 @@ public final class Expressions {
 	@SuppressWarnings("unchecked")
 	@SafeVarargs
 	public final static <R> Choice<R> choice(ParsingExpression<? extends R>... exprs) {
-		return new Choice<R>((ParsingExpression<R>[]) exprs);
+		return new Choice<>((ParsingExpression<R>[]) exprs);
 	}
 
 	public final static PredictAction predict(PredictiveAction action) {
@@ -100,7 +102,11 @@ public final class Expressions {
 		return new Capture(exprs);
 	}
 
-	public final static <R> NoArgAction<R> action(ParsingActionNoArg<R> action) {
-		return new NoArgAction<R>(action);
+	public final static <R> NoArgAction<R> action(ParsingActionNoArgReturn<R> action) {
+		return new NoArgAction<>(action);
+	}
+
+	public final static NoArgAction<Void> actionNoRet(ParsingActionNoArgNoReturn action) {
+		return new NoArgAction<>(action);
 	}
 }
