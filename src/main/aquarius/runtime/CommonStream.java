@@ -186,7 +186,7 @@ public class CommonStream implements AquariusInputStream {
 
 		@Override
 		public String toString() {
-			return "token<" + this.startPos + "-" + this.length + ">";
+			return "token<" + this.startPos + ":" + this.length + ">";
 		}
 
 		@Override

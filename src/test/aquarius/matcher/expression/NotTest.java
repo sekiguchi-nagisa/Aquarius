@@ -18,6 +18,7 @@ public class NotTest extends TestBase<Tuple2<Void, Void>> {
 	public void test() {
 		boolean result = this.expr.parse(this.context);
 		assertEquals(6, this.context.getInputStream().getPosition());
+		assertNull(context.popValue());
 		assertTrue(result);
 
 		// failure test

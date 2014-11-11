@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import aquarius.runtime.Token;
 import static aquarius.matcher.Expressions.*;
 import static aquarius.misc.Utf8Util.*;
 
@@ -21,52 +20,51 @@ public class CharSetTest extends TestBase<Void> {
 	@Test
 	public void test() {
 		// test 1
-		Token expected = this.input.createToken(0, 1);
 		boolean result = this.expr.parse(this.context);
 		assertTrue(result);
+		assertNull(context.popValue());
 		assertEquals(1, this.input.getPosition());
 
 		// test 2
 		this.initContext("a");
-		expected = this.input.createToken(0, 1);
 		result = this.expr.parse(this.context);
 		assertTrue(result);
 		assertEquals(1, this.input.getPosition());
 
 		// test 3
 		this.initContext("d");
-		expected = this.input.createToken(0, 1);
 		result = this.expr.parse(this.context);
 		assertTrue(result);
+		assertNull(context.popValue());
 		assertEquals(1, this.input.getPosition());
 
 		// test 4
 		this.initContext("4");
-		expected = this.input.createToken(0, 1);
 		result = this.expr.parse(this.context);
 		assertTrue(result);
+		assertNull(context.popValue());
 		assertEquals(1, this.input.getPosition());
 
 		// test 5
 		this.initContext("ω");
-		expected = this.input.createToken(0, 2);
 		result = this.expr.parse(this.context);
 		assertTrue(result);
+		assertNull(context.popValue());
 		assertEquals(2, this.input.getPosition());
 
 		// test 6
 		this.initContext("あ");
-		expected = this.input.createToken(0, 3);
 		result = this.expr.parse(this.context);
 		assertTrue(result);
+		assertNull(context.popValue());
 		assertEquals(3, this.input.getPosition());
 
 		// test 7
 		String s = new String(Character.toChars(0x21c56));
 		this.initContext(s);
-		expected = this.input.createToken(0, 4);
 		result = this.expr.parse(this.context);
 		assertTrue(result);
+		assertNull(context.popValue());
 		assertEquals(4, this.input.getPosition());
 
 		// failure test

@@ -17,15 +17,24 @@ public class Sequence2Test extends TestBase<Tuple2<Void, Void>> {
 
 	@Test
 	public void test() {
+		// test1
 		boolean result = this.expr.parse(this.context);
 		assertTrue(result);
+		assertNull(context.popValue());
 		assertEquals(7, this.input.getPosition());
 
-		// failure test
+		// failure test1
 		this.initContext("1234aa");
 		result = this.expr.parse(this.context);
 		assertTrue(!result);
 		assertEquals(4, context.popFailure().getFailurePos());
+		assertEquals(0, this.input.getPosition());
+
+		// failure test2
+		this.initContext("12abc");
+		result = this.expr.parse(this.context);
+		assertTrue(!result);
+		assertEquals(0, context.popFailure().getFailurePos());
 		assertEquals(0, this.input.getPosition());
 	}
 

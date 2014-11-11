@@ -19,6 +19,7 @@ public class AndTest extends TestBase<Tuple2<Void, Void>> {
 		boolean result = this.expr.parse(this.context);
 		assertEquals(6, this.context.getInputStream().getPosition());
 		assertTrue(result);
+		assertNull(context.popValue());
 
 		// failure test
 		this.initContext("public3  ");

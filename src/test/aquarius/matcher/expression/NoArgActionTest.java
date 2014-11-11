@@ -18,6 +18,7 @@ public class NoArgActionTest extends TestBase<Void> {
 	public void test() {
 		boolean result = this.expr.parse(this.context);
 		assertTrue(result);
+		assertNull(context.popValue());
 		assertEquals(1, this.input.getPosition());
 
 		// failure test

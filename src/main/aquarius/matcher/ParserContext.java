@@ -69,6 +69,11 @@ public class ParserContext {
 		return value;
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T> T popValue(Class<T> clazz) {
+		return (T) this.popValue();
+	}
+
 	public void pushFailure(int pos, FailedActionException e) {
 		this.value = Failure.failInAction(pos, e);
 	}

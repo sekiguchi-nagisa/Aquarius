@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import aquarius.runtime.Token;
 import static aquarius.matcher.Expressions.*;
 
 public class LiteralTest extends TestBase<Void> {
@@ -17,17 +16,17 @@ public class LiteralTest extends TestBase<Void> {
 	@Test
 	public void test() {
 		// test1
-		Token expected = this.input.createToken(0, "hello world".length());
 		boolean result = this.expr.parse(this.context);
 		assertTrue(result);
+		assertNull(context.popValue());
 		assertEquals(11, this.input.getPosition());
 
 		// test2
-		String text = "aこ12";
 		this.expr = str("aこ12");
 		this.initContext("aこ12hur");
 		result = this.expr.parse(this.context);
 		assertTrue(result);
+		assertNull(context.popValue());
 		assertEquals(6, this.input.getPosition());
 
 		// failure test

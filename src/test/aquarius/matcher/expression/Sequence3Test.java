@@ -20,6 +20,7 @@ public class Sequence3Test extends TestBase<Tuple3<Void, Void, Void>> {
 		boolean result = this.expr.parse(this.context);
 		assertTrue(result);
 		assertEquals(8, this.input.getPosition());
+		assertNull(context.popValue());
 
 		// failure test
 		this.initContext("1234aa");

@@ -18,18 +18,21 @@ public class ChoiceTest extends TestBase<Void> {
 		// test1
 		boolean result = this.expr.parse(this.context);
 		assertTrue(result);
+		assertNull(context.popValue());
 		assertEquals(5, this.input.getPosition());
 
 		// test2
 		this.initContext("good");
 		result = this.expr.parse(this.context);
 		assertTrue(result);
+		assertNull(context.popValue());
 		assertEquals(4, this.input.getPosition());
 
 		// test3
 		this.initContext("world");
 		result = this.expr.parse(this.context);
 		assertTrue(result);
+		assertNull(context.popValue());
 		assertEquals(5, this.input.getPosition());
 
 		// failure test

@@ -18,7 +18,7 @@ public class ActionTest extends TestBase<Integer> {
 	public void test() {
 		boolean result = this.expr.parse(this.context);
 		assertTrue(result);
-		assertEquals(12, this.context.popValue());
+		assertEquals(12, this.context.popValue(Integer.class).intValue());
 		assertEquals(1, this.input.getPosition());
 
 		// failure test

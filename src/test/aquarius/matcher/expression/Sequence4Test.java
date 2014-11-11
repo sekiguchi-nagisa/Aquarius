@@ -20,6 +20,7 @@ public class Sequence4Test extends TestBase<Tuple4<Void, Void, Void, Void>> {
 		boolean result = this.expr.parse(this.context);
 		assertTrue(result);
 		assertEquals(9, this.input.getPosition());
+		assertNull(context.popValue());
 
 		// failure test
 		this.initContext("1234aa");

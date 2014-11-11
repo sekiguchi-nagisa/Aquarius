@@ -21,7 +21,7 @@ public class CaptureTest extends TestBase<Token> {
 		Token expectedToken = this.input.createToken(0, 4);
 		boolean result = this.expr.parse(this.context);
 		assertTrue(result);
-		assertEquals(expectedToken, this.context.popValue());
+		assertEquals(expectedToken, this.context.popValue(Token.class));
 		assertEquals(4, this.input.getPosition());
 
 		// test2
