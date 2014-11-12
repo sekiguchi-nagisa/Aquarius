@@ -59,7 +59,7 @@ public class JSONGrammar extends Grammar {
 
 		def(object, 
 			choice(
-				seq(objectOpen, keyValue, zeroMore(seq(valueSep, keyValue)), objectClose)
+				seq(objectOpen, keyValue, zeroMore(valueSep, keyValue), objectClose)
 					.action((ctx, a) -> {
 						JSONObject object = new JSONObject();
 						for(Tuple2<Void, Tuple2<JSONString, JSON>> t : a.get2()) {
@@ -76,7 +76,7 @@ public class JSONGrammar extends Grammar {
 
 		def(array,
 			choice(
-				seq(arrayOpen, value, zeroMore(seq(valueSep, value)), arrayClose)
+				seq(arrayOpen, value, zeroMore(valueSep, value), arrayClose)
 					.action((ctx, a) -> {
 						JSONArray array = new JSONArray();
 						for(Tuple2<Void, JSON> t : a.get2()) {
