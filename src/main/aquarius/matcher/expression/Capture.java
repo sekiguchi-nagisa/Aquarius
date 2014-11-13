@@ -11,7 +11,7 @@ import aquarius.runtime.Token;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class Capture implements ParsingExpression<Token> {	// extended expression type
+public class Capture extends ParsingExpression<Token> {	// extended expression type
 	private final ParsingExpression<?>[] exprs;
 
 	@SafeVarargs

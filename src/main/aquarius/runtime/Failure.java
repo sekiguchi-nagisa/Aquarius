@@ -14,9 +14,9 @@ import aquarius.matcher.expression.PredictAction;
 import aquarius.misc.TypeMatch;
 import aquarius.misc.Utf8Util;
 
-public interface Failure {
-	public int getFailurePos();
-	public String getMessage(AquariusInputStream input);
+public abstract class Failure {
+	public abstract int getFailurePos();
+	public abstract String getMessage(AquariusInputStream input);
 
 	public static Failure failInAction(int pos, FailedActionException e) {
 		return new Failure() {

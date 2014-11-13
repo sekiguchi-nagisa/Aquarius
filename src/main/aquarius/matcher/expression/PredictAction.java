@@ -12,7 +12,7 @@ import aquarius.runtime.AquariusInputStream;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class PredictAction implements ParsingExpression<Void> {	// extended expression type
+public class PredictAction extends ParsingExpression<Void> {	// extended expression type
 	private final PredictiveAction action;
 
 	public PredictAction(PredictiveAction action) {

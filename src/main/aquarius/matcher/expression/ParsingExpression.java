@@ -5,18 +5,18 @@ import aquarius.matcher.ParserContext;
 import aquarius.matcher.ParsingAction.ParsingActionNoReturn;
 import aquarius.matcher.ParsingAction.ParsingActionReturn;
 
-public interface ParsingExpression<R> {
-	public <T> T accept(ExpressionVisitor<T> visitor);
+public abstract class ParsingExpression<R> {
+	public abstract <T> T accept(ExpressionVisitor<T> visitor);
 
-	public boolean parse(ParserContext context);
+	public abstract boolean parse(ParserContext context);
 
-	public boolean isReturnable();
+	public abstract boolean isReturnable();
 
-	public default <E> Action<E, R> action(ParsingActionReturn<E, R> action) {
+	public  <E> Action<E, R> action(ParsingActionReturn<E, R> action) {
 		return new Action<>(this, action);
 	}
 
-	public default Action<Void, R> actionNoRet(ParsingActionNoReturn<R> action) {
+	public Action<Void, R> actionNoRet(ParsingActionNoReturn<R> action) {
 		return new Action<>(this, action);
 	}
 }

@@ -16,7 +16,7 @@ import aquarius.runtime.AquariusInputStream;
  * @param <A>
 *
 */
-public class Action<R, A> implements ParsingExpression<R> {	// extended expression type
+public class Action<R, A> extends ParsingExpression<R> {	// extended expression type
 	private final ParsingExpression<A> expr;
 	private final ParsingAction<R, A> action;
 	private final boolean returnable;

@@ -14,7 +14,7 @@ import aquarius.runtime.AquariusInputStream;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class CharSet implements ParsingExpression<Void> {
+public class CharSet extends ParsingExpression<Void> {
 	private final int[] chars;
 	private List<IntRange> rangeList;
 

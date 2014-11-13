@@ -58,7 +58,7 @@ public abstract class Grammar {
 	 * @param <R>
 	*
 	*/
-	public static class Rule<R> implements ParsingExpression<R> {
+	public static class Rule<R> extends ParsingExpression<R> {
 		private final String ruleName;
 		private final int ruleIndex;
 		private final boolean returnable;

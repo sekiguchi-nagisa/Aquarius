@@ -5,7 +5,7 @@ import aquarius.matcher.ParserContext;
 import aquarius.misc.Tuple2;
 import aquarius.runtime.AquariusInputStream;
 
-public class Sequence2<A, B> implements ParsingExpression<Tuple2<A, B>> {
+public class Sequence2<A, B> extends ParsingExpression<Tuple2<A, B>> {
 	private final Tuple2<ParsingExpression<A>, ParsingExpression<B>> exprs;
 	private final boolean returnable;
 

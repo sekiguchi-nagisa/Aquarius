@@ -10,7 +10,7 @@ import aquarius.runtime.AquariusInputStream;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class Any implements ParsingExpression<Void> {
+public class Any extends ParsingExpression<Void> {
 	@Override
 	public String toString() {
 		return ".";

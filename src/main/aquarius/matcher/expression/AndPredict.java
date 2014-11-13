@@ -12,7 +12,7 @@ import aquarius.runtime.AquariusInputStream;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class AndPredict implements ParsingExpression<Void> {
+public class AndPredict extends ParsingExpression<Void> {
 	private final ParsingExpression<?> expr;
 
 	public AndPredict(ParsingExpression<?> expr) {

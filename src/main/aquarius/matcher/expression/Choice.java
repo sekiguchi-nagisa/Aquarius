@@ -13,7 +13,7 @@ import aquarius.runtime.Failure;
  * @param <R>
 *
 */
-public class Choice<R> implements ParsingExpression<R> {
+public class Choice<R> extends ParsingExpression<R> {
 	private final ParsingExpression<R>[] exprs;
 	private final boolean returnable;
 

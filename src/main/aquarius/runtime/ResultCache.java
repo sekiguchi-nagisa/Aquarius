@@ -6,7 +6,7 @@ package aquarius.runtime;
  * @author skgchxngsxyz-opensuse
  *
  */
-public interface ResultCache {
+public abstract class ResultCache {
 	/**
 	 * look up previous parsed result
 	 * @param ruleIndex
@@ -16,7 +16,7 @@ public interface ResultCache {
 	 * @return
 	 * return null if not found parsed result
 	 */
-	public CacheEntry get(int ruleIndex, int srcPos);
+	public abstract CacheEntry get(int ruleIndex, int srcPos);
 
 	/**
 	 * set parsed result.
@@ -28,5 +28,5 @@ public interface ResultCache {
 	 * parsed result
 	 * @param currentPos
 	 */
-	public void set(int ruleIndex, int srcPos, Object value, int currentPos);
+	public abstract void set(int ruleIndex, int srcPos, Object value, int currentPos);
 }
