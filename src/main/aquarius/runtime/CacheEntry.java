@@ -1,48 +1,28 @@
 package aquarius.runtime;
 
-public interface CacheEntry {
-	public int getCurrentPos();
-	public boolean getStatus();
-	public Object getValue();
+public class CacheEntry {
+	private int pos;
+	private Object value;
 
-	public static CacheEntry newEntry(int pos, Object value) {
-		if(value == null) {
-			return newAlwaysSuccessEntry(pos);
-		}
-		return new CacheEntry() {
-			@Override
-			public Object getValue() {
-				return value;
-			}
-
-			@Override
-			public boolean getStatus() {
-				return !(value instanceof Failure);
-			}
-
-			@Override
-			public int getCurrentPos() {
-				return pos;
-			}
-		};
+	public CacheEntry(int pos, Object value) {
+		this.pos = pos;
+		this.value = value;
 	}
 
-	public static CacheEntry newAlwaysSuccessEntry(int pos) {
-		return new CacheEntry() {
-			@Override
-			public Object getValue() {
-				return null;
-			}
+	public int getCurrentPos() {
+		return this.pos;
+	}
 
-			@Override
-			public boolean getStatus() {
-				return true;
-			}
+	public boolean getStatus() {
+		return !(value instanceof Failure);
+	}
 
-			@Override
-			public int getCurrentPos() {
-				return pos;
-			}
-		};
+	public Object getValue() {
+		return this.value;
+	}
+
+	public void reuse(int pos, Object value) {
+		this.pos = pos;
+		this.value = value;
 	}
 }

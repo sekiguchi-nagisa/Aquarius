@@ -1,6 +1,6 @@
 package aquarius.matcher.expression;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import aquarius.matcher.ExpressionVisitor;
@@ -37,7 +37,7 @@ public class OneMore<R> implements ParsingExpression<List<R>> {
 	public boolean parse(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
 		int count = 0;
-		List<R> result = this.returnable ? new ArrayList<>() : null;
+		List<R> result = this.returnable ? new LinkedList<R>() : null;
 		while(true) {
 			int pos = input.getPosition();
 			count++;

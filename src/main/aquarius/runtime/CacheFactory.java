@@ -1,5 +1,6 @@
 package aquarius.runtime;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class CacheFactory {
@@ -59,7 +60,7 @@ public class CacheFactory {
 		@Override
 		public void set(int ruleIndex, int srcPos, Object value, int currentPos) {
 			assert(this.resultArray[ruleIndex][srcPos] != null);
-			this.resultArray[ruleIndex][srcPos] = CacheEntry.newEntry(currentPos, value);
+			this.resultArray[ruleIndex][srcPos] = new CacheEntry(currentPos, value);
 		}
 	}
 
@@ -78,7 +79,7 @@ public class CacheFactory {
 
 		@Override
 		public void set(int ruleIndex, int srcPos, Object value, int currentPos) {
-			this.put(toUniqueId(ruleIndex, srcPos), CacheEntry.newEntry(currentPos, value));
+			this.put(toUniqueId(ruleIndex, srcPos), new CacheEntry(currentPos, value));
 		}
 
 		protected final static long toUniqueId(int ruleIndex, int srcPos) {
@@ -91,19 +92,22 @@ public class CacheFactory {
 
 		public LimitedSizeCache(int ruleSize, int srcSize) {
 			this.entryTable = new EntryRow[ruleSize];
-			for(int i = 0; i < ruleSize; i++) {
-				this.entryTable[i] = new EntryRow();
-			}
 		}
 
 		@Override
 		public CacheEntry get(int ruleIndex, int srcPos) {
-			return this.entryTable[ruleIndex].get(srcPos);
+			EntryRow row = this.entryTable[ruleIndex];
+			return row != null ? row.get(srcPos) : null;
 		}
 
 		@Override
 		public void set(int ruleIndex, int srcPos, Object value, int currentPos) {
-			this.entryTable[ruleIndex].set(srcPos, CacheEntry.newEntry(currentPos, value));
+			EntryRow row = this.entryTable[ruleIndex];
+			if(row == null) {
+				row = new EntryRow();
+				this.entryTable[ruleIndex] = row;
+			}
+			row.set(srcPos, currentPos, value);
 		}
 	}
 
@@ -115,16 +119,18 @@ public class CacheFactory {
 		public EntryRow() {
 			this.entries = new CacheEntry[DEFAULT_ROW_SIZE];
 			this.srcIndexEntries = new int[DEFAULT_ROW_SIZE];
-			for(int i = 0; i < DEFAULT_ROW_SIZE; i++) {
-				this.entries[i] = null;
-				this.srcIndexEntries[i] = -1;
-			}
+			Arrays.fill(this.srcIndexEntries, -1);
 		}
 
-		public void set(int srcIndex, CacheEntry entry) {
+		public void set(int srcIndex, int pos, Object value) {
 			int index = srcIndex % DEFAULT_ROW_SIZE;
 			this.srcIndexEntries[index] = srcIndex;
-			this.entries[index] = entry;
+			CacheEntry entry = this.entries[index];
+			if(entry == null) {
+				this.entries[index] = new CacheEntry(pos, value);
+			} else {
+				entry.reuse(pos, value);
+			}
 		}
 
 		public CacheEntry get(int srcIndex) {

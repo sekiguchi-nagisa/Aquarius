@@ -1,8 +1,5 @@
 package aquarius.matcher.expression;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.ParserContext;
 import aquarius.runtime.AquariusInputStream;
@@ -42,23 +39,19 @@ public class Choice<R> implements ParsingExpression<R> {
 	@Override
 	public boolean parse(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
-		// for error report
-		List<Failure> failures = new ArrayList<>(this.exprs.length);
 
+		Failure longestMatched = null;
 		int pos = input.getPosition();
 		for(ParsingExpression<R> e : this.exprs) {
 			if(!e.parse(context)) {
-				failures.add(context.popFailure());
+				Failure failure = context.popFailure();
+				if(longestMatched == null || longestMatched.getFailurePos() < failure.getFailurePos()) {
+					longestMatched = failure;
+				}
 				input.setPosition(pos);	// roll back position
 				continue;
 			}
 			return true;
-		}
-		Failure longestMatched = failures.get(0);
-		for(Failure failure : failures) {
-			if(failure.getFailurePos() > longestMatched.getFailurePos()) {
-				longestMatched = failure;
-			}
 		}
 		context.pushFailure(longestMatched);
 		return false;

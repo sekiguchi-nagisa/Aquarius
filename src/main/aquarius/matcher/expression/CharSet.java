@@ -105,7 +105,7 @@ public class CharSet implements ParsingExpression<Void> {
 
 		final int fetchedCh = input.fetch();
 		// match chars
-		for(int ch : this.getChars()) {
+		for(int ch : this.chars) {
 			if(fetchedCh == ch) {
 				input.consume();
 				return true;
