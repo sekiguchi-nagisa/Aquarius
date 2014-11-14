@@ -71,7 +71,7 @@ class SampleGrammar extends Grammar {
 		def(EOF, not(ANY));
 
 		def(__,
-			zeroMore(ch(' ', '\t', '\n', '\r'))
+			ch(' ', '\t', '\n', '\r').zeroMore()
 		);
 
 		def(Expr,
@@ -104,7 +104,7 @@ class SampleGrammar extends Grammar {
 		def(Num,
 			choice(
 				$(str("0")),
-				$(opt(ch('-', '+')), r('1', '9'), zeroMore(r('0', '9')))
+				$(ch('-', '+').opt(), r('1', '9'), r('0', '9').zeroMore())
 			)
 		);
 	}

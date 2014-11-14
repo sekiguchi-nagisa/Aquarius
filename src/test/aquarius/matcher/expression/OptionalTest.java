@@ -12,7 +12,7 @@ public class OptionalTest extends TestBase<Optional<Void>> {
 
 	@Before
 	public void prepare() {
-		this.expr = opt(str("hello"));
+		this.expr = str("hello").opt();
 		this.initContext("g");
 	}
 

@@ -11,7 +11,7 @@ import org.junit.Test;
 public class OneMoreTest extends TestBase<List<Void>> {
 	@Before
 	public void prepare() {
-		this.expr = oneMore(str("hello"));
+		this.expr = str("hello").oneMore();
 		this.initContext("hellohello");
 	}
 

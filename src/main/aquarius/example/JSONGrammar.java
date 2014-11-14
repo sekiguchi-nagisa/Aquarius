@@ -22,7 +22,7 @@ public class JSONGrammar extends Grammar {
 	public JSONGrammar() {
 		//separator definition
 		Rule<List<Void>> ws = rule("ws", 
-			zeroMore(ch(' ', '\t', '\r', '\n'))
+			ch(' ', '\t', '\r', '\n').zeroMore()
 		);
 
 		Rule<Void> objectOpen = ruleVoid("objectOpen",
@@ -118,32 +118,32 @@ public class JSONGrammar extends Grammar {
 
 		def(string,
 			$(str("\""), 
-			zeroMore(choice(
+			choice(
 				escape, 
 				seqN(not(ch('"', '\\')), ANY)
-			)), 
+			).zeroMore(), 
 			str("\"")).action((ctx, a) -> new JSONString(ctx.createTokenText(a)))
 		);
 	
 		Rule<Void> integer = ruleVoid("integer",
 			choice(
 				str("0"),
-				seqN(r('1', '9'), zeroMore(r('0', '9')))
+				seqN(r('1', '9'), r('0', '9').zeroMore())
 			)
 		);
 
 		Rule<Tuple3<Void, Optional<Void>, Void>> exp = rule("expr",
-			seq(ch('E', 'e'), opt(ch('+', '-')), integer)
+			seq(ch('E', 'e'), ch('+', '-').opt(), integer)
 		);
 
 		def(number, 
 			choice(
-				$(opt(str("-")), integer, str("."), oneMore(r('0', '9')), opt(exp))
+				$(str("-").opt(), integer, str("."), r('0', '9').oneMore(), exp.opt())
 					.action((ctx, a) -> 
 						new JSONNumber(Double.parseDouble(ctx.createTokenText(a))
 					)
 				),
-				$(opt(str("-")), integer)
+				$(str("-").opt(), integer)
 					.action((ctx, a) -> 
 						new JSONNumber(Long.parseLong(ctx.createTokenText(a))
 					)

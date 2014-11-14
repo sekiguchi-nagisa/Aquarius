@@ -11,7 +11,7 @@ import org.junit.Test;
 public class ZeroMoreTest extends TestBase<List<Void>>{
 	@Before
 	public void prepare() {
-		this.expr = zeroMore(ch().r('a', 'c'));
+		this.expr = ch().r('a', 'c').zeroMore();
 		this.initContext("8");
 	}
 

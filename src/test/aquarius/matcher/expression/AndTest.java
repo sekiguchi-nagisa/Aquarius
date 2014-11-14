@@ -11,7 +11,7 @@ import static aquarius.matcher.Expressions.*;
 public class AndTest extends TestBase<Tuple2<Void, Void>> {
 	@Before
 	public void prepare() {
-		this.expr = seq(str("public"), and(oneMore(ch(' ', '\t'))));
+		this.expr = seq(str("public"), and(ch(' ', '\t').oneMore()));
 		this.initContext("public   \t   \t    \t\t");
 	}
 	@Test

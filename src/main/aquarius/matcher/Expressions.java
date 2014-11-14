@@ -48,10 +48,6 @@ public final class Expressions {
 	}
 
 	// ZeroMore
-	public final static <R> ZeroMore<R> zeroMore(ParsingExpression<R> expr) {
-		return new ZeroMore<>(expr);
-	}
-
 	public final static <A, B> ZeroMore<Tuple2<A, B>> zeroMore(ParsingExpression<A> a, ParsingExpression<B> b) {
 		return new ZeroMore<>(new Sequence2<>(a, b));
 	}
@@ -72,10 +68,6 @@ public final class Expressions {
 	}
 
 	// OneMore
-	public final static <R> OneMore<R> oneMore(ParsingExpression<R> expr) {
-		return new OneMore<>(expr);
-	}
-
 	public final static <A, B> OneMore<Tuple2<A, B>> oneMore(ParsingExpression<A> a, ParsingExpression<B> b) {
 		return new OneMore<>(new Sequence2<>(a, b));
 	}
@@ -96,10 +88,6 @@ public final class Expressions {
 	}
 
 	// Optional
-	public final static <R> Optional<R> opt(ParsingExpression<R> expr) {
-		return new Optional<>(expr);
-	}
-
 	public final static <A, B> Optional<Tuple2<A, B>> opt(ParsingExpression<A> a, ParsingExpression<B> b) {
 		return new Optional<>(new Sequence2<>(a, b));
 	}

@@ -11,7 +11,7 @@ import static aquarius.matcher.Expressions.*;
 public class NotTest extends TestBase<Tuple2<Void, Void>> {
 	@Before
 	public void prepare() {
-		this.expr = seq(str("public"), not(oneMore(ch().r('a', 'z').r('A', 'Z').r('0', '9'))));
+		this.expr = seq(str("public"), not(ch().r('a', 'z').r('A', 'Z').r('0', '9').oneMore()));
 		this.initContext("public   \t   \t    \t\t");
 	}
 	@Test
