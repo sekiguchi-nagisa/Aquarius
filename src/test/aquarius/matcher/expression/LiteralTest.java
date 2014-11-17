@@ -17,24 +17,20 @@ public class LiteralTest extends TestBase<Void> {
 	public void test() {
 		// test1
 		boolean result = this.expr.parse(this.context);
-		assertTrue(result);
+		this.success(result, 11);
 		assertNull(context.popValue());
-		assertEquals(11, this.input.getPosition());
 
 		// test2
 		this.expr = str("aこ12");
 		this.initContext("aこ12hur");
 		result = this.expr.parse(this.context);
-		assertTrue(result);
+		this.success(result, 6);
 		assertNull(context.popValue());
-		assertEquals(6, this.input.getPosition());
 
 		// failure test
 		this.initContext("hellod world");
 		this.expr = str("hello world");
 		result = this.expr.parse(this.context);
-		assertTrue(!result);
-		assertEquals(0, context.popFailure().getFailurePos());
-		assertEquals(0, this.input.getPosition());
+		this.failure(result, 0, 0);
 	}
 }

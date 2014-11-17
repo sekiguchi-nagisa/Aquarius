@@ -108,11 +108,33 @@ public class ParserContext {
 		return token.getText(this.input);
 	}
 
+	/**
+	 * start parsing
+	 * @param startRule
+	 * @return
+	 * parsed result
+	 */
 	public <R> boolean parse(Rule<R> startRule) {
 		if(!startRule.equals(this.grammar.getRule(startRule.getRuleName()))) {
 			throw new IllegalArgumentException("grammar not include this rule: " + startRule);
 		}
 		return startRule.parse(this);
+	}
+
+	/**
+	 * start parsing and get parsed result
+	 * @param startRuleName
+	 * @param clazz
+	 * @return
+	 * may be null
+	 */
+	public <R> R parse(String startRuleName, Class<R> clazz) {
+		Rule<R> rule = this.grammar.getRule(startRuleName);
+		if(rule == null) {
+			throw new IllegalArgumentException("undefined rule name: " + startRuleName);
+		}
+		rule.parse(this);
+		return this.popValue(clazz);
 	}
 
 	/**

@@ -19,36 +19,30 @@ public class AnyTest extends TestBase<Void> {
 	public void test() {
 		// test1
 		boolean result = this.expr.parse(this.context);
-		assertTrue(result);
+		this.success(result, 1);
 		assertNull(context.popValue());
-		assertEquals(1, this.input.getPosition());
 
 		// test2
 		this.initContext("ω");
 		result = this.expr.parse(this.context);
-		assertTrue(result);
+		this.success(result, 2);
 		assertNull(context.popValue());
-		assertEquals(2, this.input.getPosition());
 
 		// test3
 		this.initContext("あ");
 		result = this.expr.parse(this.context);
-		assertTrue(result);
+		this.success(result, 3);
 		assertNull(context.popValue());
-		assertEquals(3, this.input.getPosition());
 
 		// test4
 		this.initContext(new String(Character.toChars(0x21c56)));
 		result = this.expr.parse(this.context);
-		assertTrue(result);
+		this.success(result, 4);
 		assertNull(context.popValue());
-		assertEquals(4, this.input.getPosition());
 
 		// failure test
 		this.initContext("");
 		result = this.expr.parse(this.context);
-		assertTrue(!result);
-		assertEquals(0, this.input.getPosition());
-		assertEquals(0, context.popFailure().getFailurePos());
+		this.failure(result, 0, 0);
 	}
 }

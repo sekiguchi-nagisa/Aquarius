@@ -19,9 +19,8 @@ public class Sequence2Test extends TestBase<Tuple2<Void, Void>> {
 	public void test() {
 		// test1
 		boolean result = this.expr.parse(this.context);
-		assertTrue(result);
+		this.success(result, 7);
 		assertNull(context.popValue());
-		assertEquals(7, this.input.getPosition());
 
 		// failure test1
 		this.initContext("1234aa");
@@ -33,9 +32,7 @@ public class Sequence2Test extends TestBase<Tuple2<Void, Void>> {
 		// failure test2
 		this.initContext("12abc");
 		result = this.expr.parse(this.context);
-		assertTrue(!result);
-		assertEquals(0, context.popFailure().getFailurePos());
-		assertEquals(0, this.input.getPosition());
+		this.failure(result, 0, 0);
 	}
 
 }

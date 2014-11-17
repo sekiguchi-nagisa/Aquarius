@@ -28,7 +28,7 @@ public abstract class Failure {
 				sBuilder.append(e.getMessage());
 				return sBuilder.toString();
 			}
-			
+
 			@Override
 			public int getFailurePos() {
 				return pos;
@@ -38,7 +38,6 @@ public abstract class Failure {
 
 	public static Failure failInExpr(int pos, ParsingExpression<?> expr) {
 		return new Failure() {
-			
 			@Override
 			public String getMessage(AquariusInputStream input) {
 				StringBuilder sBuilder = new StringBuilder();
@@ -83,7 +82,8 @@ public abstract class Failure {
 						sBuilder.append("failed And Prediction")
 					)
 					.when(NotPredict.class, a -> 
-						sBuilder.append("failed Not Prediction"))
+						sBuilder.append("failed Not Prediction")
+					)
 					.when(PredictAction.class, a ->
 						sBuilder.append("failed And Prediction")
 					).orElse(a -> {
@@ -95,7 +95,7 @@ public abstract class Failure {
 					});
 				return sBuilder.toString();
 			}
-			
+
 			@Override
 			public int getFailurePos() {
 				return pos;

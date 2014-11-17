@@ -17,15 +17,12 @@ public class AndTest extends TestBase<Tuple2<Void, Void>> {
 	@Test
 	public void test() {
 		boolean result = this.expr.parse(this.context);
-		assertEquals(6, this.context.getInputStream().getPosition());
-		assertTrue(result);
+		this.success(result, 6);
 		assertNull(context.popValue());
 
 		// failure test
 		this.initContext("public3  ");
 		result = this.expr.parse(this.context);
-		assertTrue(!result);
-		assertEquals(0, this.input.getPosition());
-		assertEquals(6, context.popFailure().getFailurePos());
+		this.failure(result, 0, 6);
 	}
 }

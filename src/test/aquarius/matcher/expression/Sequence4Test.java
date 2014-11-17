@@ -18,16 +18,12 @@ public class Sequence4Test extends TestBase<Tuple4<Void, Void, Void, Void>> {
 	@Test
 	public void test() {
 		boolean result = this.expr.parse(this.context);
-		assertTrue(result);
-		assertEquals(9, this.input.getPosition());
+		this.success(result, 9);
 		assertNull(context.popValue());
 
 		// failure test
 		this.initContext("1234aa");
 		result = this.expr.parse(this.context);
-		assertTrue(!result);
-		assertEquals(4, context.popFailure().getFailurePos());
-		assertEquals(0, this.input.getPosition());
+		this.failure(result, 0, 4);
 	}
-
 }

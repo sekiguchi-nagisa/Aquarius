@@ -19,22 +19,18 @@ public class OneMoreTest extends TestBase<List<Void>> {
 	public void test() {
 		// test1
 		boolean result = this.expr.parse(this.context);
-		assertTrue(result);
+		this.success(result, 10);
 		assertNull(context.popValue());
-		assertEquals(10, this.input.getPosition());
 
 		// test2
 		this.initContext("hellos");
 		result = this.expr.parse(this.context);
-		assertTrue(result);
+		this.success(result, 5);
 		assertNull(context.popValue());
-		assertEquals(5, this.input.getPosition());
 
 		// failure test
 		this.initContext("hells");
 		result = this.expr.parse(this.context);
-		assertTrue(!result);
-		assertEquals(0, context.popFailure().getFailurePos());
-		assertEquals(0, this.input.getPosition());
+		this.failure(result, 0, 0);
 	}
 }

@@ -17,16 +17,13 @@ public class ActionTest extends TestBase<Integer> {
 	@Test
 	public void test() {
 		boolean result = this.expr.parse(this.context);
-		assertTrue(result);
+		this.success(result, 1);
 		assertEquals(12, this.context.popValue(Integer.class).intValue());
-		assertEquals(1, this.input.getPosition());
 
 		// failure test
 		this.expr = ANY.action((ctx, a) -> {throw new FailedActionException("fail");});
 		this.initContext("12+34");
 		result = this.expr.parse(this.context);
-		assertTrue(!result);
-		assertEquals(1, context.popFailure().getFailurePos());
-		assertEquals(1, this.input.getPosition());
+		this.failure(result, 1, 1);
 	}
 }

@@ -17,16 +17,13 @@ public class NoArgActionTest extends TestBase<Void> {
 	@Test
 	public void test() {
 		boolean result = this.expr.parse(this.context);
-		assertTrue(result);
+		this.success(result, 1);
 		assertNull(context.popValue());
-		assertEquals(1, this.input.getPosition());
 
 		// failure test
 		this.expr = actionNoRet(ctx -> {throw new FailedActionException("fail");});
 		this.initContext("12+34");
 		result = this.expr.parse(this.context);
-		assertTrue(!result);
-		assertEquals(0, context.popFailure().getFailurePos());
-		assertEquals(0, this.input.getPosition());
+		this.failure(result, 0, 0);
 	}
 }

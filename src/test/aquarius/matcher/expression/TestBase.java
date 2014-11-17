@@ -1,5 +1,7 @@
 package aquarius.matcher.expression;
 
+import static org.junit.Assert.*;
+
 import aquarius.matcher.Grammar;
 import aquarius.matcher.ParserContext;
 import aquarius.matcher.expression.ParsingExpression;
@@ -44,5 +46,16 @@ public abstract class TestBase<R> {
 
 	protected void initContext(String source) {
 		this.initContext(source, null);
+	}
+
+	protected void success(boolean status, int position) {
+		assertTrue(status);
+		assertEquals(position, this.input.getPosition());
+	}
+
+	protected void failure(boolean status, int position, int failruePos) {
+		assertTrue(!status);
+		assertEquals(position, this.input.getPosition());
+		assertEquals(failruePos, this.context.popFailure().getFailurePos());
 	}
 }

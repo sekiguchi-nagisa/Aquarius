@@ -39,12 +39,20 @@ public final class Expressions {
 		return new Literal(target);
 	}
 
+	public final static CharSet ch(char... chars) {
+		return new CharSet(chars);
+	}
+
 	public final static CharSet ch(int ...chars) {
 		return new CharSet(chars);
 	}
 
+	public final static CharSet r(char start, char stop) {
+		return new CharSet(new int[]{}).r(start, stop);
+	}
+
 	public final static CharSet r(int start, int stop) {
-		return new CharSet().r(start, stop);
+		return new CharSet(new int[]{}).r(start, stop);
 	}
 
 	// ZeroMore

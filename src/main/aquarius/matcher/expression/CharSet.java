@@ -6,6 +6,7 @@ import java.util.List;
 import aquarius.matcher.ExpressionVisitor;
 import aquarius.matcher.ParserContext;
 import aquarius.misc.IntRange;
+import aquarius.misc.Utf8Util;
 import aquarius.runtime.AquariusInputStream;
 
 /**
@@ -18,13 +19,38 @@ public class CharSet extends ParsingExpression<Void> {
 	private final int[] chars;
 	private List<IntRange> rangeList;
 
+	private static int[] toUtf8Chars(char[] chars) {
+		int[] encoddedChars = new int[chars.length];
+		for(int i = 0; i < chars.length; i++) {
+			encoddedChars[i] = Utf8Util.toUtf8Code(chars[i]);
+		}
+		return encoddedChars;
+	}
+
+	public CharSet(char... chars) {
+		this(toUtf8Chars(chars));
+	}
+
 	/**
 	 * 
 	 * @param chars
 	 * must be utf8 character
 	 */
-	public CharSet(int ...chars) {
+	public CharSet(int... chars) {
 		this.chars = chars;
+	}
+
+	/**
+	 * 
+	 * @param start
+	 * java utf16 character
+	 * @param stop
+	 * java utf16 character
+	 * @return
+	 * this
+	 */
+	public CharSet r(char start, char stop) {
+		return this.r(Utf8Util.toUtf8Code(start), Utf8Util.toUtf8Code(stop));
 	}
 
 	/**

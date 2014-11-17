@@ -16,16 +16,12 @@ public class SequenceTest extends TestBase<Void> {
 	@Test
 	public void test() {
 		boolean result = this.expr.parse(this.context);
-		assertTrue(result);
-		assertEquals(10, this.input.getPosition());
+		this.success(result, 10);
 		assertNull(context.popValue());
 
 		// failure test
 		this.initContext("1234aa");
 		result = this.expr.parse(this.context);
-		assertTrue(!result);
-		assertEquals(4, context.popFailure().getFailurePos());
-		assertEquals(0, this.input.getPosition());
+		this.failure(result, 0, 4);
 	}
-
 }

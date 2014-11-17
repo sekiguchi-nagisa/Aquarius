@@ -17,29 +17,24 @@ public class ChoiceTest extends TestBase<Void> {
 	public void test() {
 		// test1
 		boolean result = this.expr.parse(this.context);
-		assertTrue(result);
+		this.success(result, 5);
 		assertNull(context.popValue());
-		assertEquals(5, this.input.getPosition());
 
 		// test2
 		this.initContext("good");
 		result = this.expr.parse(this.context);
-		assertTrue(result);
+		this.success(result, 4);
 		assertNull(context.popValue());
-		assertEquals(4, this.input.getPosition());
 
 		// test3
 		this.initContext("world");
 		result = this.expr.parse(this.context);
-		assertTrue(result);
+		this.success(result, 5);
 		assertNull(context.popValue());
-		assertEquals(5, this.input.getPosition());
 
 		// failure test
 		this.initContext("w");
 		boolean result2 = this.expr.parse(this.context);
-		assertTrue(!result2);
-		assertEquals(0, context.popFailure().getFailurePos());
-		assertEquals(0, this.input.getPosition());
+		this.failure(result2, 0, 0);
 	}
 }

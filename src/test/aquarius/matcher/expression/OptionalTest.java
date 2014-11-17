@@ -20,15 +20,12 @@ public class OptionalTest extends TestBase<Optional<Void>> {
 	public void test() {
 		// test 1
 		boolean result = this.expr.parse(this.context);
-		assertTrue(result);
+		this.success(result, 0);
 		assertNull(context.popValue());
-		assertEquals(0, this.input.getPosition());
 
 		// test 2
 		this.initContext("hello");
 		result = this.expr.parse(this.context);
-		assertTrue(result);
-		assertEquals(5, this.input.getPosition());
+		this.success(result, 5);
 	}
-
 }
