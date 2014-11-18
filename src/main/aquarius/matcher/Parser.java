@@ -4,7 +4,7 @@ import aquarius.matcher.expression.ParsingExpression;
 
 public interface Parser {
 	public default <R> NoneTerminal<R> rule(Pattern<R> expr) {
-		return null;
+		throw new RuntimeException("unimplemented method: rule");
 	}
 
 	@FunctionalInterface

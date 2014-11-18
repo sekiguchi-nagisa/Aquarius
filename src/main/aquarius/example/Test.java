@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import aquarius.matcher.Grammar;
-import aquarius.matcher.NoneTerminal;
-import aquarius.matcher.Parser;
 import aquarius.matcher.ParserContext;
 import aquarius.misc.Utils;
 import aquarius.runtime.CommonStream;
@@ -104,64 +102,6 @@ class SampleGrammar extends Grammar {
 		);
 
 		def(Num,
-			choice(
-				$(str("0")),
-				$(ch('-', '+').opt(), r('1', '9'), r('0', '9').zeroMore())
-			)
-		);
-	}
-}
-
-interface Sample2 extends Parser {
-	public default NoneTerminal<Void> EOF() {
-		return rule(() ->
-			not(ANY)
-		);
-	}
-
-	public default NoneTerminal<List<Void>> __() {
-		return rule(() -> 
-			ch(' ', '\t', '\n', '\r').zeroMore()
-		);
-	}
-
-	public default NoneTerminal<Token> Expr() {
-		return rule(() -> 
-			seq(__(), Add(), __()).action((ctx, a) -> a.get1())
-		);
-	}
-
-	public default NoneTerminal<Token> Add() {
-		return rule(() ->
-			choice(
-				$(Mul(), __(), str("+"), __(), Add()),
-				$(Mul(), __(), str("-"), __(), Add()),
-				Mul()
-			)
-		);
-	}
-
-	public default NoneTerminal<Token> Mul() {
-		return rule(() -> 
-			choice(
-				$(Primary(), __(), str("*"), __(), Mul()),
-				$(Primary(), __(), str("/"), __(), Mul()),
-				Primary()
-			)
-		);
-	}
-
-	public default NoneTerminal<Token> Primary() {
-		return rule(() ->
-			choice(
-				$(str("("), __(), Add(), __(), str(")")),
-				Num()
-			)
-		);
-	}
-
-	public default NoneTerminal<Token> Num() {
-		return rule(() -> 
 			choice(
 				$(str("0")),
 				$(ch('-', '+').opt(), r('1', '9'), r('0', '9').zeroMore())
