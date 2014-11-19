@@ -1,5 +1,6 @@
 package aquarius;
 
+import aquarius.CacheFactory.CacheKind;
 import aquarius.Parser.PatternWrapper;
 import aquarius.expression.ParsingExpression;
 
@@ -8,6 +9,11 @@ public class Rule<R> extends ParsingExpression<R> {
 	 * for memoization
 	 */
 	private final int ruleIndex;
+
+	/**
+	 * for initialization of memo
+	 */
+	private int ruleSize;
 
 	private final boolean returnable;
 	/**
@@ -25,14 +31,12 @@ public class Rule<R> extends ParsingExpression<R> {
 
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
-		// TODO Auto-generated method stub
-		return null;
+		return visitor.visitRule(this);
 	}
 
 	@Override
 	public boolean parse(ParserContext context) {
-		// TODO Auto-generated method stub
-		return false;
+		return context.dispatchRule(this);
 	}
 
 	@Override
@@ -40,7 +44,8 @@ public class Rule<R> extends ParsingExpression<R> {
 		return this.returnable;
 	}
 
-	void initExpr() {
+	void init(int ruleSize) {
+		this.ruleSize = ruleSize;
 		this.pattern = this.wrapper.invoke();
 		this.wrapper = null;
 	}
@@ -51,5 +56,20 @@ public class Rule<R> extends ParsingExpression<R> {
 
 	public ParsingExpression<R> getPattern() {
 		return this.pattern;
+	}
+
+	// parser entry point
+	public ParsedResult<R> parse(AquariusInputStream input) {
+		return this.parse(input, new CacheFactory(CacheKind.Limit));
+	}
+
+	public ParsedResult<R> parse(AquariusInputStream input, CacheFactory factory) {
+		ParserContext context = new ParserContext(input, factory.newCache(this.ruleSize, 0));
+
+		// start parsing
+		this.parse(context);
+
+		// create result
+		return new ParsedResult<>(context.popValue());
 	}
 }

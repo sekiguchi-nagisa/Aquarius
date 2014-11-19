@@ -1,44 +1,26 @@
 package aquarius;
 
 import aquarius.CacheFactory.CacheKind;
-import aquarius.Grammar.Rule;
 import aquarius.action.FailedActionException;
 import aquarius.expression.ParsingExpression;
 
 public class ParserContext {
-	private final AquariusInputStream input;
-	private final ResultCache cache;
-	private final Grammar grammar;
+	private AquariusInputStream input;
+	private ResultCache cache;
 
 	/**
 	 * result value of action or capture, or failure. may be null
 	 */
 	private Object value;
 
-	/**
-	 * 
-	 * @param input
-	 * not null
-	 * @param factory
-	 * not null
-	 * @param ruleSize
-	 * size of target rules.
-	 */
-	public ParserContext(Grammar grammar, AquariusInputStream input, CacheFactory factory) {
+	public ParserContext(AquariusInputStream input) {
 		this.input = input;
-		this.cache = factory.newCache(grammar.getIndexSize(), this.input.getInputSize());
-		this.grammar = grammar;
+		this.cache = new CacheFactory(CacheKind.Empty).newCache(0, 0);
 	}
 
-	/**
-	 * equivalent to ParserContext(input, new MapBasedMemoTableFactory(), ruleSize)
-	 * @param input
-	 * not null
-	 * @param ruleSize
-	 * size of target rules
-	 */
-	public ParserContext(Grammar grammar, AquariusInputStream input) {
-		this(grammar, input, new CacheFactory(CacheKind.Limit));
+	ParserContext(AquariusInputStream input, ResultCache cache) {
+		this.input = input;
+		this.cache = cache;
 	}
 
 	public AquariusInputStream getInputStream() {
@@ -104,42 +86,13 @@ public class ParserContext {
 	}
 
 	/**
-	 * start parsing
-	 * @param startRule
-	 * @return
-	 * parsed result
-	 */
-	public <R> boolean parse(Rule<R> startRule) {
-		if(!startRule.equals(this.grammar.getRule(startRule.getRuleName()))) {
-			throw new IllegalArgumentException("grammar not include this rule: " + startRule);
-		}
-		return startRule.parse(this);
-	}
-
-	/**
-	 * start parsing and get parsed result
-	 * @param startRuleName
-	 * @param clazz
-	 * @return
-	 * may be null
-	 */
-	public <R> R parse(String startRuleName, Class<R> clazz) {
-		Rule<R> rule = this.grammar.getRule(startRuleName);
-		if(rule == null) {
-			throw new IllegalArgumentException("undefined rule name: " + startRuleName);
-		}
-		rule.parse(this);
-		return this.popValue(clazz);
-	}
-
-	/**
 	 * 
 	 * @param <R>
 	 * @param rule
 	 * @return
 	 * parsed result of dispatched rule. if match is failed, return Failure
 	 */
-	public <R> boolean dispatchRule(Rule<R> rule) {
+	<R> boolean dispatchRule(Rule<R> rule) {
 		final int ruleIndex = rule.getRuleIndex();
 		final int srcPos = this.input.getPosition();
 

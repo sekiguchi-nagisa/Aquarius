@@ -1,11 +1,8 @@
 package aquarius.expression;
 
 import static org.junit.Assert.*;
-import aquarius.CacheFactory;
 import aquarius.CommonStream;
-import aquarius.Grammar;
 import aquarius.ParserContext;
-import aquarius.CacheFactory.CacheKind;
 import aquarius.expression.ParsingExpression;
 
 /**
@@ -22,29 +19,9 @@ public abstract class TestBase<R> {
 
 	protected ParserContext context;
 
-
-	/**
-	 * init input and evaluator
-	 * @param source
-	 * @param rules
-	 */
-
-	/**
-	 * nit input and evaluator
-	 * @param source
-	 * not null
-	 * @param factory
-	 * if null, use NullMemoFactory.
-	 * @param size
-	 */
-	protected void initContext(String source, CacheFactory factory) {
-		factory = factory == null ? new CacheFactory(CacheKind.Empty) : factory;
-		this.input = new CommonStream("test", source);
-		this.context = new ParserContext(new Grammar() {}, this.input, factory);
-	}
-
 	protected void initContext(String source) {
-		this.initContext(source, null);
+		this.input = new CommonStream("test", source);
+		this.context = new ParserContext(this.input);
 	}
 
 	protected void success(boolean status, int position) {

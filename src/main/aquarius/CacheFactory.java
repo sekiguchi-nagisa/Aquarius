@@ -18,7 +18,7 @@ public class CacheFactory {
 		case Empty:
 			return new EmptyCache();
 		case Limit:
-			return new LimitedSizeCache(ruleSize, srcSize);
+			return new LimitedSizeCache(ruleSize);
 		}
 		return null;
 	}
@@ -37,7 +37,7 @@ public class CacheFactory {
 	protected static class LimitedSizeCache extends ResultCache {
 		private EntryRow[] entryTable;
 
-		public LimitedSizeCache(int ruleSize, int srcSize) {
+		public LimitedSizeCache(int ruleSize) {
 			this.entryTable = new EntryRow[ruleSize];
 		}
 

@@ -85,7 +85,7 @@ public class ParserFactory {
 
 	private static class ParserProxy implements InvocationHandler {
 		private boolean allowDefaultMethodInvocation = true;
-		private int ruleIndex = 0;
+		private int ruleIndexCount = 0;
 		private final Map<String, Rule<?>> ruleMap;
 
 		public ParserProxy() {
@@ -105,7 +105,7 @@ public class ParserFactory {
 			if(this.allowDefaultMethodInvocation && (methodName.equals("rule") || methodName.equals("ruleVoid"))) {
 				PatternWrapper<?> pattern = (PatternWrapper<?>)args[0];
 				boolean returnable = methodName.equals("rule");
-				Rule<?> expr = new Rule<>(this.ruleIndex++, pattern, returnable);
+				Rule<?> expr = new Rule<>(this.ruleIndexCount++, pattern, returnable);
 				return expr;
 			}
 			return null;
@@ -139,7 +139,7 @@ public class ParserFactory {
 		public void initializeRules() {
 			this.allowDefaultMethodInvocation = false;
 			for(Entry<String, Rule<?>> entry : this.ruleMap.entrySet()) {
-				entry.getValue().initExpr();
+				entry.getValue().init(this.ruleIndexCount);
 			}
 		}
 	}
