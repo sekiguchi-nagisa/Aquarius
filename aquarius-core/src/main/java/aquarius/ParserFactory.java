@@ -55,11 +55,10 @@ public class ParserFactory {
 	private static void invokeRuleMethods(Object instance, Method[] methods) {
 		for(Method method : methods) {
 			if(matchAnnotation(method.getAnnotations(), RuleDefinition.class) 
-					&& method.getReturnType().equals(Rule.class) 
-					&& matchParameter(new Class[]{}, method.getParameterTypes())) {
+					&& matchMethod(method, Rule.class, null)) {
 				try {
 					method.invoke(instance);
-				} catch (IllegalAccessException | IllegalArgumentException
+				} catch(IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
 					throw new RuntimeException(e);
 				}
@@ -67,24 +66,40 @@ public class ParserFactory {
 		}
 	}
 
-	private static boolean matchParameter(Class<?>[] paramClasses, Class<?>[] targetParamClasses) {
-		if(paramClasses == null || targetParamClasses == null) {
+	/**
+	 * match instance method name, return class, parameter
+	 * @param targetMethod
+	 * @param returnClass
+	 * @param methodName
+	 * if null, accept any method name
+	 * @param paramClasses
+	 * @return
+	 */
+	private static boolean matchMethod(Method targetMethod, Class<?> returnClass, String methodName, Class<?>... paramClasses) {
+		// compare method name
+		if(methodName != null && !methodName.equals(targetMethod.getName())) {
 			return false;
 		}
-		final int size = paramClasses.length;
+
+		// compare parameter classes
+		Class<?>[] targetParamClasses = targetMethod.getParameterTypes();
+		int size = paramClasses.length;
 		if(targetParamClasses.length != size) {
 			return false;
 		}
+
 		for(int i = 0; i < size; i++) {
 			if(!paramClasses[i].equals(targetParamClasses[i])) {
 				return false;
 			}
 		}
-		return true;
+
+		// compare return class
+		return returnClass.equals(targetMethod.getReturnType());
 	}
 
 	private static class ParserProxy implements InvocationHandler {
-		private boolean allowDefaultMethodInvocation = true;
+		private boolean invokeRule = true;
 		private int ruleIndexCount = 0;
 		private final Map<String, Rule<?>> ruleMap;
 
@@ -96,24 +111,53 @@ public class ParserFactory {
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			Annotation[] annos = method.getAnnotations();
 			String methodName = method.getName();
-			if(matchAnnotation(annos, RuleDefinition.class)) {
-				return this.allowDefaultMethodInvocation ? 
+
+			// call user defined Rule method
+			if(matchAnnotation(annos, RuleDefinition.class) && matchMethod(method, Rule.class, null)) {
+				return this.invokeRule ? 
 						this.createRule(proxy, method, args) : this.getCachedRule(methodName);
 			}
 
 			// invoke Parser#rule(Pattern pattern)
-			if(this.allowDefaultMethodInvocation && (methodName.equals("rule") || methodName.equals("ruleVoid"))) {
-				PatternWrapper<?> pattern = (PatternWrapper<?>)args[0];
-				boolean returnable = methodName.equals("rule");
-				Rule<?> expr = new Rule<>(this.ruleIndexCount++, pattern, returnable);
-				return expr;
+			if(this.invokeRule && method.isDefault()) {
+				if(matchMethod(method, Rule.class, "rule", PatternWrapper.class) 
+						|| matchMethod(method, Rule.class, "ruleVoid", PatternWrapper.class)) {
+					PatternWrapper<?> pattern = (PatternWrapper<?>)args[0];
+					boolean returnable = methodName.equals("rule");
+					Rule<?> expr = new Rule<>(this.ruleIndexCount++, pattern, returnable);
+					return expr;
+				}
 			}
+
+			// hashCode, equals, toString
+			if(matchMethod(method, int.class, "hashCode")) {
+				return proxy.hashCode();
+			} else if(matchMethod(method, boolean.class, "equals", Object.class)) {
+				return proxy.equals(args[0]);
+			} else if(matchMethod(method, String.class, "toString")) {
+				return proxy.toString();
+			}
+
+			// call default method
+			if(method.isDefault()) {
+				return this.invokeDefaultMethod(proxy, method, args);
+			}
+
+			// otherwise
 			return null;
 		}
 
-		private final Rule<?> createRule(Object proxy, Method method, Object[] args) throws Throwable {
+
+		@SuppressWarnings("unchecked")
+		private final <T> T invokeDefaultMethod(Object proxy, Method method, 
+				Object[] args, Class<T> returnClass) throws Throwable {
+			return (T) this.invokeDefaultMethod(proxy, method, args);
+		}
+
+		private final Object invokeDefaultMethod(Object proxy, Method method, 
+				Object[] args) throws Throwable {
 			if(!method.isDefault()) {
-				throw new RuntimeException("must be default method: " + method.getName());
+				throw new IllegalArgumentException("must be default method: " + method.getName());
 			}
 			Class<?> declaringClass = method.getDeclaringClass();
 			final Constructor<MethodHandles.Lookup> constructor = 
@@ -121,9 +165,15 @@ public class ParserFactory {
 			if(!constructor.isAccessible()) {
 				constructor.setAccessible(true);
 			}
-			Rule<?> value = (Rule<?>) constructor.newInstance(declaringClass, MethodHandles.Lookup.PRIVATE)
+
+			// invoke
+			return constructor.newInstance(declaringClass, MethodHandles.Lookup.PRIVATE)
 					.unreflectSpecial(method, declaringClass)
 					.bindTo(proxy).invokeWithArguments(args);
+		}
+	
+		private final Rule<?> createRule(Object proxy, Method method, Object[] args) throws Throwable {
+			Rule<?> value = this.invokeDefaultMethod(proxy, method, args, Rule.class);
 			this.ruleMap.put(method.getName(), value);
 			return value;
 		}
@@ -137,7 +187,7 @@ public class ParserFactory {
 		}
 
 		public void initializeRules() {
-			this.allowDefaultMethodInvocation = false;
+			this.invokeRule = false;
 			for(Entry<String, Rule<?>> entry : this.ruleMap.entrySet()) {
 				entry.getValue().init(this.ruleIndexCount);
 			}

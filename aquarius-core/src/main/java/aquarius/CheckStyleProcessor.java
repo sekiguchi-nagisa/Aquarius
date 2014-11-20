@@ -16,9 +16,10 @@ import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 
 import aquarius.annotation.Grammar;
+import aquarius.annotation.RuleDefinition;
 
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-@SupportedAnnotationTypes("aquarius.annotation.Grammar")
+@SupportedAnnotationTypes({"aquarius.annotation.Grammar", "aquarius.annotation.RuleDefinition"})
 public class CheckStyleProcessor extends AbstractProcessor {
 	private final static boolean debugMode = false;
 	@Override
@@ -68,9 +69,11 @@ public class CheckStyleProcessor extends AbstractProcessor {
 		}
 
 		// check method parameter and return type
-		if(element.getParameters().size() != 0 
-				|| !this.matchClass(this.processingEnv.getTypeUtils().erasure(element.getReturnType()), Rule.class)) {
-			this.reportErrorAndExit("must be return type: Rule, and has no parameters", element);
+		if(element.getAnnotation(RuleDefinition.class) != null) {
+			if(element.getParameters().size() != 0 
+					|| !this.matchClass(this.processingEnv.getTypeUtils().erasure(element.getReturnType()), Rule.class)) {
+				this.reportErrorAndExit("must be return type: Rule, and has no parameters", element);
+			}
 		}
 	}
 
