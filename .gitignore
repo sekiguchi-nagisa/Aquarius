@@ -1,4 +1,5 @@
-/bin/
-/target/
-/aquarius.jar
-/build/
+bin/
+target/
+build/
+.settings/
+/earthquake.geojson

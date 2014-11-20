@@ -1,0 +1,2124 @@
+{
+  "@NodeType" : "RootNode",
+  "@HashCode" : "785447854",
+  "nodeList@java.util.List" : [
+    {
+      "@NodeType" : "VarDeclNode",
+      "@HashCode" : "346224929",
+      "isReadOnly@boolean" : true,
+      "isGlobal@boolean" : true,
+      "varName@java.lang.String" : "LOG",
+      "initValueNode@dshell.internal.parser.Node.ExprNode" : {
+        "@NodeType" : "StringExprNode",
+        "@HashCode" : "720167805",
+        "elementList@java.util.List" : [
+          {
+            "@NodeType" : "StringValueNode",
+            "@HashCode" : "398690014",
+            "value@java.lang.String" : ".\/test-result.log",
+            "type@dshell.internal.type.DSType" : "String",
+            "token@org.antlr.v4.runtime.Token" : ".\/test-result.log",
+            "parentNode@dshell.internal.parser.Node" : "ref->720167805"
+          }
+        ],
+        "type@dshell.internal.type.DSType" : "String",
+        "token@org.antlr.v4.runtime.Token" : "\"",
+        "parentNode@dshell.internal.parser.Node" : "ref->346224929"
+      },
+      "token@org.antlr.v4.runtime.Token" : "let",
+      "parentNode@dshell.internal.parser.Node" : "ref->785447854"
+    },
+    {
+      "@NodeType" : "VarDeclNode",
+      "@HashCode" : "380242442",
+      "isReadOnly@boolean" : true,
+      "isGlobal@boolean" : true,
+      "varName@java.lang.String" : "jar",
+      "initValueNode@dshell.internal.parser.Node.ExprNode" : {
+        "@NodeType" : "StringExprNode",
+        "@HashCode" : "125881207",
+        "elementList@java.util.List" : [
+          {
+            "@NodeType" : "StringValueNode",
+            "@HashCode" : "1763344271",
+            "value@java.lang.String" : ".\/dshell.jar",
+            "type@dshell.internal.type.DSType" : "String",
+            "token@org.antlr.v4.runtime.Token" : ".\/dshell.jar",
+            "parentNode@dshell.internal.parser.Node" : "ref->125881207"
+          }
+        ],
+        "type@dshell.internal.type.DSType" : "String",
+        "token@org.antlr.v4.runtime.Token" : "\"",
+        "parentNode@dshell.internal.parser.Node" : "ref->380242442"
+      },
+      "token@org.antlr.v4.runtime.Token" : "let",
+      "parentNode@dshell.internal.parser.Node" : "ref->785447854"
+    },
+    {
+      "@NodeType" : "VarDeclNode",
+      "@HashCode" : "1353170030",
+      "isReadOnly@boolean" : true,
+      "isGlobal@boolean" : true,
+      "varName@java.lang.String" : "JVM_OPTION",
+      "initValueNode@dshell.internal.parser.Node.ExprNode" : {
+        "@NodeType" : "StringExprNode",
+        "@HashCode" : "370869802",
+        "elementList@java.util.List" : [
+          {
+            "@NodeType" : "StringValueNode",
+            "@HashCode" : "398572781",
+            "value@java.lang.String" : "-Xbootclasspath\/a:",
+            "type@dshell.internal.type.DSType" : "String",
+            "token@org.antlr.v4.runtime.Token" : "-Xbootclasspath\/a:",
+            "parentNode@dshell.internal.parser.Node" : "ref->370869802"
+          },
+          {
+            "@NodeType" : "OperatorCallNode",
+            "@HashCode" : "1077199500",
+            "funcName@java.lang.String" : "$",
+            "argNodeList@java.util.List" : [
+              {
+                "@NodeType" : "SymbolNode",
+                "@HashCode" : "1405747618",
+                "symbolName@java.lang.String" : "jar",
+                "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                "isReadOnly@boolean" : true,
+                "type@dshell.internal.type.DSType" : "String",
+                "token@org.antlr.v4.runtime.Token" : "$jar",
+                "parentNode@dshell.internal.parser.Node" : "ref->1077199500"
+              }
+            ],
+            "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#toStringOrFlat : Func<String,[$Object$]>",
+            "type@dshell.internal.type.DSType" : "String",
+            "token@org.antlr.v4.runtime.Token" : null,
+            "parentNode@dshell.internal.parser.Node" : "ref->370869802"
+          },
+          {
+            "@NodeType" : "StringValueNode",
+            "@HashCode" : "589835301",
+            "value@java.lang.String" : " -XX:+TieredCompilation -XX:TieredStopAtLevel=1 dshell.main.DShellTest",
+            "type@dshell.internal.type.DSType" : "String",
+            "token@org.antlr.v4.runtime.Token" : " -XX:+TieredCompilation -XX:TieredStopAtLevel=1 dshell.main.DShellTest",
+            "parentNode@dshell.internal.parser.Node" : "ref->370869802"
+          }
+        ],
+        "type@dshell.internal.type.DSType" : "String",
+        "token@org.antlr.v4.runtime.Token" : "\"",
+        "parentNode@dshell.internal.parser.Node" : "ref->1353170030"
+      },
+      "token@org.antlr.v4.runtime.Token" : "let",
+      "parentNode@dshell.internal.parser.Node" : "ref->785447854"
+    },
+    {
+      "@NodeType" : "FunctionNode",
+      "@HashCode" : "112466394",
+      "funcName@java.lang.String" : "test",
+      "paramTypeSymbolList@java.util.List" : [
+        "String",
+        "String",
+        "String",
+        "[@40,249:253='Array',<77>,5:81]<String>"
+      ],
+      "nodeList@java.util.List" : [
+        {
+          "@NodeType" : "SymbolNode",
+          "@HashCode" : "64133603",
+          "symbolName@java.lang.String" : "test_dir",
+          "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+          "isReadOnly@boolean" : false,
+          "type@dshell.internal.type.DSType" : "$unresolved$",
+          "token@org.antlr.v4.runtime.Token" : "$test_dir",
+          "parentNode@dshell.internal.parser.Node" : "ref->112466394"
+        },
+        {
+          "@NodeType" : "SymbolNode",
+          "@HashCode" : "1436901839",
+          "symbolName@java.lang.String" : "test_file",
+          "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+          "isReadOnly@boolean" : false,
+          "type@dshell.internal.type.DSType" : "$unresolved$",
+          "token@org.antlr.v4.runtime.Token" : "$test_file",
+          "parentNode@dshell.internal.parser.Node" : "ref->112466394"
+        },
+        {
+          "@NodeType" : "SymbolNode",
+          "@HashCode" : "999522307",
+          "symbolName@java.lang.String" : "option",
+          "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+          "isReadOnly@boolean" : false,
+          "type@dshell.internal.type.DSType" : "$unresolved$",
+          "token@org.antlr.v4.runtime.Token" : "$option",
+          "parentNode@dshell.internal.parser.Node" : "ref->112466394"
+        },
+        {
+          "@NodeType" : "SymbolNode",
+          "@HashCode" : "1866161430",
+          "symbolName@java.lang.String" : "args",
+          "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+          "isReadOnly@boolean" : false,
+          "type@dshell.internal.type.DSType" : "$unresolved$",
+          "token@org.antlr.v4.runtime.Token" : "$args",
+          "parentNode@dshell.internal.parser.Node" : "ref->112466394"
+        }
+      ],
+      "blockNode@dshell.internal.parser.Node.BlockNode" : {
+        "@NodeType" : "BlockNode",
+        "@HashCode" : "107241811",
+        "nodeList@java.util.List" : [
+          {
+            "@NodeType" : "VarDeclNode",
+            "@HashCode" : "558922244",
+            "isReadOnly@boolean" : false,
+            "isGlobal@boolean" : false,
+            "varName@java.lang.String" : "mode",
+            "initValueNode@dshell.internal.parser.Node.ExprNode" : {
+              "@NodeType" : "StringExprNode",
+              "@HashCode" : "339099861",
+              "elementList@java.util.List" : [
+                {
+                  "@NodeType" : "StringValueNode",
+                  "@HashCode" : "1653986196",
+                  "value@java.lang.String" : "[s]",
+                  "type@dshell.internal.type.DSType" : "String",
+                  "token@org.antlr.v4.runtime.Token" : "[s]",
+                  "parentNode@dshell.internal.parser.Node" : "ref->339099861"
+                }
+              ],
+              "type@dshell.internal.type.DSType" : "String",
+              "token@org.antlr.v4.runtime.Token" : "\"",
+              "parentNode@dshell.internal.parser.Node" : "ref->558922244"
+            },
+            "token@org.antlr.v4.runtime.Token" : "var",
+            "parentNode@dshell.internal.parser.Node" : "ref->107241811"
+          },
+          {
+            "@NodeType" : "IfNode",
+            "@HashCode" : "1702660825",
+            "condNode@dshell.internal.parser.Node.ExprNode" : {
+              "@NodeType" : "OperatorCallNode",
+              "@HashCode" : "1131040331",
+              "funcName@java.lang.String" : "==",
+              "argNodeList@java.util.List" : [
+                {
+                  "@NodeType" : "SymbolNode",
+                  "@HashCode" : "254749889",
+                  "symbolName@java.lang.String" : "option",
+                  "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                  "isReadOnly@boolean" : true,
+                  "type@dshell.internal.type.DSType" : "String",
+                  "token@org.antlr.v4.runtime.Token" : "$option",
+                  "parentNode@dshell.internal.parser.Node" : "ref->1131040331"
+                },
+                {
+                  "@NodeType" : "StringExprNode",
+                  "@HashCode" : "973576304",
+                  "elementList@java.util.List" : [
+                    {
+                      "@NodeType" : "StringValueNode",
+                      "@HashCode" : "992802731",
+                      "value@java.lang.String" : "-i",
+                      "type@dshell.internal.type.DSType" : "String",
+                      "token@org.antlr.v4.runtime.Token" : "-i",
+                      "parentNode@dshell.internal.parser.Node" : "ref->973576304"
+                    }
+                  ],
+                  "type@dshell.internal.type.DSType" : "String",
+                  "token@org.antlr.v4.runtime.Token" : "\"",
+                  "parentNode@dshell.internal.parser.Node" : "ref->1131040331"
+                }
+              ],
+              "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#equals : Func<boolean,[String,String]>",
+              "type@dshell.internal.type.DSType" : "boolean",
+              "token@org.antlr.v4.runtime.Token" : "==",
+              "parentNode@dshell.internal.parser.Node" : "ref->1702660825"
+            },
+            "thenBlockNode@dshell.internal.parser.Node.BlockNode" : {
+              "@NodeType" : "BlockNode",
+              "@HashCode" : "715521683",
+              "nodeList@java.util.List" : [
+                {
+                  "@NodeType" : "AssignNode",
+                  "@HashCode" : "1524126153",
+                  "assignOp@java.lang.String" : "=",
+                  "handle@dshell.internal.type.CalleeHandle.MethodHandle" : null,
+                  "leftNode@dshell.internal.parser.Node.ExprNode" : {
+                    "@NodeType" : "SymbolNode",
+                    "@HashCode" : "102065302",
+                    "symbolName@java.lang.String" : "mode",
+                    "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                    "isReadOnly@boolean" : false,
+                    "type@dshell.internal.type.DSType" : "String",
+                    "token@org.antlr.v4.runtime.Token" : "$mode",
+                    "parentNode@dshell.internal.parser.Node" : "ref->1524126153"
+                  },
+                  "rightNode@dshell.internal.parser.Node.ExprNode" : {
+                    "@NodeType" : "StringExprNode",
+                    "@HashCode" : "63001505",
+                    "elementList@java.util.List" : [
+                      {
+                        "@NodeType" : "StringValueNode",
+                        "@HashCode" : "191037037",
+                        "value@java.lang.String" : "[i]",
+                        "type@dshell.internal.type.DSType" : "String",
+                        "token@org.antlr.v4.runtime.Token" : "[i]",
+                        "parentNode@dshell.internal.parser.Node" : "ref->63001505"
+                      }
+                    ],
+                    "type@dshell.internal.type.DSType" : "String",
+                    "token@org.antlr.v4.runtime.Token" : "\"",
+                    "parentNode@dshell.internal.parser.Node" : "ref->1524126153"
+                  },
+                  "token@org.antlr.v4.runtime.Token" : "=",
+                  "parentNode@dshell.internal.parser.Node" : "ref->715521683"
+                }
+              ],
+              "token@org.antlr.v4.runtime.Token" : null,
+              "parentNode@dshell.internal.parser.Node" : "ref->1702660825"
+            },
+            "elseBlockNode@dshell.internal.parser.Node.BlockNode" : {
+              "@NodeType" : "EmptyBlockNode",
+              "@HashCode" : "330084561",
+              "nodeList@java.util.List" : [],
+              "token@org.antlr.v4.runtime.Token" : null,
+              "parentNode@dshell.internal.parser.Node" : "ref->1702660825"
+            },
+            "token@org.antlr.v4.runtime.Token" : "if",
+            "parentNode@dshell.internal.parser.Node" : "ref->107241811"
+          },
+          {
+            "@NodeType" : "TaskNode",
+            "@HashCode" : "728258269",
+            "procNodeList@java.util.List" : [
+              {
+                "@NodeType" : "ProcessNode",
+                "@HashCode" : "1627857534",
+                "commandPath@java.lang.String" : "echo",
+                "argNodeList@java.util.List" : [
+                  {
+                    "@NodeType" : "ArgumentNode",
+                    "@HashCode" : "360062456",
+                    "segmentNodeList@java.util.List" : [
+                      {
+                        "@NodeType" : "StringExprNode",
+                        "@HashCode" : "1790421142",
+                        "elementList@java.util.List" : [
+                          {
+                            "@NodeType" : "StringValueNode",
+                            "@HashCode" : "846947180",
+                            "value@java.lang.String" : "====== Test: ",
+                            "type@dshell.internal.type.DSType" : "String",
+                            "token@org.antlr.v4.runtime.Token" : "====== Test: ",
+                            "parentNode@dshell.internal.parser.Node" : "ref->1790421142"
+                          },
+                          {
+                            "@NodeType" : "OperatorCallNode",
+                            "@HashCode" : "1172131546",
+                            "funcName@java.lang.String" : "$",
+                            "argNodeList@java.util.List" : [
+                              {
+                                "@NodeType" : "SymbolNode",
+                                "@HashCode" : "1616974404",
+                                "symbolName@java.lang.String" : "mode",
+                                "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                "isReadOnly@boolean" : false,
+                                "type@dshell.internal.type.DSType" : "String",
+                                "token@org.antlr.v4.runtime.Token" : "$mode",
+                                "parentNode@dshell.internal.parser.Node" : "ref->1172131546"
+                              }
+                            ],
+                            "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#toStringOrFlat : Func<String,[$Object$]>",
+                            "type@dshell.internal.type.DSType" : "String",
+                            "token@org.antlr.v4.runtime.Token" : null,
+                            "parentNode@dshell.internal.parser.Node" : "ref->1790421142"
+                          },
+                          {
+                            "@NodeType" : "StringValueNode",
+                            "@HashCode" : "927327686",
+                            "value@java.lang.String" : " ",
+                            "type@dshell.internal.type.DSType" : "String",
+                            "token@org.antlr.v4.runtime.Token" : " ",
+                            "parentNode@dshell.internal.parser.Node" : "ref->1790421142"
+                          },
+                          {
+                            "@NodeType" : "OperatorCallNode",
+                            "@HashCode" : "1582071873",
+                            "funcName@java.lang.String" : "$",
+                            "argNodeList@java.util.List" : [
+                              {
+                                "@NodeType" : "SymbolNode",
+                                "@HashCode" : "1908981452",
+                                "symbolName@java.lang.String" : "test_file",
+                                "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                "isReadOnly@boolean" : true,
+                                "type@dshell.internal.type.DSType" : "String",
+                                "token@org.antlr.v4.runtime.Token" : "$test_file",
+                                "parentNode@dshell.internal.parser.Node" : "ref->1582071873"
+                              }
+                            ],
+                            "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#toStringOrFlat : Func<String,[$Object$]>",
+                            "type@dshell.internal.type.DSType" : "String",
+                            "token@org.antlr.v4.runtime.Token" : null,
+                            "parentNode@dshell.internal.parser.Node" : "ref->1790421142"
+                          },
+                          {
+                            "@NodeType" : "StringValueNode",
+                            "@HashCode" : "433287555",
+                            "value@java.lang.String" : " ======",
+                            "type@dshell.internal.type.DSType" : "String",
+                            "token@org.antlr.v4.runtime.Token" : " ======",
+                            "parentNode@dshell.internal.parser.Node" : "ref->1790421142"
+                          }
+                        ],
+                        "type@dshell.internal.type.DSType" : "String",
+                        "token@org.antlr.v4.runtime.Token" : "\"",
+                        "parentNode@dshell.internal.parser.Node" : "ref->360062456"
+                      }
+                    ],
+                    "type@dshell.internal.type.DSType" : "void",
+                    "token@org.antlr.v4.runtime.Token" : "\"",
+                    "parentNode@dshell.internal.parser.Node" : "ref->1627857534"
+                  }
+                ],
+                "redirOptionList@java.util.List" : [
+                  "(7, ArgumentNode:void)"
+                ],
+                "trace@boolean" : false,
+                "type@dshell.internal.type.DSType" : "void",
+                "token@org.antlr.v4.runtime.Token" : "echo",
+                "parentNode@dshell.internal.parser.Node" : "ref->728258269"
+              }
+            ],
+            "isBackGround@boolean" : false,
+            "bufferEntry@dshell.lang.GenericPair" : null,
+            "type@dshell.internal.type.DSType" : "void",
+            "token@org.antlr.v4.runtime.Token" : "echo",
+            "parentNode@dshell.internal.parser.Node" : "ref->107241811"
+          },
+          {
+            "@NodeType" : "VarDeclNode",
+            "@HashCode" : "266272063",
+            "isReadOnly@boolean" : true,
+            "isGlobal@boolean" : false,
+            "varName@java.lang.String" : "result",
+            "initValueNode@dshell.internal.parser.Node.ExprNode" : {
+              "@NodeType" : "TaskNode",
+              "@HashCode" : "226744878",
+              "procNodeList@java.util.List" : [
+                {
+                  "@NodeType" : "ProcessNode",
+                  "@HashCode" : "172032696",
+                  "commandPath@java.lang.String" : "java",
+                  "argNodeList@java.util.List" : [
+                    {
+                      "@NodeType" : "ArgumentNode",
+                      "@HashCode" : "299644693",
+                      "segmentNodeList@java.util.List" : [
+                        {
+                          "@NodeType" : "StringValueNode",
+                          "@HashCode" : "1771243284",
+                          "value@java.lang.String" : "-ea",
+                          "type@dshell.internal.type.DSType" : "String",
+                          "token@org.antlr.v4.runtime.Token" : null,
+                          "parentNode@dshell.internal.parser.Node" : "ref->299644693"
+                        }
+                      ],
+                      "type@dshell.internal.type.DSType" : "void",
+                      "token@org.antlr.v4.runtime.Token" : null,
+                      "parentNode@dshell.internal.parser.Node" : "ref->172032696"
+                    },
+                    {
+                      "@NodeType" : "ArgumentNode",
+                      "@HashCode" : "2052256418",
+                      "segmentNodeList@java.util.List" : [
+                        {
+                          "@NodeType" : "InnerTaskNode",
+                          "@HashCode" : "143695640",
+                          "exprNode@dshell.internal.parser.Node.ExprNode" : {
+                            "@NodeType" : "TaskNode",
+                            "@HashCode" : "2043318969",
+                            "procNodeList@java.util.List" : [
+                              {
+                                "@NodeType" : "ProcessNode",
+                                "@HashCode" : "341878976",
+                                "commandPath@java.lang.String" : "echo",
+                                "argNodeList@java.util.List" : [
+                                  {
+                                    "@NodeType" : "ArgumentNode",
+                                    "@HashCode" : "1331923253",
+                                    "segmentNodeList@java.util.List" : [
+                                      {
+                                        "@NodeType" : "SymbolNode",
+                                        "@HashCode" : "1132967838",
+                                        "symbolName@java.lang.String" : "JVM_OPTION",
+                                        "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                        "isReadOnly@boolean" : true,
+                                        "type@dshell.internal.type.DSType" : "String",
+                                        "token@org.antlr.v4.runtime.Token" : "$JVM_OPTION",
+                                        "parentNode@dshell.internal.parser.Node" : "ref->1331923253"
+                                      }
+                                    ],
+                                    "type@dshell.internal.type.DSType" : "void",
+                                    "token@org.antlr.v4.runtime.Token" : "$JVM_OPTION",
+                                    "parentNode@dshell.internal.parser.Node" : "ref->341878976"
+                                  }
+                                ],
+                                "redirOptionList@java.util.List" : [],
+                                "trace@boolean" : false,
+                                "type@dshell.internal.type.DSType" : "void",
+                                "token@org.antlr.v4.runtime.Token" : "echo",
+                                "parentNode@dshell.internal.parser.Node" : "ref->2043318969"
+                              }
+                            ],
+                            "isBackGround@boolean" : false,
+                            "bufferEntry@dshell.lang.GenericPair" : "(\"@outputBuffer0\", \/OutputBuffer)",
+                            "type@dshell.internal.type.DSType" : "boolean",
+                            "token@org.antlr.v4.runtime.Token" : "echo",
+                            "parentNode@dshell.internal.parser.Node" : "ref->143695640"
+                          },
+                          "bufferEntry@dshell.lang.GenericPair" : "(\"@outputBuffer0\", \/OutputBuffer)",
+                          "type@dshell.internal.type.DSType" : "Array<String>",
+                          "token@org.antlr.v4.runtime.Token" : "echo",
+                          "parentNode@dshell.internal.parser.Node" : "ref->2052256418"
+                        }
+                      ],
+                      "type@dshell.internal.type.DSType" : "void",
+                      "token@org.antlr.v4.runtime.Token" : "echo",
+                      "parentNode@dshell.internal.parser.Node" : "ref->172032696"
+                    },
+                    {
+                      "@NodeType" : "ArgumentNode",
+                      "@HashCode" : "1853205005",
+                      "segmentNodeList@java.util.List" : [
+                        {
+                          "@NodeType" : "SymbolNode",
+                          "@HashCode" : "2143431083",
+                          "symbolName@java.lang.String" : "option",
+                          "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                          "isReadOnly@boolean" : true,
+                          "type@dshell.internal.type.DSType" : "String",
+                          "token@org.antlr.v4.runtime.Token" : "$option",
+                          "parentNode@dshell.internal.parser.Node" : "ref->1853205005"
+                        }
+                      ],
+                      "type@dshell.internal.type.DSType" : "void",
+                      "token@org.antlr.v4.runtime.Token" : "$option",
+                      "parentNode@dshell.internal.parser.Node" : "ref->172032696"
+                    },
+                    {
+                      "@NodeType" : "ArgumentNode",
+                      "@HashCode" : "750468423",
+                      "segmentNodeList@java.util.List" : [
+                        {
+                          "@NodeType" : "SymbolNode",
+                          "@HashCode" : "1384010761",
+                          "symbolName@java.lang.String" : "test_dir",
+                          "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                          "isReadOnly@boolean" : true,
+                          "type@dshell.internal.type.DSType" : "String",
+                          "token@org.antlr.v4.runtime.Token" : "${test_dir}",
+                          "parentNode@dshell.internal.parser.Node" : "ref->750468423"
+                        },
+                        {
+                          "@NodeType" : "StringValueNode",
+                          "@HashCode" : "295221641",
+                          "value@java.lang.String" : "\/",
+                          "type@dshell.internal.type.DSType" : "String",
+                          "token@org.antlr.v4.runtime.Token" : null,
+                          "parentNode@dshell.internal.parser.Node" : "ref->750468423"
+                        },
+                        {
+                          "@NodeType" : "SymbolNode",
+                          "@HashCode" : "2147046752",
+                          "symbolName@java.lang.String" : "test_file",
+                          "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                          "isReadOnly@boolean" : true,
+                          "type@dshell.internal.type.DSType" : "String",
+                          "token@org.antlr.v4.runtime.Token" : "${test_file}",
+                          "parentNode@dshell.internal.parser.Node" : "ref->750468423"
+                        }
+                      ],
+                      "type@dshell.internal.type.DSType" : "void",
+                      "token@org.antlr.v4.runtime.Token" : "${test_dir}",
+                      "parentNode@dshell.internal.parser.Node" : "ref->172032696"
+                    },
+                    {
+                      "@NodeType" : "ArgumentNode",
+                      "@HashCode" : "182259421",
+                      "segmentNodeList@java.util.List" : [
+                        {
+                          "@NodeType" : "SymbolNode",
+                          "@HashCode" : "715378067",
+                          "symbolName@java.lang.String" : "args",
+                          "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                          "isReadOnly@boolean" : true,
+                          "type@dshell.internal.type.DSType" : "Array<String>",
+                          "token@org.antlr.v4.runtime.Token" : "$args",
+                          "parentNode@dshell.internal.parser.Node" : "ref->182259421"
+                        }
+                      ],
+                      "type@dshell.internal.type.DSType" : "void",
+                      "token@org.antlr.v4.runtime.Token" : "$args",
+                      "parentNode@dshell.internal.parser.Node" : "ref->172032696"
+                    }
+                  ],
+                  "redirOptionList@java.util.List" : [
+                    "(7, ArgumentNode:void)"
+                  ],
+                  "trace@boolean" : false,
+                  "type@dshell.internal.type.DSType" : "void",
+                  "token@org.antlr.v4.runtime.Token" : "java",
+                  "parentNode@dshell.internal.parser.Node" : "ref->226744878"
+                }
+              ],
+              "isBackGround@boolean" : false,
+              "bufferEntry@dshell.lang.GenericPair" : null,
+              "type@dshell.internal.type.DSType" : "int",
+              "token@org.antlr.v4.runtime.Token" : "java",
+              "parentNode@dshell.internal.parser.Node" : "ref->266272063"
+            },
+            "token@org.antlr.v4.runtime.Token" : "let",
+            "parentNode@dshell.internal.parser.Node" : "ref->107241811"
+          },
+          {
+            "@NodeType" : "VarDeclNode",
+            "@HashCode" : "2124643775",
+            "isReadOnly@boolean" : false,
+            "isGlobal@boolean" : false,
+            "varName@java.lang.String" : "prefix",
+            "initValueNode@dshell.internal.parser.Node.ExprNode" : {
+              "@NodeType" : "StringExprNode",
+              "@HashCode" : "1262773598",
+              "elementList@java.util.List" : [
+                {
+                  "@NodeType" : "StringValueNode",
+                  "@HashCode" : "688726285",
+                  "value@java.lang.String" : "[fail]:",
+                  "type@dshell.internal.type.DSType" : "String",
+                  "token@org.antlr.v4.runtime.Token" : "[fail]:",
+                  "parentNode@dshell.internal.parser.Node" : "ref->1262773598"
+                }
+              ],
+              "type@dshell.internal.type.DSType" : "String",
+              "token@org.antlr.v4.runtime.Token" : "\"",
+              "parentNode@dshell.internal.parser.Node" : "ref->2124643775"
+            },
+            "token@org.antlr.v4.runtime.Token" : "var",
+            "parentNode@dshell.internal.parser.Node" : "ref->107241811"
+          },
+          {
+            "@NodeType" : "IfNode",
+            "@HashCode" : "494317290",
+            "condNode@dshell.internal.parser.Node.ExprNode" : {
+              "@NodeType" : "OperatorCallNode",
+              "@HashCode" : "2027775614",
+              "funcName@java.lang.String" : "==",
+              "argNodeList@java.util.List" : [
+                {
+                  "@NodeType" : "SymbolNode",
+                  "@HashCode" : "282821294",
+                  "symbolName@java.lang.String" : "result",
+                  "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                  "isReadOnly@boolean" : true,
+                  "type@dshell.internal.type.DSType" : "int",
+                  "token@org.antlr.v4.runtime.Token" : "$result",
+                  "parentNode@dshell.internal.parser.Node" : "ref->2027775614"
+                },
+                {
+                  "@NodeType" : "IntValueNode",
+                  "@HashCode" : "2025269734",
+                  "value@long" : 0,
+                  "type@dshell.internal.type.DSType" : "int",
+                  "token@org.antlr.v4.runtime.Token" : "0",
+                  "parentNode@dshell.internal.parser.Node" : "ref->2027775614"
+                }
+              ],
+              "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#equals : Func<boolean,[int,int]>",
+              "type@dshell.internal.type.DSType" : "boolean",
+              "token@org.antlr.v4.runtime.Token" : "==",
+              "parentNode@dshell.internal.parser.Node" : "ref->494317290"
+            },
+            "thenBlockNode@dshell.internal.parser.Node.BlockNode" : {
+              "@NodeType" : "BlockNode",
+              "@HashCode" : "1800031768",
+              "nodeList@java.util.List" : [
+                {
+                  "@NodeType" : "AssignNode",
+                  "@HashCode" : "667447085",
+                  "assignOp@java.lang.String" : "=",
+                  "handle@dshell.internal.type.CalleeHandle.MethodHandle" : null,
+                  "leftNode@dshell.internal.parser.Node.ExprNode" : {
+                    "@NodeType" : "SymbolNode",
+                    "@HashCode" : "26728049",
+                    "symbolName@java.lang.String" : "prefix",
+                    "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                    "isReadOnly@boolean" : false,
+                    "type@dshell.internal.type.DSType" : "String",
+                    "token@org.antlr.v4.runtime.Token" : "$prefix",
+                    "parentNode@dshell.internal.parser.Node" : "ref->667447085"
+                  },
+                  "rightNode@dshell.internal.parser.Node.ExprNode" : {
+                    "@NodeType" : "StringExprNode",
+                    "@HashCode" : "1076770748",
+                    "elementList@java.util.List" : [
+                      {
+                        "@NodeType" : "StringValueNode",
+                        "@HashCode" : "2041416495",
+                        "value@java.lang.String" : "[pass]:",
+                        "type@dshell.internal.type.DSType" : "String",
+                        "token@org.antlr.v4.runtime.Token" : "[pass]:",
+                        "parentNode@dshell.internal.parser.Node" : "ref->1076770748"
+                      }
+                    ],
+                    "type@dshell.internal.type.DSType" : "String",
+                    "token@org.antlr.v4.runtime.Token" : "\"",
+                    "parentNode@dshell.internal.parser.Node" : "ref->667447085"
+                  },
+                  "token@org.antlr.v4.runtime.Token" : "=",
+                  "parentNode@dshell.internal.parser.Node" : "ref->1800031768"
+                }
+              ],
+              "token@org.antlr.v4.runtime.Token" : null,
+              "parentNode@dshell.internal.parser.Node" : "ref->494317290"
+            },
+            "elseBlockNode@dshell.internal.parser.Node.BlockNode" : {
+              "@NodeType" : "EmptyBlockNode",
+              "@HashCode" : "502800944",
+              "nodeList@java.util.List" : [],
+              "token@org.antlr.v4.runtime.Token" : null,
+              "parentNode@dshell.internal.parser.Node" : "ref->494317290"
+            },
+            "token@org.antlr.v4.runtime.Token" : "if",
+            "parentNode@dshell.internal.parser.Node" : "ref->107241811"
+          },
+          {
+            "@NodeType" : "VarDeclNode",
+            "@HashCode" : "576936864",
+            "isReadOnly@boolean" : false,
+            "isGlobal@boolean" : false,
+            "varName@java.lang.String" : "msg",
+            "initValueNode@dshell.internal.parser.Node.ExprNode" : {
+              "@NodeType" : "StringExprNode",
+              "@HashCode" : "331418503",
+              "elementList@java.util.List" : [
+                {
+                  "@NodeType" : "OperatorCallNode",
+                  "@HashCode" : "111156771",
+                  "funcName@java.lang.String" : "$",
+                  "argNodeList@java.util.List" : [
+                    {
+                      "@NodeType" : "SymbolNode",
+                      "@HashCode" : "1519736165",
+                      "symbolName@java.lang.String" : "prefix",
+                      "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                      "isReadOnly@boolean" : false,
+                      "type@dshell.internal.type.DSType" : "String",
+                      "token@org.antlr.v4.runtime.Token" : "$prefix",
+                      "parentNode@dshell.internal.parser.Node" : "ref->111156771"
+                    }
+                  ],
+                  "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#toStringOrFlat : Func<String,[$Object$]>",
+                  "type@dshell.internal.type.DSType" : "String",
+                  "token@org.antlr.v4.runtime.Token" : null,
+                  "parentNode@dshell.internal.parser.Node" : "ref->331418503"
+                },
+                {
+                  "@NodeType" : "StringValueNode",
+                  "@HashCode" : "1653844940",
+                  "value@java.lang.String" : " ",
+                  "type@dshell.internal.type.DSType" : "String",
+                  "token@org.antlr.v4.runtime.Token" : " ",
+                  "parentNode@dshell.internal.parser.Node" : "ref->331418503"
+                },
+                {
+                  "@NodeType" : "OperatorCallNode",
+                  "@HashCode" : "2039810346",
+                  "funcName@java.lang.String" : "$",
+                  "argNodeList@java.util.List" : [
+                    {
+                      "@NodeType" : "SymbolNode",
+                      "@HashCode" : "2143437117",
+                      "symbolName@java.lang.String" : "mode",
+                      "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                      "isReadOnly@boolean" : false,
+                      "type@dshell.internal.type.DSType" : "String",
+                      "token@org.antlr.v4.runtime.Token" : "$mode",
+                      "parentNode@dshell.internal.parser.Node" : "ref->2039810346"
+                    }
+                  ],
+                  "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#toStringOrFlat : Func<String,[$Object$]>",
+                  "type@dshell.internal.type.DSType" : "String",
+                  "token@org.antlr.v4.runtime.Token" : null,
+                  "parentNode@dshell.internal.parser.Node" : "ref->331418503"
+                },
+                {
+                  "@NodeType" : "StringValueNode",
+                  "@HashCode" : "260840925",
+                  "value@java.lang.String" : " ",
+                  "type@dshell.internal.type.DSType" : "String",
+                  "token@org.antlr.v4.runtime.Token" : " ",
+                  "parentNode@dshell.internal.parser.Node" : "ref->331418503"
+                },
+                {
+                  "@NodeType" : "OperatorCallNode",
+                  "@HashCode" : "1891502635",
+                  "funcName@java.lang.String" : "$",
+                  "argNodeList@java.util.List" : [
+                    {
+                      "@NodeType" : "SymbolNode",
+                      "@HashCode" : "557023567",
+                      "symbolName@java.lang.String" : "test_dir",
+                      "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                      "isReadOnly@boolean" : true,
+                      "type@dshell.internal.type.DSType" : "String",
+                      "token@org.antlr.v4.runtime.Token" : "${test_dir}",
+                      "parentNode@dshell.internal.parser.Node" : "ref->1891502635"
+                    }
+                  ],
+                  "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#toStringOrFlat : Func<String,[$Object$]>",
+                  "type@dshell.internal.type.DSType" : "String",
+                  "token@org.antlr.v4.runtime.Token" : null,
+                  "parentNode@dshell.internal.parser.Node" : "ref->331418503"
+                },
+                {
+                  "@NodeType" : "StringValueNode",
+                  "@HashCode" : "1276504061",
+                  "value@java.lang.String" : "\/",
+                  "type@dshell.internal.type.DSType" : "String",
+                  "token@org.antlr.v4.runtime.Token" : "\/",
+                  "parentNode@dshell.internal.parser.Node" : "ref->331418503"
+                },
+                {
+                  "@NodeType" : "OperatorCallNode",
+                  "@HashCode" : "597190999",
+                  "funcName@java.lang.String" : "$",
+                  "argNodeList@java.util.List" : [
+                    {
+                      "@NodeType" : "SymbolNode",
+                      "@HashCode" : "603443293",
+                      "symbolName@java.lang.String" : "test_file",
+                      "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                      "isReadOnly@boolean" : true,
+                      "type@dshell.internal.type.DSType" : "String",
+                      "token@org.antlr.v4.runtime.Token" : "${test_file}",
+                      "parentNode@dshell.internal.parser.Node" : "ref->597190999"
+                    }
+                  ],
+                  "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#toStringOrFlat : Func<String,[$Object$]>",
+                  "type@dshell.internal.type.DSType" : "String",
+                  "token@org.antlr.v4.runtime.Token" : null,
+                  "parentNode@dshell.internal.parser.Node" : "ref->331418503"
+                }
+              ],
+              "type@dshell.internal.type.DSType" : "String",
+              "token@org.antlr.v4.runtime.Token" : "\"",
+              "parentNode@dshell.internal.parser.Node" : "ref->576936864"
+            },
+            "token@org.antlr.v4.runtime.Token" : "var",
+            "parentNode@dshell.internal.parser.Node" : "ref->107241811"
+          },
+          {
+            "@NodeType" : "TaskNode",
+            "@HashCode" : "510854293",
+            "procNodeList@java.util.List" : [
+              {
+                "@NodeType" : "ProcessNode",
+                "@HashCode" : "2100961961",
+                "commandPath@java.lang.String" : "echo",
+                "argNodeList@java.util.List" : [
+                  {
+                    "@NodeType" : "ArgumentNode",
+                    "@HashCode" : "487075464",
+                    "segmentNodeList@java.util.List" : [
+                      {
+                        "@NodeType" : "SymbolNode",
+                        "@HashCode" : "6320204",
+                        "symbolName@java.lang.String" : "msg",
+                        "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                        "isReadOnly@boolean" : false,
+                        "type@dshell.internal.type.DSType" : "String",
+                        "token@org.antlr.v4.runtime.Token" : "$msg",
+                        "parentNode@dshell.internal.parser.Node" : "ref->487075464"
+                      }
+                    ],
+                    "type@dshell.internal.type.DSType" : "void",
+                    "token@org.antlr.v4.runtime.Token" : "$msg",
+                    "parentNode@dshell.internal.parser.Node" : "ref->2100961961"
+                  }
+                ],
+                "redirOptionList@java.util.List" : [],
+                "trace@boolean" : false,
+                "type@dshell.internal.type.DSType" : "void",
+                "token@org.antlr.v4.runtime.Token" : "echo",
+                "parentNode@dshell.internal.parser.Node" : "ref->510854293"
+              }
+            ],
+            "isBackGround@boolean" : false,
+            "bufferEntry@dshell.lang.GenericPair" : null,
+            "type@dshell.internal.type.DSType" : "void",
+            "token@org.antlr.v4.runtime.Token" : "echo",
+            "parentNode@dshell.internal.parser.Node" : "ref->107241811"
+          },
+          {
+            "@NodeType" : "TaskNode",
+            "@HashCode" : "112302969",
+            "procNodeList@java.util.List" : [
+              {
+                "@NodeType" : "ProcessNode",
+                "@HashCode" : "707976812",
+                "commandPath@java.lang.String" : "echo",
+                "argNodeList@java.util.List" : [
+                  {
+                    "@NodeType" : "ArgumentNode",
+                    "@HashCode" : "1989335500",
+                    "segmentNodeList@java.util.List" : [
+                      {
+                        "@NodeType" : "SymbolNode",
+                        "@HashCode" : "1978869058",
+                        "symbolName@java.lang.String" : "msg",
+                        "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                        "isReadOnly@boolean" : false,
+                        "type@dshell.internal.type.DSType" : "String",
+                        "token@org.antlr.v4.runtime.Token" : "$msg",
+                        "parentNode@dshell.internal.parser.Node" : "ref->1989335500"
+                      }
+                    ],
+                    "type@dshell.internal.type.DSType" : "void",
+                    "token@org.antlr.v4.runtime.Token" : "$msg",
+                    "parentNode@dshell.internal.parser.Node" : "ref->707976812"
+                  }
+                ],
+                "redirOptionList@java.util.List" : [
+                  "(7, ArgumentNode:void)"
+                ],
+                "trace@boolean" : false,
+                "type@dshell.internal.type.DSType" : "void",
+                "token@org.antlr.v4.runtime.Token" : "echo",
+                "parentNode@dshell.internal.parser.Node" : "ref->112302969"
+              }
+            ],
+            "isBackGround@boolean" : false,
+            "bufferEntry@dshell.lang.GenericPair" : null,
+            "type@dshell.internal.type.DSType" : "void",
+            "token@org.antlr.v4.runtime.Token" : "echo",
+            "parentNode@dshell.internal.parser.Node" : "ref->107241811"
+          },
+          {
+            "@NodeType" : "ReturnNode",
+            "@HashCode" : "592617454",
+            "exprNode@dshell.internal.parser.Node.ExprNode" : {
+              "@NodeType" : "OperatorCallNode",
+              "@HashCode" : "1340565491",
+              "funcName@java.lang.String" : "==",
+              "argNodeList@java.util.List" : [
+                {
+                  "@NodeType" : "SymbolNode",
+                  "@HashCode" : "671467883",
+                  "symbolName@java.lang.String" : "result",
+                  "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                  "isReadOnly@boolean" : true,
+                  "type@dshell.internal.type.DSType" : "int",
+                  "token@org.antlr.v4.runtime.Token" : "$result",
+                  "parentNode@dshell.internal.parser.Node" : "ref->1340565491"
+                },
+                {
+                  "@NodeType" : "IntValueNode",
+                  "@HashCode" : "407697359",
+                  "value@long" : 0,
+                  "type@dshell.internal.type.DSType" : "int",
+                  "token@org.antlr.v4.runtime.Token" : "0",
+                  "parentNode@dshell.internal.parser.Node" : "ref->1340565491"
+                }
+              ],
+              "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#equals : Func<boolean,[int,int]>",
+              "type@dshell.internal.type.DSType" : "boolean",
+              "token@org.antlr.v4.runtime.Token" : "==",
+              "parentNode@dshell.internal.parser.Node" : "ref->592617454"
+            },
+            "token@org.antlr.v4.runtime.Token" : "return",
+            "parentNode@dshell.internal.parser.Node" : "ref->107241811"
+          }
+        ],
+        "token@org.antlr.v4.runtime.Token" : null,
+        "parentNode@dshell.internal.parser.Node" : "ref->112466394"
+      },
+      "returnTypeSymbol@dshell.internal.parser.TypeToken" : "boolean",
+      "holderType@dshell.internal.type.DSType.FuncHolderType" : "FuncHolder1ofFunc<boolean,[String,String,String,Array<String>]>",
+      "token@org.antlr.v4.runtime.Token" : "function",
+      "parentNode@dshell.internal.parser.Node" : "ref->785447854"
+    },
+    {
+      "@NodeType" : "FunctionNode",
+      "@HashCode" : "1543148593",
+      "funcName@java.lang.String" : "test_all",
+      "paramTypeSymbolList@java.util.List" : [
+        "String",
+        "int"
+      ],
+      "nodeList@java.util.List" : [
+        {
+          "@NodeType" : "SymbolNode",
+          "@HashCode" : "574568002",
+          "symbolName@java.lang.String" : "dir",
+          "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+          "isReadOnly@boolean" : false,
+          "type@dshell.internal.type.DSType" : "$unresolved$",
+          "token@org.antlr.v4.runtime.Token" : "$dir",
+          "parentNode@dshell.internal.parser.Node" : "ref->1543148593"
+        },
+        {
+          "@NodeType" : "SymbolNode",
+          "@HashCode" : "952486988",
+          "symbolName@java.lang.String" : "option",
+          "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+          "isReadOnly@boolean" : false,
+          "type@dshell.internal.type.DSType" : "$unresolved$",
+          "token@org.antlr.v4.runtime.Token" : "$option",
+          "parentNode@dshell.internal.parser.Node" : "ref->1543148593"
+        }
+      ],
+      "blockNode@dshell.internal.parser.Node.BlockNode" : {
+        "@NodeType" : "BlockNode",
+        "@HashCode" : "932285561",
+        "nodeList@java.util.List" : [
+          {
+            "@NodeType" : "VarDeclNode",
+            "@HashCode" : "2028555727",
+            "isReadOnly@boolean" : false,
+            "isGlobal@boolean" : false,
+            "varName@java.lang.String" : "count",
+            "initValueNode@dshell.internal.parser.Node.ExprNode" : {
+              "@NodeType" : "IntValueNode",
+              "@HashCode" : "591391158",
+              "value@long" : 0,
+              "type@dshell.internal.type.DSType" : "int",
+              "token@org.antlr.v4.runtime.Token" : "0",
+              "parentNode@dshell.internal.parser.Node" : "ref->2028555727"
+            },
+            "token@org.antlr.v4.runtime.Token" : "var",
+            "parentNode@dshell.internal.parser.Node" : "ref->932285561"
+          },
+          {
+            "@NodeType" : "VarDeclNode",
+            "@HashCode" : "898557489",
+            "isReadOnly@boolean" : false,
+            "isGlobal@boolean" : false,
+            "varName@java.lang.String" : "pass_count",
+            "initValueNode@dshell.internal.parser.Node.ExprNode" : {
+              "@NodeType" : "IntValueNode",
+              "@HashCode" : "247944893",
+              "value@long" : 0,
+              "type@dshell.internal.type.DSType" : "int",
+              "token@org.antlr.v4.runtime.Token" : "0",
+              "parentNode@dshell.internal.parser.Node" : "ref->898557489"
+            },
+            "token@org.antlr.v4.runtime.Token" : "var",
+            "parentNode@dshell.internal.parser.Node" : "ref->932285561"
+          },
+          {
+            "@NodeType" : "VarDeclNode",
+            "@HashCode" : "1014166943",
+            "isReadOnly@boolean" : true,
+            "isGlobal@boolean" : false,
+            "varName@java.lang.String" : "args",
+            "initValueNode@dshell.internal.parser.Node.ExprNode" : {
+              "@NodeType" : "ArrayNode",
+              "@HashCode" : "1625082366",
+              "nodeList@java.util.List" : [
+                {
+                  "@NodeType" : "StringExprNode",
+                  "@HashCode" : "384294141",
+                  "elementList@java.util.List" : [
+                    {
+                      "@NodeType" : "StringValueNode",
+                      "@HashCode" : "1024597427",
+                      "value@java.lang.String" : "a",
+                      "type@dshell.internal.type.DSType" : "String",
+                      "token@org.antlr.v4.runtime.Token" : "a",
+                      "parentNode@dshell.internal.parser.Node" : "ref->384294141"
+                    }
+                  ],
+                  "type@dshell.internal.type.DSType" : "String",
+                  "token@org.antlr.v4.runtime.Token" : "\"",
+                  "parentNode@dshell.internal.parser.Node" : "ref->1625082366"
+                },
+                {
+                  "@NodeType" : "StringExprNode",
+                  "@HashCode" : "990355670",
+                  "elementList@java.util.List" : [
+                    {
+                      "@NodeType" : "StringValueNode",
+                      "@HashCode" : "296347592",
+                      "value@java.lang.String" : "b",
+                      "type@dshell.internal.type.DSType" : "String",
+                      "token@org.antlr.v4.runtime.Token" : "b",
+                      "parentNode@dshell.internal.parser.Node" : "ref->990355670"
+                    }
+                  ],
+                  "type@dshell.internal.type.DSType" : "String",
+                  "token@org.antlr.v4.runtime.Token" : "\"",
+                  "parentNode@dshell.internal.parser.Node" : "ref->1625082366"
+                },
+                {
+                  "@NodeType" : "StringExprNode",
+                  "@HashCode" : "956420404",
+                  "elementList@java.util.List" : [
+                    {
+                      "@NodeType" : "StringValueNode",
+                      "@HashCode" : "349420578",
+                      "value@java.lang.String" : "c",
+                      "type@dshell.internal.type.DSType" : "String",
+                      "token@org.antlr.v4.runtime.Token" : "c",
+                      "parentNode@dshell.internal.parser.Node" : "ref->956420404"
+                    }
+                  ],
+                  "type@dshell.internal.type.DSType" : "String",
+                  "token@org.antlr.v4.runtime.Token" : "\"",
+                  "parentNode@dshell.internal.parser.Node" : "ref->1625082366"
+                }
+              ],
+              "type@dshell.internal.type.DSType" : "Array<String>",
+              "token@org.antlr.v4.runtime.Token" : "[",
+              "parentNode@dshell.internal.parser.Node" : "ref->1014166943"
+            },
+            "token@org.antlr.v4.runtime.Token" : "let",
+            "parentNode@dshell.internal.parser.Node" : "ref->932285561"
+          },
+          {
+            "@NodeType" : "ForInNode",
+            "@HashCode" : "2065857933",
+            "initName@java.lang.String" : "test_file",
+            "exprNode@dshell.internal.parser.Node.ExprNode" : {
+              "@NodeType" : "InnerTaskNode",
+              "@HashCode" : "1914301543",
+              "exprNode@dshell.internal.parser.Node.ExprNode" : {
+                "@NodeType" : "TaskNode",
+                "@HashCode" : "1157726741",
+                "procNodeList@java.util.List" : [
+                  {
+                    "@NodeType" : "ProcessNode",
+                    "@HashCode" : "1708570683",
+                    "commandPath@java.lang.String" : "ls",
+                    "argNodeList@java.util.List" : [
+                      {
+                        "@NodeType" : "ArgumentNode",
+                        "@HashCode" : "225472281",
+                        "segmentNodeList@java.util.List" : [
+                          {
+                            "@NodeType" : "SymbolNode",
+                            "@HashCode" : "817348612",
+                            "symbolName@java.lang.String" : "dir",
+                            "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                            "isReadOnly@boolean" : true,
+                            "type@dshell.internal.type.DSType" : "String",
+                            "token@org.antlr.v4.runtime.Token" : "$dir",
+                            "parentNode@dshell.internal.parser.Node" : "ref->225472281"
+                          }
+                        ],
+                        "type@dshell.internal.type.DSType" : "void",
+                        "token@org.antlr.v4.runtime.Token" : "$dir",
+                        "parentNode@dshell.internal.parser.Node" : "ref->1708570683"
+                      }
+                    ],
+                    "redirOptionList@java.util.List" : [],
+                    "trace@boolean" : false,
+                    "type@dshell.internal.type.DSType" : "void",
+                    "token@org.antlr.v4.runtime.Token" : "ls",
+                    "parentNode@dshell.internal.parser.Node" : "ref->1157726741"
+                  }
+                ],
+                "isBackGround@boolean" : false,
+                "bufferEntry@dshell.lang.GenericPair" : "(\"@outputBuffer1\", \/OutputBuffer)",
+                "type@dshell.internal.type.DSType" : "boolean",
+                "token@org.antlr.v4.runtime.Token" : "ls",
+                "parentNode@dshell.internal.parser.Node" : "ref->1914301543"
+              },
+              "bufferEntry@dshell.lang.GenericPair" : "(\"@outputBuffer1\", \/OutputBuffer)",
+              "type@dshell.internal.type.DSType" : "Array<String>",
+              "token@org.antlr.v4.runtime.Token" : "ls",
+              "parentNode@dshell.internal.parser.Node" : "ref->2065857933"
+            },
+            "blockNode@dshell.internal.parser.Node.BlockNode" : {
+              "@NodeType" : "BlockNode",
+              "@HashCode" : "2045766957",
+              "nodeList@java.util.List" : [
+                {
+                  "@NodeType" : "IfNode",
+                  "@HashCode" : "690521419",
+                  "condNode@dshell.internal.parser.Node.ExprNode" : {
+                    "@NodeType" : "OperatorCallNode",
+                    "@HashCode" : "665726928",
+                    "funcName@java.lang.String" : "==",
+                    "argNodeList@java.util.List" : [
+                      {
+                        "@NodeType" : "SymbolNode",
+                        "@HashCode" : "689401025",
+                        "symbolName@java.lang.String" : "option",
+                        "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                        "isReadOnly@boolean" : true,
+                        "type@dshell.internal.type.DSType" : "int",
+                        "token@org.antlr.v4.runtime.Token" : "$option",
+                        "parentNode@dshell.internal.parser.Node" : "ref->665726928"
+                      },
+                      {
+                        "@NodeType" : "IntValueNode",
+                        "@HashCode" : "790067787",
+                        "value@long" : 0,
+                        "type@dshell.internal.type.DSType" : "int",
+                        "token@org.antlr.v4.runtime.Token" : "0",
+                        "parentNode@dshell.internal.parser.Node" : "ref->665726928"
+                      }
+                    ],
+                    "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#equals : Func<boolean,[int,int]>",
+                    "type@dshell.internal.type.DSType" : "boolean",
+                    "token@org.antlr.v4.runtime.Token" : "==",
+                    "parentNode@dshell.internal.parser.Node" : "ref->690521419"
+                  },
+                  "thenBlockNode@dshell.internal.parser.Node.BlockNode" : {
+                    "@NodeType" : "BlockNode",
+                    "@HashCode" : "1115201599",
+                    "nodeList@java.util.List" : [
+                      {
+                        "@NodeType" : "AssignNode",
+                        "@HashCode" : "343856911",
+                        "assignOp@java.lang.String" : "++",
+                        "handle@dshell.internal.type.CalleeHandle.MethodHandle" : "null#add : Func<int,[int,int]>",
+                        "leftNode@dshell.internal.parser.Node.ExprNode" : {
+                          "@NodeType" : "SymbolNode",
+                          "@HashCode" : "102617125",
+                          "symbolName@java.lang.String" : "count",
+                          "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                          "isReadOnly@boolean" : false,
+                          "type@dshell.internal.type.DSType" : "int",
+                          "token@org.antlr.v4.runtime.Token" : "$count",
+                          "parentNode@dshell.internal.parser.Node" : "ref->343856911"
+                        },
+                        "rightNode@dshell.internal.parser.Node.ExprNode" : {
+                          "@NodeType" : "IntValueNode",
+                          "@HashCode" : "306980751",
+                          "value@long" : 1,
+                          "type@dshell.internal.type.DSType" : "int",
+                          "token@org.antlr.v4.runtime.Token" : null,
+                          "parentNode@dshell.internal.parser.Node" : "ref->343856911"
+                        },
+                        "token@org.antlr.v4.runtime.Token" : "++",
+                        "parentNode@dshell.internal.parser.Node" : "ref->1115201599"
+                      },
+                      {
+                        "@NodeType" : "IfNode",
+                        "@HashCode" : "363988129",
+                        "condNode@dshell.internal.parser.Node.ExprNode" : {
+                          "@NodeType" : "ApplyNode",
+                          "@HashCode" : "1997963191",
+                          "recvNode@dshell.internal.parser.Node.ExprNode" : {
+                            "@NodeType" : "SymbolNode",
+                            "@HashCode" : "1826699684",
+                            "symbolName@java.lang.String" : "test",
+                            "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                            "isReadOnly@boolean" : false,
+                            "type@dshell.internal.type.DSType" : "$unresolved$",
+                            "token@org.antlr.v4.runtime.Token" : "$test",
+                            "parentNode@dshell.internal.parser.Node" : "ref->1997963191"
+                          },
+                          "argList@java.util.List" : [
+                            {
+                              "@NodeType" : "SymbolNode",
+                              "@HashCode" : "1769193365",
+                              "symbolName@java.lang.String" : "dir",
+                              "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                              "isReadOnly@boolean" : true,
+                              "type@dshell.internal.type.DSType" : "String",
+                              "token@org.antlr.v4.runtime.Token" : "$dir",
+                              "parentNode@dshell.internal.parser.Node" : "ref->1997963191"
+                            },
+                            {
+                              "@NodeType" : "SymbolNode",
+                              "@HashCode" : "769429195",
+                              "symbolName@java.lang.String" : "test_file",
+                              "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                              "isReadOnly@boolean" : false,
+                              "type@dshell.internal.type.DSType" : "String",
+                              "token@org.antlr.v4.runtime.Token" : "$test_file",
+                              "parentNode@dshell.internal.parser.Node" : "ref->1997963191"
+                            },
+                            {
+                              "@NodeType" : "StringExprNode",
+                              "@HashCode" : "580718781",
+                              "elementList@java.util.List" : [],
+                              "type@dshell.internal.type.DSType" : "String",
+                              "token@org.antlr.v4.runtime.Token" : "\"",
+                              "parentNode@dshell.internal.parser.Node" : "ref->1997963191"
+                            },
+                            {
+                              "@NodeType" : "SymbolNode",
+                              "@HashCode" : "1196695891",
+                              "symbolName@java.lang.String" : "args",
+                              "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                              "isReadOnly@boolean" : true,
+                              "type@dshell.internal.type.DSType" : "Array<String>",
+                              "token@org.antlr.v4.runtime.Token" : "$args",
+                              "parentNode@dshell.internal.parser.Node" : "ref->1997963191"
+                            }
+                          ],
+                          "isFuncCall@boolean" : true,
+                          "handle@dshell.internal.type.CalleeHandle.MethodHandle" : "FuncHolder1ofFunc<boolean,[String,String,String,Array<String>]>#invokeDirect : Func<boolean,[String,String,String,Array<String>]>",
+                          "type@dshell.internal.type.DSType" : "boolean",
+                          "token@org.antlr.v4.runtime.Token" : "$test",
+                          "parentNode@dshell.internal.parser.Node" : "ref->363988129"
+                        },
+                        "thenBlockNode@dshell.internal.parser.Node.BlockNode" : {
+                          "@NodeType" : "BlockNode",
+                          "@HashCode" : "867148091",
+                          "nodeList@java.util.List" : [
+                            {
+                              "@NodeType" : "AssignNode",
+                              "@HashCode" : "2051853139",
+                              "assignOp@java.lang.String" : "++",
+                              "handle@dshell.internal.type.CalleeHandle.MethodHandle" : "null#add : Func<int,[int,int]>",
+                              "leftNode@dshell.internal.parser.Node.ExprNode" : {
+                                "@NodeType" : "SymbolNode",
+                                "@HashCode" : "815674463",
+                                "symbolName@java.lang.String" : "pass_count",
+                                "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                "isReadOnly@boolean" : false,
+                                "type@dshell.internal.type.DSType" : "int",
+                                "token@org.antlr.v4.runtime.Token" : "$pass_count",
+                                "parentNode@dshell.internal.parser.Node" : "ref->2051853139"
+                              },
+                              "rightNode@dshell.internal.parser.Node.ExprNode" : {
+                                "@NodeType" : "IntValueNode",
+                                "@HashCode" : "1453774246",
+                                "value@long" : 1,
+                                "type@dshell.internal.type.DSType" : "int",
+                                "token@org.antlr.v4.runtime.Token" : null,
+                                "parentNode@dshell.internal.parser.Node" : "ref->2051853139"
+                              },
+                              "token@org.antlr.v4.runtime.Token" : "++",
+                              "parentNode@dshell.internal.parser.Node" : "ref->867148091"
+                            }
+                          ],
+                          "token@org.antlr.v4.runtime.Token" : null,
+                          "parentNode@dshell.internal.parser.Node" : "ref->363988129"
+                        },
+                        "elseBlockNode@dshell.internal.parser.Node.BlockNode" : {
+                          "@NodeType" : "EmptyBlockNode",
+                          "@HashCode" : "416153648",
+                          "nodeList@java.util.List" : [],
+                          "token@org.antlr.v4.runtime.Token" : null,
+                          "parentNode@dshell.internal.parser.Node" : "ref->363988129"
+                        },
+                        "token@org.antlr.v4.runtime.Token" : "if",
+                        "parentNode@dshell.internal.parser.Node" : "ref->1115201599"
+                      },
+                      {
+                        "@NodeType" : "AssignNode",
+                        "@HashCode" : "71587369",
+                        "assignOp@java.lang.String" : "++",
+                        "handle@dshell.internal.type.CalleeHandle.MethodHandle" : "null#add : Func<int,[int,int]>",
+                        "leftNode@dshell.internal.parser.Node.ExprNode" : {
+                          "@NodeType" : "SymbolNode",
+                          "@HashCode" : "1169794610",
+                          "symbolName@java.lang.String" : "count",
+                          "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                          "isReadOnly@boolean" : false,
+                          "type@dshell.internal.type.DSType" : "int",
+                          "token@org.antlr.v4.runtime.Token" : "$count",
+                          "parentNode@dshell.internal.parser.Node" : "ref->71587369"
+                        },
+                        "rightNode@dshell.internal.parser.Node.ExprNode" : {
+                          "@NodeType" : "IntValueNode",
+                          "@HashCode" : "634540230",
+                          "value@long" : 1,
+                          "type@dshell.internal.type.DSType" : "int",
+                          "token@org.antlr.v4.runtime.Token" : null,
+                          "parentNode@dshell.internal.parser.Node" : "ref->71587369"
+                        },
+                        "token@org.antlr.v4.runtime.Token" : "++",
+                        "parentNode@dshell.internal.parser.Node" : "ref->1115201599"
+                      },
+                      {
+                        "@NodeType" : "IfNode",
+                        "@HashCode" : "1307904972",
+                        "condNode@dshell.internal.parser.Node.ExprNode" : {
+                          "@NodeType" : "ApplyNode",
+                          "@HashCode" : "1797712197",
+                          "recvNode@dshell.internal.parser.Node.ExprNode" : {
+                            "@NodeType" : "SymbolNode",
+                            "@HashCode" : "1671846437",
+                            "symbolName@java.lang.String" : "test",
+                            "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                            "isReadOnly@boolean" : false,
+                            "type@dshell.internal.type.DSType" : "$unresolved$",
+                            "token@org.antlr.v4.runtime.Token" : "$test",
+                            "parentNode@dshell.internal.parser.Node" : "ref->1797712197"
+                          },
+                          "argList@java.util.List" : [
+                            {
+                              "@NodeType" : "SymbolNode",
+                              "@HashCode" : "1422222071",
+                              "symbolName@java.lang.String" : "dir",
+                              "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                              "isReadOnly@boolean" : true,
+                              "type@dshell.internal.type.DSType" : "String",
+                              "token@org.antlr.v4.runtime.Token" : "$dir",
+                              "parentNode@dshell.internal.parser.Node" : "ref->1797712197"
+                            },
+                            {
+                              "@NodeType" : "SymbolNode",
+                              "@HashCode" : "831236296",
+                              "symbolName@java.lang.String" : "test_file",
+                              "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                              "isReadOnly@boolean" : false,
+                              "type@dshell.internal.type.DSType" : "String",
+                              "token@org.antlr.v4.runtime.Token" : "$test_file",
+                              "parentNode@dshell.internal.parser.Node" : "ref->1797712197"
+                            },
+                            {
+                              "@NodeType" : "StringExprNode",
+                              "@HashCode" : "1840976765",
+                              "elementList@java.util.List" : [
+                                {
+                                  "@NodeType" : "StringValueNode",
+                                  "@HashCode" : "1016925085",
+                                  "value@java.lang.String" : "-i",
+                                  "type@dshell.internal.type.DSType" : "String",
+                                  "token@org.antlr.v4.runtime.Token" : "-i",
+                                  "parentNode@dshell.internal.parser.Node" : "ref->1840976765"
+                                }
+                              ],
+                              "type@dshell.internal.type.DSType" : "String",
+                              "token@org.antlr.v4.runtime.Token" : "\"",
+                              "parentNode@dshell.internal.parser.Node" : "ref->1797712197"
+                            },
+                            {
+                              "@NodeType" : "SymbolNode",
+                              "@HashCode" : "1127224355",
+                              "symbolName@java.lang.String" : "args",
+                              "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                              "isReadOnly@boolean" : true,
+                              "type@dshell.internal.type.DSType" : "Array<String>",
+                              "token@org.antlr.v4.runtime.Token" : "$args",
+                              "parentNode@dshell.internal.parser.Node" : "ref->1797712197"
+                            }
+                          ],
+                          "isFuncCall@boolean" : true,
+                          "handle@dshell.internal.type.CalleeHandle.MethodHandle" : "FuncHolder1ofFunc<boolean,[String,String,String,Array<String>]>#invokeDirect : Func<boolean,[String,String,String,Array<String>]>",
+                          "type@dshell.internal.type.DSType" : "boolean",
+                          "token@org.antlr.v4.runtime.Token" : "$test",
+                          "parentNode@dshell.internal.parser.Node" : "ref->1307904972"
+                        },
+                        "thenBlockNode@dshell.internal.parser.Node.BlockNode" : {
+                          "@NodeType" : "BlockNode",
+                          "@HashCode" : "789653861",
+                          "nodeList@java.util.List" : [
+                            {
+                              "@NodeType" : "AssignNode",
+                              "@HashCode" : "436532993",
+                              "assignOp@java.lang.String" : "++",
+                              "handle@dshell.internal.type.CalleeHandle.MethodHandle" : "null#add : Func<int,[int,int]>",
+                              "leftNode@dshell.internal.parser.Node.ExprNode" : {
+                                "@NodeType" : "SymbolNode",
+                                "@HashCode" : "1318180415",
+                                "symbolName@java.lang.String" : "pass_count",
+                                "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                "isReadOnly@boolean" : false,
+                                "type@dshell.internal.type.DSType" : "int",
+                                "token@org.antlr.v4.runtime.Token" : "$pass_count",
+                                "parentNode@dshell.internal.parser.Node" : "ref->436532993"
+                              },
+                              "rightNode@dshell.internal.parser.Node.ExprNode" : {
+                                "@NodeType" : "IntValueNode",
+                                "@HashCode" : "222511810",
+                                "value@long" : 1,
+                                "type@dshell.internal.type.DSType" : "int",
+                                "token@org.antlr.v4.runtime.Token" : null,
+                                "parentNode@dshell.internal.parser.Node" : "ref->436532993"
+                              },
+                              "token@org.antlr.v4.runtime.Token" : "++",
+                              "parentNode@dshell.internal.parser.Node" : "ref->789653861"
+                            }
+                          ],
+                          "token@org.antlr.v4.runtime.Token" : null,
+                          "parentNode@dshell.internal.parser.Node" : "ref->1307904972"
+                        },
+                        "elseBlockNode@dshell.internal.parser.Node.BlockNode" : {
+                          "@NodeType" : "EmptyBlockNode",
+                          "@HashCode" : "733943822",
+                          "nodeList@java.util.List" : [],
+                          "token@org.antlr.v4.runtime.Token" : null,
+                          "parentNode@dshell.internal.parser.Node" : "ref->1307904972"
+                        },
+                        "token@org.antlr.v4.runtime.Token" : "if",
+                        "parentNode@dshell.internal.parser.Node" : "ref->1115201599"
+                      }
+                    ],
+                    "token@org.antlr.v4.runtime.Token" : null,
+                    "parentNode@dshell.internal.parser.Node" : "ref->690521419"
+                  },
+                  "elseBlockNode@dshell.internal.parser.Node.BlockNode" : {
+                    "@NodeType" : "BlockNode",
+                    "@HashCode" : "373182087",
+                    "nodeList@java.util.List" : [
+                      {
+                        "@NodeType" : "IfNode",
+                        "@HashCode" : "1457410641",
+                        "condNode@dshell.internal.parser.Node.ExprNode" : {
+                          "@NodeType" : "OperatorCallNode",
+                          "@HashCode" : "1100767002",
+                          "funcName@java.lang.String" : "==",
+                          "argNodeList@java.util.List" : [
+                            {
+                              "@NodeType" : "SymbolNode",
+                              "@HashCode" : "313540687",
+                              "symbolName@java.lang.String" : "option",
+                              "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                              "isReadOnly@boolean" : true,
+                              "type@dshell.internal.type.DSType" : "int",
+                              "token@org.antlr.v4.runtime.Token" : "$option",
+                              "parentNode@dshell.internal.parser.Node" : "ref->1100767002"
+                            },
+                            {
+                              "@NodeType" : "IntValueNode",
+                              "@HashCode" : "1990098664",
+                              "value@long" : 1,
+                              "type@dshell.internal.type.DSType" : "int",
+                              "token@org.antlr.v4.runtime.Token" : "1",
+                              "parentNode@dshell.internal.parser.Node" : "ref->1100767002"
+                            }
+                          ],
+                          "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#equals : Func<boolean,[int,int]>",
+                          "type@dshell.internal.type.DSType" : "boolean",
+                          "token@org.antlr.v4.runtime.Token" : "==",
+                          "parentNode@dshell.internal.parser.Node" : "ref->1457410641"
+                        },
+                        "thenBlockNode@dshell.internal.parser.Node.BlockNode" : {
+                          "@NodeType" : "BlockNode",
+                          "@HashCode" : "1383524016",
+                          "nodeList@java.util.List" : [
+                            {
+                              "@NodeType" : "AssignNode",
+                              "@HashCode" : "1907431275",
+                              "assignOp@java.lang.String" : "++",
+                              "handle@dshell.internal.type.CalleeHandle.MethodHandle" : "null#add : Func<int,[int,int]>",
+                              "leftNode@dshell.internal.parser.Node.ExprNode" : {
+                                "@NodeType" : "SymbolNode",
+                                "@HashCode" : "1637061418",
+                                "symbolName@java.lang.String" : "count",
+                                "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                "isReadOnly@boolean" : false,
+                                "type@dshell.internal.type.DSType" : "int",
+                                "token@org.antlr.v4.runtime.Token" : "$count",
+                                "parentNode@dshell.internal.parser.Node" : "ref->1907431275"
+                              },
+                              "rightNode@dshell.internal.parser.Node.ExprNode" : {
+                                "@NodeType" : "IntValueNode",
+                                "@HashCode" : "1686100174",
+                                "value@long" : 1,
+                                "type@dshell.internal.type.DSType" : "int",
+                                "token@org.antlr.v4.runtime.Token" : null,
+                                "parentNode@dshell.internal.parser.Node" : "ref->1907431275"
+                              },
+                              "token@org.antlr.v4.runtime.Token" : "++",
+                              "parentNode@dshell.internal.parser.Node" : "ref->1383524016"
+                            },
+                            {
+                              "@NodeType" : "IfNode",
+                              "@HashCode" : "22671767",
+                              "condNode@dshell.internal.parser.Node.ExprNode" : {
+                                "@NodeType" : "ApplyNode",
+                                "@HashCode" : "2024453272",
+                                "recvNode@dshell.internal.parser.Node.ExprNode" : {
+                                  "@NodeType" : "SymbolNode",
+                                  "@HashCode" : "98394724",
+                                  "symbolName@java.lang.String" : "test",
+                                  "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                  "isReadOnly@boolean" : false,
+                                  "type@dshell.internal.type.DSType" : "$unresolved$",
+                                  "token@org.antlr.v4.runtime.Token" : "$test",
+                                  "parentNode@dshell.internal.parser.Node" : "ref->2024453272"
+                                },
+                                "argList@java.util.List" : [
+                                  {
+                                    "@NodeType" : "SymbolNode",
+                                    "@HashCode" : "536765369",
+                                    "symbolName@java.lang.String" : "dir",
+                                    "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                    "isReadOnly@boolean" : true,
+                                    "type@dshell.internal.type.DSType" : "String",
+                                    "token@org.antlr.v4.runtime.Token" : "$dir",
+                                    "parentNode@dshell.internal.parser.Node" : "ref->2024453272"
+                                  },
+                                  {
+                                    "@NodeType" : "SymbolNode",
+                                    "@HashCode" : "1374026904",
+                                    "symbolName@java.lang.String" : "test_file",
+                                    "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                    "isReadOnly@boolean" : false,
+                                    "type@dshell.internal.type.DSType" : "String",
+                                    "token@org.antlr.v4.runtime.Token" : "$test_file",
+                                    "parentNode@dshell.internal.parser.Node" : "ref->2024453272"
+                                  },
+                                  {
+                                    "@NodeType" : "StringExprNode",
+                                    "@HashCode" : "2085002312",
+                                    "elementList@java.util.List" : [],
+                                    "type@dshell.internal.type.DSType" : "String",
+                                    "token@org.antlr.v4.runtime.Token" : "\"",
+                                    "parentNode@dshell.internal.parser.Node" : "ref->2024453272"
+                                  },
+                                  {
+                                    "@NodeType" : "SymbolNode",
+                                    "@HashCode" : "317071334",
+                                    "symbolName@java.lang.String" : "args",
+                                    "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                    "isReadOnly@boolean" : true,
+                                    "type@dshell.internal.type.DSType" : "Array<String>",
+                                    "token@org.antlr.v4.runtime.Token" : "$args",
+                                    "parentNode@dshell.internal.parser.Node" : "ref->2024453272"
+                                  }
+                                ],
+                                "isFuncCall@boolean" : true,
+                                "handle@dshell.internal.type.CalleeHandle.MethodHandle" : "FuncHolder1ofFunc<boolean,[String,String,String,Array<String>]>#invokeDirect : Func<boolean,[String,String,String,Array<String>]>",
+                                "type@dshell.internal.type.DSType" : "boolean",
+                                "token@org.antlr.v4.runtime.Token" : "$test",
+                                "parentNode@dshell.internal.parser.Node" : "ref->22671767"
+                              },
+                              "thenBlockNode@dshell.internal.parser.Node.BlockNode" : {
+                                "@NodeType" : "BlockNode",
+                                "@HashCode" : "2129221032",
+                                "nodeList@java.util.List" : [
+                                  {
+                                    "@NodeType" : "AssignNode",
+                                    "@HashCode" : "1472465",
+                                    "assignOp@java.lang.String" : "++",
+                                    "handle@dshell.internal.type.CalleeHandle.MethodHandle" : "null#add : Func<int,[int,int]>",
+                                    "leftNode@dshell.internal.parser.Node.ExprNode" : {
+                                      "@NodeType" : "SymbolNode",
+                                      "@HashCode" : "1224347463",
+                                      "symbolName@java.lang.String" : "pass_count",
+                                      "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                      "isReadOnly@boolean" : false,
+                                      "type@dshell.internal.type.DSType" : "int",
+                                      "token@org.antlr.v4.runtime.Token" : "$pass_count",
+                                      "parentNode@dshell.internal.parser.Node" : "ref->1472465"
+                                    },
+                                    "rightNode@dshell.internal.parser.Node.ExprNode" : {
+                                      "@NodeType" : "IntValueNode",
+                                      "@HashCode" : "1791045777",
+                                      "value@long" : 1,
+                                      "type@dshell.internal.type.DSType" : "int",
+                                      "token@org.antlr.v4.runtime.Token" : null,
+                                      "parentNode@dshell.internal.parser.Node" : "ref->1472465"
+                                    },
+                                    "token@org.antlr.v4.runtime.Token" : "++",
+                                    "parentNode@dshell.internal.parser.Node" : "ref->2129221032"
+                                  }
+                                ],
+                                "token@org.antlr.v4.runtime.Token" : null,
+                                "parentNode@dshell.internal.parser.Node" : "ref->22671767"
+                              },
+                              "elseBlockNode@dshell.internal.parser.Node.BlockNode" : {
+                                "@NodeType" : "EmptyBlockNode",
+                                "@HashCode" : "1580297332",
+                                "nodeList@java.util.List" : [],
+                                "token@org.antlr.v4.runtime.Token" : null,
+                                "parentNode@dshell.internal.parser.Node" : "ref->22671767"
+                              },
+                              "token@org.antlr.v4.runtime.Token" : "if",
+                              "parentNode@dshell.internal.parser.Node" : "ref->1383524016"
+                            }
+                          ],
+                          "token@org.antlr.v4.runtime.Token" : null,
+                          "parentNode@dshell.internal.parser.Node" : "ref->1457410641"
+                        },
+                        "elseBlockNode@dshell.internal.parser.Node.BlockNode" : {
+                          "@NodeType" : "BlockNode",
+                          "@HashCode" : "1831477404",
+                          "nodeList@java.util.List" : [
+                            {
+                              "@NodeType" : "AssignNode",
+                              "@HashCode" : "1966250569",
+                              "assignOp@java.lang.String" : "++",
+                              "handle@dshell.internal.type.CalleeHandle.MethodHandle" : "null#add : Func<int,[int,int]>",
+                              "leftNode@dshell.internal.parser.Node.ExprNode" : {
+                                "@NodeType" : "SymbolNode",
+                                "@HashCode" : "370440646",
+                                "symbolName@java.lang.String" : "count",
+                                "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                "isReadOnly@boolean" : false,
+                                "type@dshell.internal.type.DSType" : "int",
+                                "token@org.antlr.v4.runtime.Token" : "$count",
+                                "parentNode@dshell.internal.parser.Node" : "ref->1966250569"
+                              },
+                              "rightNode@dshell.internal.parser.Node.ExprNode" : {
+                                "@NodeType" : "IntValueNode",
+                                "@HashCode" : "1125381564",
+                                "value@long" : 1,
+                                "type@dshell.internal.type.DSType" : "int",
+                                "token@org.antlr.v4.runtime.Token" : null,
+                                "parentNode@dshell.internal.parser.Node" : "ref->1966250569"
+                              },
+                              "token@org.antlr.v4.runtime.Token" : "++",
+                              "parentNode@dshell.internal.parser.Node" : "ref->1831477404"
+                            },
+                            {
+                              "@NodeType" : "IfNode",
+                              "@HashCode" : "2130772866",
+                              "condNode@dshell.internal.parser.Node.ExprNode" : {
+                                "@NodeType" : "ApplyNode",
+                                "@HashCode" : "511717113",
+                                "recvNode@dshell.internal.parser.Node.ExprNode" : {
+                                  "@NodeType" : "SymbolNode",
+                                  "@HashCode" : "728739494",
+                                  "symbolName@java.lang.String" : "test",
+                                  "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                  "isReadOnly@boolean" : false,
+                                  "type@dshell.internal.type.DSType" : "$unresolved$",
+                                  "token@org.antlr.v4.runtime.Token" : "$test",
+                                  "parentNode@dshell.internal.parser.Node" : "ref->511717113"
+                                },
+                                "argList@java.util.List" : [
+                                  {
+                                    "@NodeType" : "SymbolNode",
+                                    "@HashCode" : "2005733474",
+                                    "symbolName@java.lang.String" : "dir",
+                                    "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                    "isReadOnly@boolean" : true,
+                                    "type@dshell.internal.type.DSType" : "String",
+                                    "token@org.antlr.v4.runtime.Token" : "$dir",
+                                    "parentNode@dshell.internal.parser.Node" : "ref->511717113"
+                                  },
+                                  {
+                                    "@NodeType" : "SymbolNode",
+                                    "@HashCode" : "6750210",
+                                    "symbolName@java.lang.String" : "test_file",
+                                    "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                    "isReadOnly@boolean" : false,
+                                    "type@dshell.internal.type.DSType" : "String",
+                                    "token@org.antlr.v4.runtime.Token" : "$test_file",
+                                    "parentNode@dshell.internal.parser.Node" : "ref->511717113"
+                                  },
+                                  {
+                                    "@NodeType" : "StringExprNode",
+                                    "@HashCode" : "521081105",
+                                    "elementList@java.util.List" : [
+                                      {
+                                        "@NodeType" : "StringValueNode",
+                                        "@HashCode" : "1237550792",
+                                        "value@java.lang.String" : "-i",
+                                        "type@dshell.internal.type.DSType" : "String",
+                                        "token@org.antlr.v4.runtime.Token" : "-i",
+                                        "parentNode@dshell.internal.parser.Node" : "ref->521081105"
+                                      }
+                                    ],
+                                    "type@dshell.internal.type.DSType" : "String",
+                                    "token@org.antlr.v4.runtime.Token" : "\"",
+                                    "parentNode@dshell.internal.parser.Node" : "ref->511717113"
+                                  },
+                                  {
+                                    "@NodeType" : "SymbolNode",
+                                    "@HashCode" : "1448247698",
+                                    "symbolName@java.lang.String" : "args",
+                                    "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                    "isReadOnly@boolean" : true,
+                                    "type@dshell.internal.type.DSType" : "Array<String>",
+                                    "token@org.antlr.v4.runtime.Token" : "$args",
+                                    "parentNode@dshell.internal.parser.Node" : "ref->511717113"
+                                  }
+                                ],
+                                "isFuncCall@boolean" : true,
+                                "handle@dshell.internal.type.CalleeHandle.MethodHandle" : "FuncHolder1ofFunc<boolean,[String,String,String,Array<String>]>#invokeDirect : Func<boolean,[String,String,String,Array<String>]>",
+                                "type@dshell.internal.type.DSType" : "boolean",
+                                "token@org.antlr.v4.runtime.Token" : "$test",
+                                "parentNode@dshell.internal.parser.Node" : "ref->2130772866"
+                              },
+                              "thenBlockNode@dshell.internal.parser.Node.BlockNode" : {
+                                "@NodeType" : "BlockNode",
+                                "@HashCode" : "1846406218",
+                                "nodeList@java.util.List" : [
+                                  {
+                                    "@NodeType" : "AssignNode",
+                                    "@HashCode" : "158199555",
+                                    "assignOp@java.lang.String" : "++",
+                                    "handle@dshell.internal.type.CalleeHandle.MethodHandle" : "null#add : Func<int,[int,int]>",
+                                    "leftNode@dshell.internal.parser.Node.ExprNode" : {
+                                      "@NodeType" : "SymbolNode",
+                                      "@HashCode" : "1556995360",
+                                      "symbolName@java.lang.String" : "pass_count",
+                                      "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                      "isReadOnly@boolean" : false,
+                                      "type@dshell.internal.type.DSType" : "int",
+                                      "token@org.antlr.v4.runtime.Token" : "$pass_count",
+                                      "parentNode@dshell.internal.parser.Node" : "ref->158199555"
+                                    },
+                                    "rightNode@dshell.internal.parser.Node.ExprNode" : {
+                                      "@NodeType" : "IntValueNode",
+                                      "@HashCode" : "517052730",
+                                      "value@long" : 1,
+                                      "type@dshell.internal.type.DSType" : "int",
+                                      "token@org.antlr.v4.runtime.Token" : null,
+                                      "parentNode@dshell.internal.parser.Node" : "ref->158199555"
+                                    },
+                                    "token@org.antlr.v4.runtime.Token" : "++",
+                                    "parentNode@dshell.internal.parser.Node" : "ref->1846406218"
+                                  }
+                                ],
+                                "token@org.antlr.v4.runtime.Token" : null,
+                                "parentNode@dshell.internal.parser.Node" : "ref->2130772866"
+                              },
+                              "elseBlockNode@dshell.internal.parser.Node.BlockNode" : {
+                                "@NodeType" : "EmptyBlockNode",
+                                "@HashCode" : "524241174",
+                                "nodeList@java.util.List" : [],
+                                "token@org.antlr.v4.runtime.Token" : null,
+                                "parentNode@dshell.internal.parser.Node" : "ref->2130772866"
+                              },
+                              "token@org.antlr.v4.runtime.Token" : "if",
+                              "parentNode@dshell.internal.parser.Node" : "ref->1831477404"
+                            }
+                          ],
+                          "token@org.antlr.v4.runtime.Token" : null,
+                          "parentNode@dshell.internal.parser.Node" : "ref->1457410641"
+                        },
+                        "token@org.antlr.v4.runtime.Token" : "if",
+                        "parentNode@dshell.internal.parser.Node" : "ref->373182087"
+                      }
+                    ],
+                    "token@org.antlr.v4.runtime.Token" : null,
+                    "parentNode@dshell.internal.parser.Node" : "ref->690521419"
+                  },
+                  "token@org.antlr.v4.runtime.Token" : "if",
+                  "parentNode@dshell.internal.parser.Node" : "ref->2045766957"
+                }
+              ],
+              "token@org.antlr.v4.runtime.Token" : null,
+              "parentNode@dshell.internal.parser.Node" : "ref->2065857933"
+            },
+            "resetHandle@dshell.internal.type.CalleeHandle.MethodHandle" : "Array<String>#$iter$Reset : Func<void>",
+            "nextHandle@dshell.internal.type.CalleeHandle.MethodHandle" : "Array<String>#$iter$Next : Func<String>",
+            "hasNextHandle@dshell.internal.type.CalleeHandle.MethodHandle" : "Array<String>#$iter$HasNext : Func<boolean>",
+            "token@org.antlr.v4.runtime.Token" : "for",
+            "parentNode@dshell.internal.parser.Node" : "ref->932285561"
+          },
+          {
+            "@NodeType" : "TaskNode",
+            "@HashCode" : "2035070981",
+            "procNodeList@java.util.List" : [
+              {
+                "@NodeType" : "ProcessNode",
+                "@HashCode" : "1264213713",
+                "commandPath@java.lang.String" : "log",
+                "argNodeList@java.util.List" : [
+                  {
+                    "@NodeType" : "ArgumentNode",
+                    "@HashCode" : "1506809545",
+                    "segmentNodeList@java.util.List" : [
+                      {
+                        "@NodeType" : "StringExprNode",
+                        "@HashCode" : "1019384604",
+                        "elementList@java.util.List" : [
+                          {
+                            "@NodeType" : "StringValueNode",
+                            "@HashCode" : "550668305",
+                            "value@java.lang.String" : "result:",
+                            "type@dshell.internal.type.DSType" : "String",
+                            "token@org.antlr.v4.runtime.Token" : "result:",
+                            "parentNode@dshell.internal.parser.Node" : "ref->1019384604"
+                          },
+                          {
+                            "@NodeType" : "OperatorCallNode",
+                            "@HashCode" : "963110412",
+                            "funcName@java.lang.String" : "$",
+                            "argNodeList@java.util.List" : [
+                              {
+                                "@NodeType" : "SymbolNode",
+                                "@HashCode" : "1624820151",
+                                "symbolName@java.lang.String" : "dir",
+                                "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                "isReadOnly@boolean" : true,
+                                "type@dshell.internal.type.DSType" : "String",
+                                "token@org.antlr.v4.runtime.Token" : "$dir",
+                                "parentNode@dshell.internal.parser.Node" : "ref->963110412"
+                              }
+                            ],
+                            "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#toStringOrFlat : Func<String,[$Object$]>",
+                            "type@dshell.internal.type.DSType" : "String",
+                            "token@org.antlr.v4.runtime.Token" : null,
+                            "parentNode@dshell.internal.parser.Node" : "ref->1019384604"
+                          },
+                          {
+                            "@NodeType" : "StringValueNode",
+                            "@HashCode" : "1219161283",
+                            "value@java.lang.String" : " ",
+                            "type@dshell.internal.type.DSType" : "String",
+                            "token@org.antlr.v4.runtime.Token" : " ",
+                            "parentNode@dshell.internal.parser.Node" : "ref->1019384604"
+                          },
+                          {
+                            "@NodeType" : "OperatorCallNode",
+                            "@HashCode" : "2081191879",
+                            "funcName@java.lang.String" : "$",
+                            "argNodeList@java.util.List" : [
+                              {
+                                "@NodeType" : "SymbolNode",
+                                "@HashCode" : "2061347276",
+                                "symbolName@java.lang.String" : "pass_count",
+                                "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                "isReadOnly@boolean" : false,
+                                "type@dshell.internal.type.DSType" : "int",
+                                "token@org.antlr.v4.runtime.Token" : "${pass_count}",
+                                "parentNode@dshell.internal.parser.Node" : "ref->2081191879"
+                              }
+                            ],
+                            "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#toStringOrFlat : Func<String,[int]>",
+                            "type@dshell.internal.type.DSType" : "String",
+                            "token@org.antlr.v4.runtime.Token" : null,
+                            "parentNode@dshell.internal.parser.Node" : "ref->1019384604"
+                          },
+                          {
+                            "@NodeType" : "StringValueNode",
+                            "@HashCode" : "1559122513",
+                            "value@java.lang.String" : "\/",
+                            "type@dshell.internal.type.DSType" : "String",
+                            "token@org.antlr.v4.runtime.Token" : "\/",
+                            "parentNode@dshell.internal.parser.Node" : "ref->1019384604"
+                          },
+                          {
+                            "@NodeType" : "OperatorCallNode",
+                            "@HashCode" : "1128096251",
+                            "funcName@java.lang.String" : "$",
+                            "argNodeList@java.util.List" : [
+                              {
+                                "@NodeType" : "SymbolNode",
+                                "@HashCode" : "1552978964",
+                                "symbolName@java.lang.String" : "count",
+                                "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                                "isReadOnly@boolean" : false,
+                                "type@dshell.internal.type.DSType" : "int",
+                                "token@org.antlr.v4.runtime.Token" : "${count}",
+                                "parentNode@dshell.internal.parser.Node" : "ref->1128096251"
+                              }
+                            ],
+                            "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#toStringOrFlat : Func<String,[int]>",
+                            "type@dshell.internal.type.DSType" : "String",
+                            "token@org.antlr.v4.runtime.Token" : null,
+                            "parentNode@dshell.internal.parser.Node" : "ref->1019384604"
+                          }
+                        ],
+                        "type@dshell.internal.type.DSType" : "String",
+                        "token@org.antlr.v4.runtime.Token" : "\"",
+                        "parentNode@dshell.internal.parser.Node" : "ref->1506809545"
+                      }
+                    ],
+                    "type@dshell.internal.type.DSType" : "void",
+                    "token@org.antlr.v4.runtime.Token" : "\"",
+                    "parentNode@dshell.internal.parser.Node" : "ref->1264213713"
+                  }
+                ],
+                "redirOptionList@java.util.List" : [],
+                "trace@boolean" : false,
+                "type@dshell.internal.type.DSType" : "void",
+                "token@org.antlr.v4.runtime.Token" : "log",
+                "parentNode@dshell.internal.parser.Node" : "ref->2035070981"
+              }
+            ],
+            "isBackGround@boolean" : false,
+            "bufferEntry@dshell.lang.GenericPair" : null,
+            "type@dshell.internal.type.DSType" : "void",
+            "token@org.antlr.v4.runtime.Token" : "log",
+            "parentNode@dshell.internal.parser.Node" : "ref->932285561"
+          },
+          {
+            "@NodeType" : "ReturnNode",
+            "@HashCode" : "1259652483",
+            "exprNode@dshell.internal.parser.Node.ExprNode" : {
+              "@NodeType" : "EmptyNode",
+              "@HashCode" : "1699113578",
+              "type@dshell.internal.type.DSType" : "void",
+              "token@org.antlr.v4.runtime.Token" : null,
+              "parentNode@dshell.internal.parser.Node" : "ref->1259652483"
+            },
+            "token@org.antlr.v4.runtime.Token" : null,
+            "parentNode@dshell.internal.parser.Node" : null
+          }
+        ],
+        "token@org.antlr.v4.runtime.Token" : null,
+        "parentNode@dshell.internal.parser.Node" : "ref->1543148593"
+      },
+      "returnTypeSymbol@dshell.internal.parser.TypeToken" : "void",
+      "holderType@dshell.internal.type.DSType.FuncHolderType" : "FuncHolder3ofFunc<void,[String,int]>",
+      "token@org.antlr.v4.runtime.Token" : "function",
+      "parentNode@dshell.internal.parser.Node" : "ref->785447854"
+    },
+    {
+      "@NodeType" : "ImportEnvNode",
+      "@HashCode" : "2028017635",
+      "envName@java.lang.String" : "TEST_DIR",
+      "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#getEnv : Func<String,[String]>",
+      "token@org.antlr.v4.runtime.Token" : "TEST_DIR",
+      "parentNode@dshell.internal.parser.Node" : "ref->785447854"
+    },
+    {
+      "@NodeType" : "TaskNode",
+      "@HashCode" : "782378927",
+      "procNodeList@java.util.List" : [
+        {
+          "@NodeType" : "ProcessNode",
+          "@HashCode" : "70807318",
+          "commandPath@java.lang.String" : "echo",
+          "argNodeList@java.util.List" : [],
+          "redirOptionList@java.util.List" : [
+            "(1, ArgumentNode:void)"
+          ],
+          "trace@boolean" : false,
+          "type@dshell.internal.type.DSType" : "void",
+          "token@org.antlr.v4.runtime.Token" : "echo",
+          "parentNode@dshell.internal.parser.Node" : "ref->782378927"
+        }
+      ],
+      "isBackGround@boolean" : false,
+      "bufferEntry@dshell.lang.GenericPair" : null,
+      "type@dshell.internal.type.DSType" : "void",
+      "token@org.antlr.v4.runtime.Token" : "echo",
+      "parentNode@dshell.internal.parser.Node" : "ref->785447854"
+    },
+    {
+      "@NodeType" : "ApplyNode",
+      "@HashCode" : "910091170",
+      "recvNode@dshell.internal.parser.Node.ExprNode" : {
+        "@NodeType" : "SymbolNode",
+        "@HashCode" : "1183888521",
+        "symbolName@java.lang.String" : "test_all",
+        "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+        "isReadOnly@boolean" : false,
+        "type@dshell.internal.type.DSType" : "$unresolved$",
+        "token@org.antlr.v4.runtime.Token" : "$test_all",
+        "parentNode@dshell.internal.parser.Node" : "ref->910091170"
+      },
+      "argList@java.util.List" : [
+        {
+          "@NodeType" : "StringExprNode",
+          "@HashCode" : "2041605291",
+          "elementList@java.util.List" : [
+            {
+              "@NodeType" : "OperatorCallNode",
+              "@HashCode" : "1052245076",
+              "funcName@java.lang.String" : "$",
+              "argNodeList@java.util.List" : [
+                {
+                  "@NodeType" : "SymbolNode",
+                  "@HashCode" : "2136288211",
+                  "symbolName@java.lang.String" : "TEST_DIR",
+                  "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                  "isReadOnly@boolean" : true,
+                  "type@dshell.internal.type.DSType" : "String",
+                  "token@org.antlr.v4.runtime.Token" : "$TEST_DIR",
+                  "parentNode@dshell.internal.parser.Node" : "ref->1052245076"
+                }
+              ],
+              "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#toStringOrFlat : Func<String,[$Object$]>",
+              "type@dshell.internal.type.DSType" : "String",
+              "token@org.antlr.v4.runtime.Token" : null,
+              "parentNode@dshell.internal.parser.Node" : "ref->2041605291"
+            },
+            {
+              "@NodeType" : "StringValueNode",
+              "@HashCode" : "1008925772",
+              "value@java.lang.String" : "\/common",
+              "type@dshell.internal.type.DSType" : "String",
+              "token@org.antlr.v4.runtime.Token" : "\/common",
+              "parentNode@dshell.internal.parser.Node" : "ref->2041605291"
+            }
+          ],
+          "type@dshell.internal.type.DSType" : "String",
+          "token@org.antlr.v4.runtime.Token" : "\"",
+          "parentNode@dshell.internal.parser.Node" : "ref->910091170"
+        },
+        {
+          "@NodeType" : "IntValueNode",
+          "@HashCode" : "1175259735",
+          "value@long" : 0,
+          "type@dshell.internal.type.DSType" : "int",
+          "token@org.antlr.v4.runtime.Token" : "0",
+          "parentNode@dshell.internal.parser.Node" : "ref->910091170"
+        }
+      ],
+      "isFuncCall@boolean" : true,
+      "handle@dshell.internal.type.CalleeHandle.MethodHandle" : "FuncHolder3ofFunc<void,[String,int]>#invokeDirect : Func<void,[String,int]>",
+      "type@dshell.internal.type.DSType" : "void",
+      "token@org.antlr.v4.runtime.Token" : "$test_all",
+      "parentNode@dshell.internal.parser.Node" : "ref->785447854"
+    },
+    {
+      "@NodeType" : "ApplyNode",
+      "@HashCode" : "1205406622",
+      "recvNode@dshell.internal.parser.Node.ExprNode" : {
+        "@NodeType" : "SymbolNode",
+        "@HashCode" : "293907205",
+        "symbolName@java.lang.String" : "test_all",
+        "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+        "isReadOnly@boolean" : false,
+        "type@dshell.internal.type.DSType" : "$unresolved$",
+        "token@org.antlr.v4.runtime.Token" : "$test_all",
+        "parentNode@dshell.internal.parser.Node" : "ref->1205406622"
+      },
+      "argList@java.util.List" : [
+        {
+          "@NodeType" : "StringExprNode",
+          "@HashCode" : "988800485",
+          "elementList@java.util.List" : [
+            {
+              "@NodeType" : "OperatorCallNode",
+              "@HashCode" : "345902941",
+              "funcName@java.lang.String" : "$",
+              "argNodeList@java.util.List" : [
+                {
+                  "@NodeType" : "SymbolNode",
+                  "@HashCode" : "454325163",
+                  "symbolName@java.lang.String" : "TEST_DIR",
+                  "handle@dshell.internal.type.CalleeHandle.StaticFieldHandle" : null,
+                  "isReadOnly@boolean" : true,
+                  "type@dshell.internal.type.DSType" : "String",
+                  "token@org.antlr.v4.runtime.Token" : "$TEST_DIR",
+                  "parentNode@dshell.internal.parser.Node" : "ref->345902941"
+                }
+              ],
+              "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#toStringOrFlat : Func<String,[$Object$]>",
+              "type@dshell.internal.type.DSType" : "String",
+              "token@org.antlr.v4.runtime.Token" : null,
+              "parentNode@dshell.internal.parser.Node" : "ref->988800485"
+            },
+            {
+              "@NodeType" : "StringValueNode",
+              "@HashCode" : "796667727",
+              "value@java.lang.String" : "\/scripting",
+              "type@dshell.internal.type.DSType" : "String",
+              "token@org.antlr.v4.runtime.Token" : "\/scripting",
+              "parentNode@dshell.internal.parser.Node" : "ref->988800485"
+            }
+          ],
+          "type@dshell.internal.type.DSType" : "String",
+          "token@org.antlr.v4.runtime.Token" : "\"",
+          "parentNode@dshell.internal.parser.Node" : "ref->1205406622"
+        },
+        {
+          "@NodeType" : "IntValueNode",
+          "@HashCode" : "1794717576",
+          "value@long" : 1,
+          "type@dshell.internal.type.DSType" : "int",
+          "token@org.antlr.v4.runtime.Token" : "1",
+          "parentNode@dshell.internal.parser.Node" : "ref->1205406622"
+        }
+      ],
+      "isFuncCall@boolean" : true,
+      "handle@dshell.internal.type.CalleeHandle.MethodHandle" : "FuncHolder3ofFunc<void,[String,int]>#invokeDirect : Func<void,[String,int]>",
+      "type@dshell.internal.type.DSType" : "void",
+      "token@org.antlr.v4.runtime.Token" : "$test_all",
+      "parentNode@dshell.internal.parser.Node" : "ref->785447854"
+    }
+  ],
+  "intrenalToplevelClassName@java.lang.String" : "dshell\/generated\/toplevel2",
+  "handle@dshell.internal.type.CalleeHandle.OperatorHandle" : "null#printValue : Func<void,[$Object$,String]>",
+  "genTargetFuncTypeSet@java.util.Set" : "[Func<void,[String,int]>, Func<boolean,[String,String,String,Array<String>]>]",
+  "token@org.antlr.v4.runtime.Token" : "let",
+  "parentNode@dshell.internal.parser.Node" : null
+}
