@@ -83,6 +83,7 @@ public interface JSONParser extends Parser {
 				seq(objectOpen(), keyValue(), zeroMore(valueSep(), keyValue()), objectClose())
 				.action((ctx, a) -> {
 					JSONObject object = new JSONObject();
+					object.add(a.get1());
 					for(Tuple2<Void, Tuple2<JSONString, JSON>> t : a.get2()) {
 						object.add(t.get1());
 					}
@@ -102,6 +103,7 @@ public interface JSONParser extends Parser {
 				seq(arrayOpen(), value(), zeroMore(valueSep(), value()), arrayClose())
 				.action((ctx, a) -> {
 					JSONArray array = new JSONArray();
+					array.add(a.get1());
 					for(Tuple2<Void, JSON> t : a.get2()) {
 						array.add(t.get1());
 					}

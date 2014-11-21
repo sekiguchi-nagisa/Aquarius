@@ -24,7 +24,32 @@ public interface JSON {
 		private final String value;
 
 		public JSONString(String value) {
-			this.value = value;
+			this.value = stringify(value);
+		}
+
+		private static String stringify(String value) {	//TODO: unicode escape
+			StringBuilder sBuilder = new StringBuilder();
+			final int size = value.length();
+			for(int i = 0; i < size; i++) {
+				char ch = value.charAt(i);
+				if(ch == '\\') {
+					char nextCh = value.charAt(++i);
+					switch(nextCh) {
+					case 'b': ch = '\b'; break;
+					case 'f': ch = '\f'; break;
+					case 'n': ch = '\n'; break;
+					case 'r': ch = '\r'; break;
+					case 't': ch = '\t'; break;
+					case '\\': ch = nextCh; break;
+					case '/': ch = nextCh; break;
+					case '"': ch = nextCh; break;
+					}
+				} else if(ch == '"') {
+					continue;
+				}
+				sBuilder.append(ch);
+			}
+			return sBuilder.toString();
 		}
 
 		public String getValue() {
