@@ -131,20 +131,21 @@ public class ParserFactory {
 
 			// hashCode, equals, toString
 			if(matchMethod(method, int.class, "hashCode")) {
-				return proxy.hashCode();
+				return this.hashCode();
 			} else if(matchMethod(method, boolean.class, "equals", Object.class)) {
-				return proxy.equals(args[0]);
+				return proxy == args[0];
 			} else if(matchMethod(method, String.class, "toString")) {
-				return proxy.toString();
+				return this.toString();
 			}
 
 			// call default method
-			if(method.isDefault()) {
+			if(method.isDefault() && !matchMethod(method, Rule.class, "rule", PatternWrapper.class) 
+					&& !matchMethod(method, Rule.class, "ruleVoid", PatternWrapper.class)) {
 				return this.invokeDefaultMethod(proxy, method, args);
 			}
 
 			// otherwise
-			return null;
+			throw new IllegalArgumentException("unimplemented method: " + method);
 		}
 
 

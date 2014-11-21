@@ -11,6 +11,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
@@ -45,6 +46,12 @@ public class CheckStyleProcessor extends AbstractProcessor {
 		// check if is interface
 		if(!typeElement.getKind().isInterface()) {
 			this.reportErrorAndExit("must be interface", typeElement);
+			return;
+		}
+
+		// check access level
+		if(!typeElement.getModifiers().contains(Modifier.PUBLIC)) {
+			this.reportErrorAndExit("must be public", typeElement);
 			return;
 		}
 
@@ -95,7 +102,12 @@ public class CheckStyleProcessor extends AbstractProcessor {
 	}
 
 	private boolean matchClass(TypeMirror type, Class<?> targetClass) {
-		return type.toString().equals(targetClass.getCanonicalName());
+		String typeName = type.toString();
+		int index = typeName.indexOf('<');
+		if(index != -1) {
+			typeName = typeName.substring(0, index);
+		}
+		return typeName.equals(targetClass.getCanonicalName());
 	}
 
 	/**
