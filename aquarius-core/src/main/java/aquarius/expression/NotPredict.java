@@ -32,19 +32,15 @@ public class NotPredict implements ParsingExpression<Void> {
 		AquariusInputStream input = context.getInputStream();
 		int pos = input.getPosition();
 
-		try {
-			if(!this.expr.parse(context)) {
-				/**
-				 * if prediction is failed, return true
-				 */
-				context.popFailure();
-				return true;
-			}
+		context.setFailureCreation(false);
+		boolean status = !this.expr.parse(context);
+		context.setFailureCreation(true);
+
+		if(!status) {
 			context.pushFailure(pos, this);
-			return false;
-		} finally {
-			input.setPosition(pos);
 		}
+		input.setPosition(pos);
+		return status;	//if prediction is failed, return true
 	}
 
 	@Override

@@ -30,4 +30,6 @@ public abstract class ResultCache {
 	 * @param currentPos
 	 */
 	public abstract void set(int ruleIndex, int srcPos, Object value, int currentPos);
+
+	public abstract void setFailure(int ruleIndex, int srcPos);
 }

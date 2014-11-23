@@ -18,7 +18,7 @@ public abstract class Failure {
 	public abstract int getFailurePos();
 	public abstract String getMessage(AquariusInputStream input);
 
-	public static Failure failInAction(int pos, FailedActionException e) {
+	public static Failure failInAction(int failurePos, FailedActionException e) {
 		return new Failure() {
 			@Override
 			public String getMessage(AquariusInputStream input) {
@@ -30,12 +30,12 @@ public abstract class Failure {
 
 			@Override
 			public int getFailurePos() {
-				return pos;
+				return failurePos;
 			}
 		};
 	}
 
-	public static Failure failInExpr(int pos, ParsingExpression<?> expr) {
+	public static Failure failInExpr(int failurePos, ParsingExpression<?> expr) {
 		return new Failure() {
 			@Override
 			public String getMessage(AquariusInputStream input) {
@@ -47,12 +47,12 @@ public abstract class Failure {
 						sBuilder.append("require any character, but reach End of File")
 					)
 					.when(CharSet.class, a -> {
-						if(pos == input.getInputSize()) {
+						if(failurePos == input.getInputSize()) {
 							sBuilder.append("require chars: " + a + ", but reach End of File");
 						} else {
 							int curPos = input.getPosition();
 
-							input.setPosition(pos);
+							input.setPosition(failurePos);
 							sBuilder.append("require chars: " + a);
 							sBuilder.append(", but is: " + Utf8Util.codeToString(input.fetch()));
 
@@ -60,7 +60,7 @@ public abstract class Failure {
 						}
 					})
 					.when(Literal.class, a -> {
-						if(pos == input.getInputSize()) {
+						if(failurePos == input.getInputSize()) {
 							sBuilder.append("require text: " + a.getTarget() + ", but reach End of File");
 						} else {
 							int curPos = input.getPosition();
@@ -97,7 +97,7 @@ public abstract class Failure {
 
 			@Override
 			public int getFailurePos() {
-				return pos;
+				return failurePos;
 			}
 		};
 	}

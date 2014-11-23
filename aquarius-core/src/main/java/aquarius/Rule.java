@@ -67,9 +67,9 @@ public class Rule<R> implements ParsingExpression<R> {
 		ParserContext context = new ParserContext(input, factory.newCache(this.ruleSize, 0));
 
 		// start parsing
-		this.parse(context);
+		boolean status = this.parse(context);
 
 		// create result
-		return new ParsedResult<>(context.popValue());
+		return new ParsedResult<>(status ? context.popValue() : context.popFailure());
 	}
 }

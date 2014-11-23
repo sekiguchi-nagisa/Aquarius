@@ -35,19 +35,15 @@ public class PredictAction implements ParsingExpression<Void> {	// extended expr
 		int pos = input.getPosition();
 
 		try {
-			if(this.action.invoke(context)) {
-				/**
-				 * if prediction is success, return true
-				 */
-				input.setPosition(pos);
-				return true;
-			}
-			try {
+			context.setFailureCreation(false);
+			boolean status = this.action.invoke(context);
+			context.setFailureCreation(true);
+
+			if(!status) {
 				context.pushFailure(pos, this);
-				return false;
-			} finally {
-				input.setPosition(pos);
 			}
+			input.setPosition(pos);
+			return status;	//if prediction is success, return true
 		} catch(Exception e) {
 			return Utils.propagate(e);
 		}

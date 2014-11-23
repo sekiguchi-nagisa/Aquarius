@@ -13,6 +13,13 @@ public class ParserContext {
 	 */
 	private Object value;
 
+	/**
+	 * longest matched failure. may be null if has no failure.
+	 */
+	private Failure longestFailure;
+
+	private boolean failureCreation = true;
+
 	public ParserContext(AquariusInputStream input) {
 		this.input = input;
 		this.cache = new CacheFactory(CacheKind.Empty).newCache(0, 0);
@@ -51,17 +58,30 @@ public class ParserContext {
 		return (T) this.popValue();
 	}
 
-	public void pushFailure(int pos, FailedActionException e) {
-		this.value = Failure.failInAction(pos, e);
+	/**
+	 * 
+	 * @param failureCreation
+	 * if true, enable failure creation.
+	 */
+	public void setFailureCreation(boolean failureCreation) {
+		this.failureCreation = failureCreation;
 	}
 
-	public void pushFailure(int pos, ParsingExpression<?> expr) {
-		this.value = Failure.failInExpr(pos, expr);
+	public void pushFailure(int failurePos, FailedActionException e) {
+		if(this.checkFailureCreation(failurePos)) {
+			this.longestFailure = Failure.failInAction(failurePos, e);
+		}
 	}
 
-	public void pushFailure(Failure failure) {
-		assert failure != null;
-		this.value = failure;
+	public void pushFailure(int failurePos, ParsingExpression<?> expr) {
+		if(this.checkFailureCreation(failurePos)) {
+			this.longestFailure = Failure.failInExpr(failurePos, expr);
+		}
+	}
+
+	private final boolean checkFailureCreation(int failurePos) {
+		return this.failureCreation && (this.longestFailure == null 
+				|| failurePos > this.longestFailure.getFailurePos());
 	}
 
 	/**
@@ -70,10 +90,7 @@ public class ParserContext {
 	 * may be null
 	 */
 	public Failure popFailure() {
-		assert this.value != null;
-		Failure failure = (Failure) this.value;
-		this.value = null;
-		return failure;
+		return this.longestFailure;
 	}
 
 	/**
@@ -98,13 +115,21 @@ public class ParserContext {
 
 		CacheEntry entry = this.cache.get(ruleIndex, srcPos);
 		if(entry != null) {
+			if(!entry.getStatus()) {
+				this.value = null;
+				return false;
+			}
 			this.input.setPosition(entry.getCurrentPos());
 			this.value = entry.getValue();
 			return entry.getStatus();
 		}
 		// if not found previous parsed result, invoke rule
 		boolean status = rule.getPattern().parse(this);
-		this.cache.set(ruleIndex, srcPos, this.value, this.input.getPosition());
+		if(status) {
+			this.cache.set(ruleIndex, srcPos, this.value, this.input.getPosition());
+		} else {
+			this.cache.setFailure(ruleIndex, srcPos);
+		}
 		return status;
 	}
 }

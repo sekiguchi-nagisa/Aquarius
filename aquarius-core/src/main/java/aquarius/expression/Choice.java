@@ -2,7 +2,6 @@ package aquarius.expression;
 
 import aquarius.AquariusInputStream;
 import aquarius.ExpressionVisitor;
-import aquarius.Failure;
 import aquarius.ParserContext;
 
 /**
@@ -39,21 +38,14 @@ public class Choice<R> implements ParsingExpression<R> {
 	@Override
 	public boolean parse(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
-
-		Failure longestMatched = null;
 		int pos = input.getPosition();
 		for(ParsingExpression<R> e : this.exprs) {
 			if(!e.parse(context)) {
-				Failure failure = context.popFailure();
-				if(longestMatched == null || longestMatched.getFailurePos() < failure.getFailurePos()) {
-					longestMatched = failure;
-				}
 				input.setPosition(pos);	// roll back position
 				continue;
 			}
 			return true;
 		}
-		context.pushFailure(longestMatched);
 		return false;
 	}
 

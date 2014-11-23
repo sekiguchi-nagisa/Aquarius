@@ -32,6 +32,10 @@ public class CacheFactory {
 		@Override
 		public void set(int ruleIndex, int srcPos, Object value, int currentPos) {
 		}
+
+		@Override
+		public void setFailure(int ruleIndex, int srcPos) {
+		}
 	}
 
 	protected static class LimitedSizeCache extends ResultCache {
@@ -56,6 +60,16 @@ public class CacheFactory {
 			}
 			row.set(srcPos, currentPos, value);
 		}
+
+		@Override
+		public void setFailure(int ruleIndex, int srcPos) {
+			EntryRow row = this.entryTable[ruleIndex];
+			if(row == null) {
+				row = new EntryRow();
+				this.entryTable[ruleIndex] = row;
+			}
+			row.setFailure(srcPos);
+		}
 	}
 
 	private static class EntryRow {
@@ -73,11 +87,17 @@ public class CacheFactory {
 			int index = srcIndex % DEFAULT_ROW_SIZE;
 			this.srcIndexEntries[index] = srcIndex;
 			CacheEntry entry = this.entries[index];
-			if(entry == null) {
-				this.entries[index] = new CacheEntry(pos, value);
+			if(entry == null || !entry.getStatus()) {
+				this.entries[index] = CacheEntry.newCacheEntry(pos, value);
 			} else {
 				entry.reuse(pos, value);
 			}
+		}
+
+		public void setFailure(int srcIndex) {
+			int index = srcIndex % DEFAULT_ROW_SIZE;
+			this.srcIndexEntries[index] = srcIndex;
+			this.entries[index] = CacheEntry.FAILURE_ENTRY;
 		}
 
 		public CacheEntry get(int srcIndex) {
