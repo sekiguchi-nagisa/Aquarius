@@ -4,7 +4,7 @@ import aquarius.CacheFactory.CacheKind;
 import aquarius.Parser.PatternWrapper;
 import aquarius.expression.ParsingExpression;
 
-public class Rule<R> extends ParsingExpression<R> {
+public class Rule<R> implements ParsingExpression<R> {
 	/**
 	 * for memoization
 	 */

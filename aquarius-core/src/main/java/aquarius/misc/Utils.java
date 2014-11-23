@@ -32,4 +32,11 @@ public class Utils {
 		System.err.println("max   memory: " + f.format(max));
 		System.err.println();
 	}
+
+	public final static boolean propagate(Exception e) throws RuntimeException {
+		if(e instanceof RuntimeException) {
+			throw (RuntimeException) e;
+		}
+		throw new RuntimeException(e);
+	}
 }

@@ -9,7 +9,7 @@ import aquarius.ParserContext;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class Sequence extends ParsingExpression<Void> {
+public class Sequence implements ParsingExpression<Void> {
 	private final ParsingExpression<?>[] exprs;
 
 	@SafeVarargs

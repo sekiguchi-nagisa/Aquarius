@@ -11,7 +11,7 @@ import aquarius.ParserContext;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class NotPredict extends ParsingExpression<Void> {
+public class NotPredict implements ParsingExpression<Void> {
 	private final ParsingExpression<?> expr;
 
 	public NotPredict(ParsingExpression<?> expr) {

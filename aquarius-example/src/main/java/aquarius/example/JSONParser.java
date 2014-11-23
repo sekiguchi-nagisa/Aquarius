@@ -2,6 +2,7 @@ package aquarius.example;
 
 import static aquarius.Expressions.*;
 import static aquarius.example.JSON.*;
+import static aquarius.misc.Tuples.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -70,7 +71,7 @@ public interface JSONParser extends Parser {
 	public default Rule<JSON> json() {
 		return rule(() -> 
 			seq(ws(), choice(object(), array()))
-			.action((ctx, a) -> 
+			.map((ctx, a) -> 
 				a.get1()
 			)
 		);
@@ -81,7 +82,7 @@ public interface JSONParser extends Parser {
 		return rule(() ->
 			choice(
 				seq(objectOpen(), keyValue(), zeroMore(valueSep(), keyValue()), objectClose())
-				.action((ctx, a) -> {
+				.map((ctx, a) -> {
 					JSONObject object = new JSONObject();
 					object.add(a.get1());
 					for(Tuple2<Void, Tuple2<JSONString, JSON>> t : a.get2()) {
@@ -89,7 +90,7 @@ public interface JSONParser extends Parser {
 					}
 					return object;
 				}),
-				seq(objectOpen(), objectClose()).action((ctx, a) -> 
+				seq(objectOpen(), objectClose()).map((ctx, a) -> 
 					new JSONObject()
 				)
 			)
@@ -101,7 +102,7 @@ public interface JSONParser extends Parser {
 		return rule(() ->
 			choice(
 				seq(arrayOpen(), value(), zeroMore(valueSep(), value()), arrayClose())
-				.action((ctx, a) -> {
+				.map((ctx, a) -> {
 					JSONArray array = new JSONArray();
 					array.add(a.get1());
 					for(Tuple2<Void, JSON> t : a.get2()) {
@@ -109,7 +110,7 @@ public interface JSONParser extends Parser {
 					}
 					return array;
 				}),
-				seq(arrayOpen(), arrayClose()).action((ctx, a) -> 
+				seq(arrayOpen(), arrayClose()).map((ctx, a) -> 
 					new JSONArray()
 				)
 			)
@@ -119,8 +120,8 @@ public interface JSONParser extends Parser {
 	@RuleDefinition
 	public default Rule<Tuple2<JSONString, JSON>> keyValue() {
 		return rule(() ->
-			seq(string(), keyValueSep(), value(), ws()).action((ctx, a) -> 
-				new Tuple2<>(a.get0(), a.get2())
+			seq(string(), keyValueSep(), value(), ws()).map((ctx, a) -> 
+				of(a.get0(), a.get2())
 			)
 		);
 	}
@@ -134,12 +135,12 @@ public interface JSONParser extends Parser {
 					number(),
 					object(),
 					array(),
-					str("true").action((ctx, a) -> new JSONBool(true)),
-					str("false").action((ctx, a) -> new JSONBool(false)),
-					str("null").action((ctx, a) -> new JSONNull())
+					str("true").map((ctx, a) -> new JSONBool(true)),
+					str("false").map((ctx, a) -> new JSONBool(false)),
+					str("null").map((ctx, a) -> new JSONNull())
 				), 
 				ws()
-			).action((ctx, a) -> 
+			).map((ctx, a) -> 
 				a.get0()
 			)
 		);
@@ -161,7 +162,7 @@ public interface JSONParser extends Parser {
 					escape(), 
 					seqN(not(ch('"', '\\')), ANY)
 				).zeroMore(), 
-				str("\"")).action((ctx, a) -> 
+				str("\"")).map((ctx, a) -> 
 					new JSONString(ctx.createTokenText(a)
 				)
 			)
@@ -190,10 +191,10 @@ public interface JSONParser extends Parser {
 		return rule(() ->
 			choice(
 				$(str("-").opt(), integer(), str("."), r('0', '9').oneMore(), exp().opt())
-				.action((ctx, a) -> 
+				.map((ctx, a) -> 
 					new JSONNumber(Double.parseDouble(ctx.createTokenText(a)))
 				),
-				$(str("-").opt(), integer()).action((ctx, a) -> 
+				$(str("-").opt(), integer()).map((ctx, a) -> 
 					new JSONNumber(Long.parseLong(ctx.createTokenText(a))
 				))
 			)

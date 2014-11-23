@@ -11,7 +11,7 @@ import static aquarius.misc.Utf8Util.*;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class Literal extends ParsingExpression<Void> {
+public class Literal implements ParsingExpression<Void> {
 	private final int[] targetCodes;
 
 	public Literal(String target) {

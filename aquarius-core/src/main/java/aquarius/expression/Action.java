@@ -6,6 +6,7 @@ import aquarius.ParserContext;
 import aquarius.action.FailedActionException;
 import aquarius.action.ParsingAction;
 import aquarius.action.ParsingAction.*;
+import aquarius.misc.Utils;
 
 /**
 * try to match the expression, if success execute action. preceding expression result
@@ -16,7 +17,7 @@ import aquarius.action.ParsingAction.*;
  * @param <A>
 *
 */
-public class Action<R, A> extends ParsingExpression<R> {	// extended expression type
+public class Action<R, A> implements ParsingExpression<R> {	// extended expression type
 	private final ParsingExpression<A> expr;
 	private final ParsingAction<R, A> action;
 	private final boolean returnable;
@@ -24,7 +25,7 @@ public class Action<R, A> extends ParsingExpression<R> {	// extended expression 
 	public Action(ParsingExpression<A> expr, ParsingAction<R, A> action) {
 		this.expr = expr;
 		this.action = action;
-		this.returnable = action instanceof ParsingActionReturn;
+		this.returnable = action instanceof Mapper;
 	}
 
 	public ParsingExpression<A> getExpr() {
@@ -53,11 +54,11 @@ public class Action<R, A> extends ParsingExpression<R> {	// extended expression 
 
 		// invoke action
 		try {
-			if(this.action instanceof ParsingActionReturn) {
+			if(this.action instanceof Mapper) {
 				context.pushValue(
-					((ParsingActionReturn<R, A>) this.action).invoke(context, (A) context.popValue()));
+					((Mapper<R, A>) this.action).invoke(context, (A) context.popValue()));
 			} else {
-				((ParsingActionNoReturn<A>) this.action).invoke(context, (A) context.popValue());
+				((Consumer<A>) this.action).invoke(context, (A) context.popValue());
 			}
 			return true;
 		} catch(FailedActionException e) {
@@ -65,7 +66,7 @@ public class Action<R, A> extends ParsingExpression<R> {	// extended expression 
 			context.pushFailure(pos, e);
 			return false;
 		} catch(Exception e) {
-			throw new RuntimeException(e);
+			return Utils.propagate(e);
 		}
 	}
 

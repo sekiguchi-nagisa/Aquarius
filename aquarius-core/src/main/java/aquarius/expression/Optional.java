@@ -11,7 +11,7 @@ import aquarius.ParserContext;
  * @param <R>
 *
 */
-public class Optional<R> extends ParsingExpression<java.util.Optional<R>> {
+public class Optional<R> implements ParsingExpression<java.util.Optional<R>> {
 	private final ParsingExpression<R> expr;
 	private final boolean returnable;
 

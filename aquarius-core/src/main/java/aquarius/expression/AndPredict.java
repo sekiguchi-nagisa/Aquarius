@@ -12,7 +12,7 @@ import aquarius.ParserContext;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class AndPredict extends ParsingExpression<Void> {
+public class AndPredict implements ParsingExpression<Void> {
 	private final ParsingExpression<?> expr;
 
 	public AndPredict(ParsingExpression<?> expr) {

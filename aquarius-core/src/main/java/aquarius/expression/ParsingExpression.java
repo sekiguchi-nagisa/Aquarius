@@ -2,33 +2,33 @@ package aquarius.expression;
 
 import aquarius.ExpressionVisitor;
 import aquarius.ParserContext;
-import aquarius.action.ParsingAction.ParsingActionNoReturn;
-import aquarius.action.ParsingAction.ParsingActionReturn;
+import aquarius.action.ParsingAction.Consumer;
+import aquarius.action.ParsingAction.Mapper;
 
-public abstract class ParsingExpression<R> {
-	public abstract <T> T accept(ExpressionVisitor<T> visitor);
+public interface ParsingExpression<R> {
+	public <T> T accept(ExpressionVisitor<T> visitor);
 
-	public abstract boolean parse(ParserContext context);
+	public boolean parse(ParserContext context);
 
-	public abstract boolean isReturnable();
+	public boolean isReturnable();
 
-	public  <E> Action<E, R> action(ParsingActionReturn<E, R> action) {
+	public default <E> Action<E, R> map(Mapper<E, R> action) {
 		return new Action<>(this, action);
 	}
 
-	public Action<Void, R> actionNoRet(ParsingActionNoReturn<R> action) {
+	public default Action<Void, R> consume(Consumer<R> action) {
 		return new Action<>(this, action);
 	}
 
-	public final ZeroMore<R> zeroMore() {
+	public default ZeroMore<R> zeroMore() {
 		return new ZeroMore<>(this);
 	}
 
-	public final OneMore<R> oneMore() {
+	public default OneMore<R> oneMore() {
 		return new OneMore<>(this);
 	}
 
-	public final Optional<R> opt() {
+	public default Optional<R> opt() {
 		return new Optional<>(this);
 	}
 }

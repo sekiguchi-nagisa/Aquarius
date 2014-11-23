@@ -37,7 +37,7 @@ public interface SampleParser extends Parser {
 	@RuleDefinition
 	public default Rule<Token> Expr() {
 		return rule(() -> 
-			seq(__(), Add(), __()).action((ctx, a) -> a.get1())
+			seq(__(), Add(), __()).map((ctx, a) -> a.get1())
 		);
 	}
 

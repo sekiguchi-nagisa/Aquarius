@@ -24,7 +24,6 @@ public abstract class Failure {
 			public String getMessage(AquariusInputStream input) {
 				StringBuilder sBuilder = new  StringBuilder();
 				appendFailurePos(sBuilder, input, this.getFailurePos());
-				sBuilder.append("failed action: ");
 				sBuilder.append(e.getMessage());
 				return sBuilder.toString();
 			}

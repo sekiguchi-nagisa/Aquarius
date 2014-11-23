@@ -10,7 +10,7 @@ import aquarius.ParserContext;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class Any extends ParsingExpression<Void> {
+public class Any implements ParsingExpression<Void> {
 	@Override
 	public String toString() {
 		return ".";

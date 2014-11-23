@@ -4,13 +4,14 @@ import aquarius.AquariusInputStream;
 import aquarius.ExpressionVisitor;
 import aquarius.ParserContext;
 import aquarius.misc.Tuple2;
+import static aquarius.misc.Tuples.*;
 
-public class Sequence2<A, B> extends ParsingExpression<Tuple2<A, B>> {
+public class Sequence2<A, B> implements ParsingExpression<Tuple2<A, B>> {
 	private final Tuple2<ParsingExpression<A>, ParsingExpression<B>> exprs;
 	private final boolean returnable;
 
 	public Sequence2(ParsingExpression<A> a, ParsingExpression<B> b) {
-		this.exprs = new Tuple2<>(a, b);
+		this.exprs = of(a, b);
 		this.returnable = a.isReturnable() || b.isReturnable();
 	}
 
@@ -49,7 +50,7 @@ public class Sequence2<A, B> extends ParsingExpression<Tuple2<A, B>> {
 		B b = (B) context.popValue();
 
 		if(this.returnable) {
-			context.pushValue(new Tuple2<A, B>(a, b));
+			context.pushValue(of(a, b));
 		}
 		return true;
 	}

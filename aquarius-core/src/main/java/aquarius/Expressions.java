@@ -1,15 +1,12 @@
 package aquarius;
 
 import aquarius.action.PredictiveAction;
-import aquarius.action.ParsingActionNoArg.ParsingActionNoArgNoReturn;
-import aquarius.action.ParsingActionNoArg.ParsingActionNoArgReturn;
 import aquarius.expression.AndPredict;
 import aquarius.expression.Any;
 import aquarius.expression.Capture;
 import aquarius.expression.CharSet;
 import aquarius.expression.Choice;
 import aquarius.expression.Literal;
-import aquarius.expression.NoArgAction;
 import aquarius.expression.NotPredict;
 import aquarius.expression.OneMore;
 import aquarius.expression.Optional;
@@ -171,13 +168,5 @@ public final class Expressions {
 	@SafeVarargs
 	public final static Capture $(ParsingExpression<?>... exprs) {
 		return new Capture(exprs);
-	}
-
-	public final static <R> NoArgAction<R> action(ParsingActionNoArgReturn<R> action) {
-		return new NoArgAction<>(action);
-	}
-
-	public final static NoArgAction<Void> actionNoRet(ParsingActionNoArgNoReturn action) {
-		return new NoArgAction<>(action);
 	}
 }

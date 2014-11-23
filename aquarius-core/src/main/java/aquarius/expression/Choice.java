@@ -13,7 +13,7 @@ import aquarius.ParserContext;
  * @param <R>
 *
 */
-public class Choice<R> extends ParsingExpression<R> {
+public class Choice<R> implements ParsingExpression<R> {
 	private final ParsingExpression<R>[] exprs;
 	private final boolean returnable;
 

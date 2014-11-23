@@ -14,7 +14,7 @@ import aquarius.ParserContext;
  * @param <R>
 *
 */
-public class OneMore<R> extends ParsingExpression<List<R>> {
+public class OneMore<R> implements ParsingExpression<List<R>> {
 	private final ParsingExpression<R> expr;
 	private final boolean returnable;
 

@@ -15,7 +15,7 @@ import aquarius.misc.Utf8Util;
 * @author skgchxngsxyz-opensuse
 *
 */
-public class CharSet extends ParsingExpression<Void> {
+public class CharSet implements ParsingExpression<Void> {
 	private final int[] chars;
 	private List<IntRange> rangeList;
 

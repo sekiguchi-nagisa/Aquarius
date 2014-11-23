@@ -4,15 +4,16 @@ import aquarius.AquariusInputStream;
 import aquarius.ExpressionVisitor;
 import aquarius.ParserContext;
 import aquarius.misc.Tuple5;
+import static aquarius.misc.Tuples.*;
 
-public class Sequence5<A, B, C, D, E> extends ParsingExpression<Tuple5<A, B, C, D, E>> {
+public class Sequence5<A, B, C, D, E> implements ParsingExpression<Tuple5<A, B, C, D, E>> {
 	private final Tuple5<ParsingExpression<A>, ParsingExpression<B>, 
 			ParsingExpression<C>, ParsingExpression<D>, ParsingExpression<E>> exprs;
 	private final boolean returnable;
 
 	public Sequence5(ParsingExpression<A> a, ParsingExpression<B> b, 
 			ParsingExpression<C> c, ParsingExpression<D> d, ParsingExpression<E> e) {
-		this.exprs = new Tuple5<>(a, b, c, d, e);
+		this.exprs = of(a, b, c, d, e);
 		this.returnable = a.isReturnable() || b.isReturnable() || 
 				c.isReturnable() || d.isReturnable() || e.isReturnable();
 	}
@@ -84,7 +85,7 @@ public class Sequence5<A, B, C, D, E> extends ParsingExpression<Tuple5<A, B, C, 
 		E e = (E) context.popValue();
 
 		if(this.returnable) {
-			context.pushValue(new Tuple5<A, B, C, D, E>(a, b, c, d, e));
+			context.pushValue(of(a, b, c, d, e));
 		}
 		return true;
 	}
