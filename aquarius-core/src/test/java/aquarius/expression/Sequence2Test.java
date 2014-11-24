@@ -25,9 +25,7 @@ public class Sequence2Test extends TestBase<Tuple2<Void, Void>> {
 		// failure test1
 		this.initContext("1234aa");
 		result = this.expr.parse(this.context);
-		assertTrue(!result);
-		assertEquals(4, context.popFailure().getFailurePos());
-		assertEquals(0, this.input.getPosition());
+		this.failure(result, 0, 4);
 
 		// failure test2
 		this.initContext("12abc");

@@ -33,13 +33,14 @@ public class Optional<R> implements ParsingExpression<java.util.Optional<R>> {
 	public boolean parse(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
 		int pos = input.getPosition();
+		context.setFailureCreation(false);
 		if(!this.expr.parse(context)) {
 			input.setPosition(pos);	// roll back position
-			context.popFailure();
 		}
 		if(this.returnable) {
 			context.pushValue(java.util.Optional.ofNullable(context.popValue()));
 		}
+		context.setFailureCreation(true);
 		return true;
 	}
 

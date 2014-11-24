@@ -16,7 +16,7 @@ public class ParserContext {
 	/**
 	 * longest matched failure. may be null if has no failure.
 	 */
-	private Failure longestFailure;
+	private final Failure longestFailure = new Failure();
 
 	private boolean failureCreation = true;
 
@@ -69,13 +69,13 @@ public class ParserContext {
 
 	public void pushFailure(int failurePos, FailedActionException e) {
 		if(this.checkFailureCreation(failurePos)) {
-			this.longestFailure = Failure.failInAction(failurePos, e);
+			this.longestFailure.reuse(failurePos, e);
 		}
 	}
 
 	public void pushFailure(int failurePos, ParsingExpression<?> expr) {
 		if(this.checkFailureCreation(failurePos)) {
-			this.longestFailure = Failure.failInExpr(failurePos, expr);
+			this.longestFailure.reuse(failurePos, expr);
 		}
 	}
 
@@ -89,7 +89,7 @@ public class ParserContext {
 	 * @return
 	 * may be null
 	 */
-	public Failure popFailure() {
+	public Failure getFailure() {
 		return this.longestFailure;
 	}
 
@@ -121,7 +121,7 @@ public class ParserContext {
 			}
 			this.input.setPosition(entry.getCurrentPos());
 			this.value = entry.getValue();
-			return entry.getStatus();
+			return true;
 		}
 		// if not found previous parsed result, invoke rule
 		boolean status = rule.getPattern().parse(this);

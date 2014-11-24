@@ -37,11 +37,12 @@ public class ZeroMore<R> implements ParsingExpression<List<R>> {
 	public boolean parse(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
 		List<R> result = this.returnable ? new LinkedList<R>() : null;
+
+		context.setFailureCreation(false);
 		while(true) {
 			int pos = input.getPosition();
 			if(!this.expr.parse(context)) {
 				input.setPosition(pos);	// roll back position
-				context.popFailure();
 				break;
 			}
 			if(this.returnable) {
@@ -49,6 +50,7 @@ public class ZeroMore<R> implements ParsingExpression<List<R>> {
 			}
 		}
 		context.pushValue(result);
+		context.setFailureCreation(true);
 		return true;
 	}
 

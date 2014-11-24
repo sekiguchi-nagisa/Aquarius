@@ -32,6 +32,6 @@ public abstract class TestBase<R> {
 	protected void failure(boolean status, int position, int failruePos) {
 		assertTrue(!status);
 		assertEquals(position, this.input.getPosition());
-		assertEquals(failruePos, this.context.popFailure().getFailurePos());
+		assertEquals(failruePos, this.context.getFailure().getFailurePos());
 	}
 }

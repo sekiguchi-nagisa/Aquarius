@@ -36,15 +36,21 @@ public class OneMore<R> implements ParsingExpression<List<R>> {
 	@Override
 	public boolean parse(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
-		int count = 0;
-		List<R> result = this.returnable ? new LinkedList<R>() : null;
+
+		// match at least once
+		if(!this.expr.parse(context)) {
+			return false;
+		}
+		List<R> result = null;
+		if(this.returnable) {
+			result = new LinkedList<>();
+			result.add((R) context.popValue());
+		}
+
+		context.setFailureCreation(false);
 		while(true) {
 			int pos = input.getPosition();
-			count++;
 			if(!this.expr.parse(context)) {
-				if(count == 1) {
-					return false;
-				}
 				input.setPosition(pos);	// roll back position
 				break;
 			}
@@ -53,6 +59,7 @@ public class OneMore<R> implements ParsingExpression<List<R>> {
 			}
 		}
 		context.pushValue(result);
+		context.setFailureCreation(true);
 		return true;
 	}
 

@@ -70,6 +70,6 @@ public class Rule<R> implements ParsingExpression<R> {
 		boolean status = this.parse(context);
 
 		// create result
-		return new ParsedResult<>(status ? context.popValue() : context.popFailure());
+		return new ParsedResult<>(status ? context.popValue() : context.getFailure());
 	}
 }

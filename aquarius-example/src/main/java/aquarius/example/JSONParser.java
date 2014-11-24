@@ -5,14 +5,12 @@ import static aquarius.example.JSON.*;
 import static aquarius.misc.Tuples.*;
 
 import java.util.List;
-import java.util.Optional;
 
 import aquarius.Parser;
 import aquarius.Rule;
 import aquarius.annotation.Grammar;
 import aquarius.annotation.RuleDefinition;
 import aquarius.misc.Tuple2;
-import aquarius.misc.Tuple3;
 
 @Grammar
 public interface JSONParser extends Parser {
@@ -180,9 +178,9 @@ public interface JSONParser extends Parser {
 	}
 
 	@RuleDefinition
-	public default Rule<Tuple3<Void, Optional<Void>, Void>> exp() {
-		return rule(() ->
-			seq(ch('E', 'e'), ch('+', '-').opt(), integer())
+	public default Rule<Void> exp() {
+		return ruleVoid(() ->
+			seqN(ch('E', 'e'), ch('+', '-').opt(), integer())
 		);
 	}
 
