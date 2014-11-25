@@ -183,4 +183,8 @@ public final class Utf8Util {
 			}
 		}
 	}
+
+	public final static boolean isAsciiCode(int utf8Code) {
+		return utf8Code > -1 && utf8Code < 128;
+	}
 }

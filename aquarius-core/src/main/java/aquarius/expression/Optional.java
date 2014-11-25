@@ -1,6 +1,5 @@
 package aquarius.expression;
 
-import aquarius.AquariusInputStream;
 import aquarius.ExpressionVisitor;
 import aquarius.ParserContext;
 
@@ -31,12 +30,8 @@ public class Optional<R> implements ParsingExpression<java.util.Optional<R>> {
 
 	@Override
 	public boolean parse(ParserContext context) {
-		AquariusInputStream input = context.getInputStream();
-		int pos = input.getPosition();
 		context.setFailureCreation(false);
-		if(!this.expr.parse(context)) {
-			input.setPosition(pos);	// roll back position
-		}
+		this.expr.parse(context);
 		if(this.returnable) {
 			context.pushValue(java.util.Optional.ofNullable(context.popValue()));
 		}

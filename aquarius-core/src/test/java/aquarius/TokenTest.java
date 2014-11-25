@@ -14,9 +14,9 @@ public class TokenTest {
 	@Test
 	public void test() {
 		// test1
-		AquariusInputStream input = new CommonStream("sample", "a");
+		CommonStream input = new CommonStream("sample", "a");
 		assertEquals("sample", input.getSourceName());
-		assertEquals(1, input.getInputSize());
+		assertEquals(1, input.getBufferSize());
 		assertEquals(Utf8Util.toUtf8Code('a'), input.fetch());
 		input.consume();
 		assertEquals(1, input.getPosition());
@@ -28,7 +28,7 @@ public class TokenTest {
 		// test2
 		input = new CommonStream("sample", "ω");
 		assertEquals("sample", input.getSourceName());
-		assertEquals(2, input.getInputSize());
+		assertEquals(2, input.getBufferSize());
 		assertEquals(Utf8Util.toUtf8Code('ω'), input.fetch());
 		input.consume();
 		assertEquals(2, input.getPosition());
@@ -40,7 +40,7 @@ public class TokenTest {
 		// test3
 		input = new CommonStream("sample", "あ");
 		assertEquals("sample", input.getSourceName());
-		assertEquals(3, input.getInputSize());
+		assertEquals(3, input.getBufferSize());
 		assertEquals(Utf8Util.toUtf8Code('あ'), input.fetch());
 		input.consume();
 		assertEquals(3, input.getPosition());
@@ -53,7 +53,7 @@ public class TokenTest {
 		// test4
 		input = new CommonStream("sample", s);
 		assertEquals("sample", input.getSourceName());
-		assertEquals(4, input.getInputSize());
+		assertEquals(4, input.getBufferSize());
 		assertEquals(Utf8Util.toUtf8Code(0x21c56), input.fetch());
 		input.consume();
 		assertEquals(4, input.getPosition());

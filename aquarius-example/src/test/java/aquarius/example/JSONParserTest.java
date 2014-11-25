@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import aquarius.AquariusInputStream;
 import aquarius.CommonStream;
 import aquarius.ParsedResult;
 import aquarius.ParserFactory;
@@ -64,11 +63,11 @@ public class JSONParserTest {
 				"  }" + "\n" +
 				"}";
 
-		AquariusInputStream input = new CommonStream("ex", jsonString);
+		CommonStream input = new CommonStream("ex", jsonString);
 		JSONParser parser = ParserFactory.createParser(JSONParser.class);
 		ParsedResult<JSON> result = parser.json().parse(input);
 		assertTrue(result.isSucess());
-		assertEquals(input.getPosition(), input.getInputSize());
+		assertEquals(input.getPosition(), input.getBufferSize());
 
 		JSON json = result.getValue();
 		assertTrue(json instanceof JSONObject);

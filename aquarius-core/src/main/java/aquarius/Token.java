@@ -1,6 +1,5 @@
 package aquarius;
 
-
 /**
  * represent for token
  * @author skgchxngsxyz-opensuse
@@ -37,10 +36,43 @@ public interface Token {
 	public int getLineNumber(AquariusInputStream srcInput);
 
 	/**
-	 * get position in line.
+	 * get position of starting new line
 	 * @param srcInput
-	 * not nul;
 	 * @return
 	 */
-	public int getPosInLine(AquariusInputStream srcInput);
+	public int getLineStartPos(AquariusInputStream srcInput);
+
+	/**
+	 * get position in line.
+	 * @param srcInput
+	 * not null
+	 * @return
+	 */
+	public default int getPosInLine(AquariusInputStream srcInput) {
+		return this.getStartPos() - this.getLineStartPos(srcInput);
+	}
+
+	/**
+	 * get utf8 code position in line.
+	 * @param srcInput
+	 * not null
+	 * @return
+	 * not equivalent to getPosInLine if has some utf8 characters.
+	 */
+	public default int getCodePosInLine(AquariusInputStream srcInput) {
+		int curPos = srcInput.getPosition();
+
+		final int startPos = this.getStartPos();
+		int pos = this.getLineStartPos(srcInput);
+		srcInput.setPosition(pos);
+		int count = 0;
+		while(pos < startPos) {
+			srcInput.consume();
+			pos = srcInput.getPosition();
+			count++;
+		}
+
+		srcInput.setPosition(curPos);
+		return count;
+	}
 }

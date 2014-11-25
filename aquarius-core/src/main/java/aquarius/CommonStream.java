@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import aquarius.misc.Utf8Util;
 import static aquarius.misc.Utf8Util.*;
 
 /**
@@ -69,7 +68,7 @@ public class CommonStream implements AquariusInputStream {
 	 * if index out of range, return false
 	 */
 	private boolean checkIndexRange(int position) {
-		if(position < 0 || position >= this.bufferSize) {
+		if(position < 0 || position > this.bufferSize) {
 			return false;
 		}
 		return true;
@@ -77,7 +76,7 @@ public class CommonStream implements AquariusInputStream {
 
 	@Override
 	public void setPosition(int position) throws IndexOutOfBoundsException {
-		if(position != this.bufferSize && !this.checkIndexRange(position)) {
+		if(!this.checkIndexRange(position)) {
 			throw new IndexOutOfBoundsException("position is " + position + 
 					", but buffer size is " + this.bufferSize);
 		}
@@ -117,7 +116,7 @@ public class CommonStream implements AquariusInputStream {
 		if(length < 0) {
 			throw new IndexOutOfBoundsException("length is non negative: " + length);
 		}
-		if(startPos + length > this.getInputSize()) {
+		if(startPos + length > this.bufferSize) {
 			length = this.bufferSize - startPos;
 		}
 		return new CommonToken(startPos, length);
@@ -164,7 +163,7 @@ public class CommonStream implements AquariusInputStream {
 		}
 
 		@Override
-		public int getPosInLine(AquariusInputStream srcInput) {
+		public int getLineStartPos(AquariusInputStream srcInput) {
 			CommonStream stream = (CommonStream) srcInput;
 			int latestNewLinePos = 0;
 			for(int i = 0; i < stream.bufferSize; i++) {
@@ -175,13 +174,7 @@ public class CommonStream implements AquariusInputStream {
 					break;
 				}
 			}
-			int count = 0;
-			int pos = latestNewLinePos;
-			while(pos < this.getStartPos()) {
-				pos = Utf8Util.getUtf8NextPos(pos, stream.buffer[pos]);
-				count++;
-			}
-			return count;
+			return latestNewLinePos;
 		}
 
 		@Override
@@ -210,8 +203,7 @@ public class CommonStream implements AquariusInputStream {
 		this.sourceName = sourceName;
 	}
 
-	@Override
-	public int getInputSize() {
+	public int getBufferSize() {
 		return this.bufferSize;
 	}
 }

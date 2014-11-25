@@ -44,7 +44,7 @@ public class Failure {
 				sBuilder.append("require any character, but reach End of File")
 			)
 			.when(CharSet.class, a -> {
-				if(failurePos == input.getInputSize()) {
+				if(isEnfOfInput(input, this.getFailurePos())) {
 					sBuilder.append("require chars: " + a + ", but reach End of File");
 				} else {
 					int curPos = input.getPosition();
@@ -57,7 +57,7 @@ public class Failure {
 				}
 			})
 			.when(Literal.class, a -> {
-				if(failurePos == input.getInputSize()) {
+				if(isEnfOfInput(input, this.getFailurePos())) {
 					sBuilder.append("require text: " + a.getTarget() + ", but reach End of File");
 				} else {
 					int curPos = input.getPosition();
@@ -90,7 +90,18 @@ public class Failure {
 					throw new RuntimeException("must not null value");
 				}
 			});
+		appendFialureLine(sBuilder, input, this.getFailurePos());
 		return sBuilder.toString();
+	}
+
+	private static boolean isEnfOfInput(AquariusInputStream input, int pos) {
+		int curPos = input.getPosition();
+		input.setPosition(pos);
+		try {
+			return input.fetch() == AquariusInputStream.EOF;
+		} finally {
+			input.setPosition(curPos);
+		}
 	}
 
 	private static void appendFailurePos(StringBuilder sBuilder, AquariusInputStream input, int pos) {
@@ -101,7 +112,35 @@ public class Failure {
 		sBuilder.append(':');
 		sBuilder.append(token.getLineNumber(input));
 		sBuilder.append(':');
-		sBuilder.append(token.getPosInLine(input));
+		sBuilder.append(token.getCodePosInLine(input));
 		sBuilder.append(": ");
+	}
+
+	private static void appendFialureLine(StringBuilder sBuilder, AquariusInputStream input, int pos) {
+		int curPos = input.getPosition();
+
+		// create line
+		final int lineStartPos = input.createToken(pos, 0).getLineStartPos(input);
+		input.setPosition(pos);
+		input.consume();
+		String line = input.createToken(lineStartPos).getText(input);
+		sBuilder.append(System.lineSeparator());
+		sBuilder.append(line);
+		sBuilder.append(System.lineSeparator());
+
+		// create line marker
+		input.setPosition(lineStartPos);
+		int startPos = lineStartPos;
+		while(startPos < pos) {
+			sBuilder.append(' ');
+			if(!Utf8Util.isAsciiCode(input.fetch())) {
+				sBuilder.append(' ');
+			}
+			input.consume();
+			startPos = input.getPosition();
+		}
+		sBuilder.append('^');
+
+		input.setPosition(curPos);
 	}
 }

@@ -21,7 +21,7 @@ public class Any implements ParsingExpression<Void> {
 		AquariusInputStream input = context.getInputStream();
 		int pos = input.getPosition();
 
-		if(pos == input.getInputSize()) {
+		if(input.fetch() == AquariusInputStream.EOF) {
 			context.pushFailure(pos, this);
 			return false;
 		}

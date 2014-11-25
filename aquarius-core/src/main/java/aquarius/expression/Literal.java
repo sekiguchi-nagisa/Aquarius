@@ -36,11 +36,6 @@ public class Literal implements ParsingExpression<Void> {
 		AquariusInputStream input = context.getInputStream();
 		int pos = input.getPosition();
 
-		if(pos == input.getInputSize()) {
-			context.pushFailure(pos, this);
-			return false;
-		}
-
 		for(int code : this.targetCodes) {
 			if(code != input.fetch()) {
 				context.pushFailure(pos, this);

@@ -1,6 +1,5 @@
 package aquarius.expression;
 
-import aquarius.AquariusInputStream;
 import aquarius.ExpressionVisitor;
 import aquarius.ParserContext;
 
@@ -37,14 +36,10 @@ public class Choice<R> implements ParsingExpression<R> {
 
 	@Override
 	public boolean parse(ParserContext context) {
-		AquariusInputStream input = context.getInputStream();
-		int pos = input.getPosition();
 		for(ParsingExpression<R> e : this.exprs) {
-			if(!e.parse(context)) {
-				input.setPosition(pos);	// roll back position
-				continue;
+			if(e.parse(context)) {
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}

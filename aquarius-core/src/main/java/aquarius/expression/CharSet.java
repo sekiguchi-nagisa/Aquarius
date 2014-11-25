@@ -124,12 +124,11 @@ public class CharSet implements ParsingExpression<Void> {
 		AquariusInputStream input = context.getInputStream();
 		int pos = input.getPosition();
 
-		if(pos == input.getInputSize()) {
+		final int fetchedCh = input.fetch();
+		if(fetchedCh == AquariusInputStream.EOF) {
 			context.pushFailure(pos, this);
 			return false;
 		}
-
-		final int fetchedCh = input.fetch();
 		// match chars
 		for(int ch : this.chars) {
 			if(fetchedCh == ch) {

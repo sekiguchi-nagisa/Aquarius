@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import aquarius.AquariusInputStream;
 import aquarius.CommonStream;
 import aquarius.ParsedResult;
 import aquarius.ParserFactory;
@@ -16,11 +15,11 @@ public class SampleParserTest {
 		SampleParser parser = ParserFactory.createParser(SampleParser.class);
 
 		String source = "      (1+ 3) / 2      ";
-		AquariusInputStream input = new CommonStream("ex", source);
+		CommonStream input = new CommonStream("ex", source);
 
 		ParsedResult<Token> result = parser.Expr().parse(input);
 		assertTrue(result.isSucess());
-		assertEquals(input.getPosition(), input.getInputSize());
+		assertEquals(input.getPosition(), input.getBufferSize());
 		assertEquals(result.getValue().getText(input), source.trim());
 
 		// parser instance test

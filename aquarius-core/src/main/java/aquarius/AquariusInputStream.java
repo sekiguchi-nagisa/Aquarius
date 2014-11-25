@@ -58,7 +58,7 @@ public interface AquariusInputStream {
 	 * token length. may be 0
 	 * @return
 	 * @throws IndexOutOfBoundsException
-	 * if startPos < 0
+	 * if startPos < 0, startPos > getInputSize()
 	 * if length < 0
 	 */
 	public Token createToken(int startPos, int length) throws IndexOutOfBoundsException;
@@ -81,5 +81,5 @@ public interface AquariusInputStream {
 	 * @return
 	 * return -1, if sub class not support it.
 	 */
-	public int getInputSize();
+//	public int getInputSize();
 }

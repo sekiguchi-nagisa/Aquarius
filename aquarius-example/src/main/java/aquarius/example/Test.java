@@ -27,7 +27,12 @@ public class Test {
 		System.out.println("parse time: " + (stop - start) + "ms");
 
 		// print result
-		System.err.println(result.isSucess() ? "sucess" : "failed");
+		if(result.isSucess()) {
+			System.out.println("success");
+		} else {
+			Failure f = result.getFailure();
+			System.err.println(f.getMessage(input));
+		}
 	}
 
 	private static void test2(String[] args) throws IOException {

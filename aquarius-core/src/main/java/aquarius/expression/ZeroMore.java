@@ -3,7 +3,6 @@ package aquarius.expression;
 import java.util.LinkedList;
 import java.util.List;
 
-import aquarius.AquariusInputStream;
 import aquarius.ExpressionVisitor;
 import aquarius.ParserContext;
 
@@ -35,14 +34,11 @@ public class ZeroMore<R> implements ParsingExpression<List<R>> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean parse(ParserContext context) {
-		AquariusInputStream input = context.getInputStream();
 		List<R> result = this.returnable ? new LinkedList<R>() : null;
 
 		context.setFailureCreation(false);
 		while(true) {
-			int pos = input.getPosition();
 			if(!this.expr.parse(context)) {
-				input.setPosition(pos);	// roll back position
 				break;
 			}
 			if(this.returnable) {
