@@ -37,10 +37,7 @@ public class ZeroMore<R> implements ParsingExpression<List<R>> {
 		List<R> result = this.returnable ? new LinkedList<R>() : null;
 
 		context.setFailureCreation(false);
-		while(true) {
-			if(!this.expr.parse(context)) {
-				break;
-			}
+		while(this.expr.parse(context)) {
 			if(this.returnable) {
 				result.add((R) context.popValue());
 			}

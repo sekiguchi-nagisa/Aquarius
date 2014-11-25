@@ -35,34 +35,27 @@ public class Sequence3<A, B, C> implements ParsingExpression<Tuple3<A, B, C>> {
 		AquariusInputStream input = context.getInputStream();
 		int pos = input.getPosition();
 
-		// 1
-		if(!this.exprs.get0().parse(context)) {
-			input.setPosition(pos);
-			return false;
-		}
-		@SuppressWarnings("unchecked")
-		A a = (A) context.popValue();
+		if(this.exprs.get0().parse(context)) {
+			@SuppressWarnings("unchecked")
+			A a = (A) context.popValue();
 
-		// 2
-		if(!this.exprs.get1().parse(context)) {
-			input.setPosition(pos);
-			return false;
-		}
-		@SuppressWarnings("unchecked")
-		B b = (B) context.popValue();
+			if(this.exprs.get1().parse(context)) {
+				@SuppressWarnings("unchecked")
+				B b = (B) context.popValue();
 
-		// 3
-		if(!this.exprs.get2().parse(context)) {
-			input.setPosition(pos);
-			return false;
-		}
-		@SuppressWarnings("unchecked")
-		C c = (C) context.popValue();
+				if(this.exprs.get2().parse(context)) {
+					@SuppressWarnings("unchecked")
+					C c = (C) context.popValue();
 
-		if(this.returnable) {
-			context.pushValue(of(a, b, c));
+					if(this.returnable) {
+						context.pushValue(of(a, b, c));
+					}
+					return true;
+				}
+			}
 		}
-		return true;
+		input.setPosition(pos);
+		return false;
 	}
 
 	@Override

@@ -33,26 +33,22 @@ public class Sequence2<A, B> implements ParsingExpression<Tuple2<A, B>> {
 		AquariusInputStream input = context.getInputStream();
 		int pos = input.getPosition();
 
-		// 1
-		if(!this.exprs.get0().parse(context)) {
-			input.setPosition(pos);
-			return false;
-		}
-		@SuppressWarnings("unchecked")
-		A a = (A) context.popValue();
+		if(this.exprs.get0().parse(context)) {
+			@SuppressWarnings("unchecked")
+			A a = (A) context.popValue();
 
-		// 2
-		if(!this.exprs.get1().parse(context)) {
-			input.setPosition(pos);
-			return false;
-		}
-		@SuppressWarnings("unchecked")
-		B b = (B) context.popValue();
+			if(this.exprs.get1().parse(context)) {
+				@SuppressWarnings("unchecked")
+				B b = (B) context.popValue();
 
-		if(this.returnable) {
-			context.pushValue(of(a, b));
+				if(this.returnable) {
+					context.pushValue(of(a, b));
+				}
+				return true;
+			}
 		}
-		return true;
+		input.setPosition(pos);
+		return false;
 	}
 
 	@Override

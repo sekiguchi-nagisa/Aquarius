@@ -45,10 +45,7 @@ public class OneMore<R> implements ParsingExpression<List<R>> {
 		}
 
 		context.setFailureCreation(false);
-		while(true) {
-			if(!this.expr.parse(context)) {
-				break;
-			}
+		while(this.expr.parse(context)) {
 			if(this.returnable) {
 				result.add((R) context.popValue());
 			}
