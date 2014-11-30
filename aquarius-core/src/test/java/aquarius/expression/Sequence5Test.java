@@ -24,6 +24,6 @@ public class Sequence5Test extends TestBase<Tuple5<Void, Void, Void, Void, Void>
 		// failure test
 		this.initContext("1234aa");
 		result = this.expr.parse(this.context);
-		this.failure(result, 0, 4);
+		this.failure(result, 0, 5);
 	}
 }

@@ -31,6 +31,6 @@ public class OneMoreTest extends TestBase<List<Void>> {
 		// failure test
 		this.initContext("hells");
 		result = this.expr.parse(this.context);
-		this.failure(result, 0, 0);
+		this.failure(result, 0, 4);
 	}
 }

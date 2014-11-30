@@ -31,6 +31,6 @@ public class LiteralTest extends TestBase<Void> {
 		this.initContext("hellod world");
 		this.expr = str("hello world");
 		result = this.expr.parse(this.context);
-		this.failure(result, 0, 0);
+		this.failure(result, 0, 5);
 	}
 }

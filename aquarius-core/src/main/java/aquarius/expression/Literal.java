@@ -38,7 +38,7 @@ public class Literal implements ParsingExpression<Void> {
 
 		for(int code : this.targetCodes) {
 			if(code != input.fetch()) {
-				context.pushFailure(pos, this);
+				context.pushFailure(input.getPosition(), this);
 				input.setPosition(pos);
 				return false;
 			}

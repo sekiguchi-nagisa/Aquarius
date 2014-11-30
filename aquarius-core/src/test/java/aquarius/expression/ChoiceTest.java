@@ -35,6 +35,6 @@ public class ChoiceTest extends TestBase<Void> {
 		// failure test
 		this.initContext("w");
 		boolean result2 = this.expr.parse(this.context);
-		this.failure(result2, 0, 0);
+		this.failure(result2, 0, 1);
 	}
 }
