@@ -9,7 +9,7 @@ import org.junit.Test;
 public class ChoiceTest extends TestBase<Void> {
 	@Before
 	public void prepare() {
-		this.expr = choice(str("hello"), str("world"), str("good"));
+		this.expr = str("hello").or(str("world")).or(str("good"));
 		this.initContext("hello");
 	}
 

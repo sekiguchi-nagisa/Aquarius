@@ -68,7 +68,7 @@ public interface JSONParser extends Parser {
 	@RuleDefinition
 	public default Rule<JSON> json() {
 		return rule(() -> 
-			seq(ws(), choice(object(), array()))
+			seq(ws(), or(object(), array()))
 			.map((ctx, a) -> 
 				a.get1()
 			)
@@ -78,40 +78,36 @@ public interface JSONParser extends Parser {
 	@RuleDefinition
 	public default Rule<JSONObject> object() {
 		return rule(() ->
-			choice(
-				seq(objectOpen(), keyValue(), zeroMore(valueSep(), keyValue()), objectClose())
-				.map((ctx, a) -> {
-					JSONObject object = new JSONObject();
-					object.add(a.get1());
-					for(Tuple2<Void, Tuple2<JSONString, JSON>> t : a.get2()) {
-						object.add(t.get1());
-					}
-					return object;
-				}),
-				seq(objectOpen(), objectClose()).map((ctx, a) -> 
-					new JSONObject()
-				)
-			)
+			seq(objectOpen(), keyValue(), zeroMore(valueSep(), keyValue()), objectClose())
+			.map((ctx, a) -> {
+				JSONObject object = new JSONObject();
+				object.add(a.get1());
+				for(Tuple2<Void, Tuple2<JSONString, JSON>> t : a.get2()) {
+					object.add(t.get1());
+				}
+				return object;
+			})
+			.or(seq(objectOpen(), objectClose()).map((ctx, a) -> 
+				new JSONObject()
+			))
 		);
 	}
 
 	@RuleDefinition
 	public default Rule<JSONArray> array() {
 		return rule(() ->
-			choice(
-				seq(arrayOpen(), value(), zeroMore(valueSep(), value()), arrayClose())
-				.map((ctx, a) -> {
-					JSONArray array = new JSONArray();
-					array.add(a.get1());
-					for(Tuple2<Void, JSON> t : a.get2()) {
-						array.add(t.get1());
-					}
-					return array;
-				}),
-				seq(arrayOpen(), arrayClose()).map((ctx, a) -> 
-					new JSONArray()
-				)
-			)
+			seq(arrayOpen(), value(), zeroMore(valueSep(), value()), arrayClose())
+			.map((ctx, a) -> {
+				JSONArray array = new JSONArray();
+				array.add(a.get1());
+				for(Tuple2<Void, JSON> t : a.get2()) {
+					array.add(t.get1());
+				}
+				return array;
+			})
+			.or(seq(arrayOpen(), arrayClose()).map((ctx, a) -> 
+				new JSONArray()
+			))
 		);
 	}
 
@@ -128,7 +124,7 @@ public interface JSONParser extends Parser {
 	public default Rule<JSON> value() {
 		return rule(() ->
 			seq(
-				choice(
+				or(
 					string(),
 					number(),
 					object(),
@@ -156,7 +152,7 @@ public interface JSONParser extends Parser {
 		return rule(() ->
 			$(
 				str("\""), 
-				choice(
+				or(
 					escape(), 
 					seqN(not(ch('"', '\\')), ANY)
 				).zeroMore(), 
@@ -170,10 +166,8 @@ public interface JSONParser extends Parser {
 	@RuleDefinition
 	public default Rule<Void> integer() {
 		return ruleVoid(() ->
-			choice(
-				str("0"),
-				seqN(r('1', '9'), r('0', '9').zeroMore())
-			)
+			str("0")
+			.or(seqN(r('1', '9'), r('0', '9').zeroMore()))
 		);
 	}
 
@@ -187,15 +181,13 @@ public interface JSONParser extends Parser {
 	@RuleDefinition
 	public default Rule<JSONNumber> number() {
 		return rule(() ->
-			choice(
-				$(str("-").opt(), integer(), str("."), r('0', '9').oneMore(), exp().opt())
-				.map((ctx, a) -> 
-					new JSONNumber(Double.parseDouble(ctx.createTokenText(a)))
-				),
-				$(str("-").opt(), integer()).map((ctx, a) -> 
-					new JSONNumber(Long.parseLong(ctx.createTokenText(a))
-				))
+			$(str("-").opt(), integer(), str("."), r('0', '9').oneMore(), exp().opt())
+			.map((ctx, a) -> 
+				new JSONNumber(Double.parseDouble(ctx.createTokenText(a)))
 			)
+			.or($(str("-").opt(), integer()).map((ctx, a) -> 
+				new JSONNumber(Long.parseLong(ctx.createTokenText(a))
+			)))
 		);
 	}
 }

@@ -157,13 +157,8 @@ public final class Expressions {
 
 	@SuppressWarnings("unchecked")
 	@SafeVarargs
-	public final static <R> Choice<R> choice(ParsingExpression<? extends R>... exprs) {
-		return new Choice<>((ParsingExpression<R>[]) exprs);
-	}
-
-	@SafeVarargs
 	public final static <R> Choice<R> or(ParsingExpression<? extends R>... exprs) {
-		return choice(exprs);
+		return new Choice<>((ParsingExpression<R>[]) exprs);
 	}
 
 	public final static PredictAction predict(PredictiveAction action) {

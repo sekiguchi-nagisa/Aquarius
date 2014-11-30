@@ -34,6 +34,16 @@ public interface ParsingExpression<R> {
 
 	@SuppressWarnings("unchecked")
 	public default Choice<R> or(ParsingExpression<? extends R> expr) {
+		if(this instanceof Choice) {
+			ParsingExpression<?>[] alters = ((Choice<?>) this).getExprs();
+			int size = alters.length;
+			ParsingExpression<?>[] exprs = new ParsingExpression<?>[size + 1];
+			for(int i = 0; i < size; i++) {
+				exprs[i] = alters[i];
+			}
+			exprs[size] = expr;
+			return new Choice<R>((ParsingExpression<R>[]) exprs);
+		}
 		return new Choice<>(this, (ParsingExpression<R>) expr);
 	}
 }

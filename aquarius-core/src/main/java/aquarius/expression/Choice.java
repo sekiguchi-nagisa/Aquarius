@@ -44,6 +44,10 @@ public class Choice<R> implements ParsingExpression<R> {
 		return false;
 	}
 
+	public ParsingExpression<R>[] getExprs() {
+		return this.exprs;
+	}
+
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visitChoice(this);
