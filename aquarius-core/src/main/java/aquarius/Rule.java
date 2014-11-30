@@ -16,6 +16,7 @@ public class Rule<R> implements ParsingExpression<R> {
 	private int ruleSize;
 
 	private final boolean returnable;
+
 	/**
 	 * will be null after call initExpr()
 	 */
@@ -64,7 +65,7 @@ public class Rule<R> implements ParsingExpression<R> {
 	}
 
 	public ParsedResult<R> parse(AquariusInputStream input, CacheFactory factory) {
-		ParserContext context = new ParserContext(input, factory.newCache(this.ruleSize, 0));
+		ParserContext context = new ParserContext(input, factory.newCache(this.ruleSize));
 
 		// start parsing
 		boolean status = this.parse(context);

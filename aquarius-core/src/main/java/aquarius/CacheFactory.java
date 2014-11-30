@@ -13,7 +13,7 @@ public class CacheFactory {
 		this.kind = kind;
 	}
 
-	public ResultCache newCache(int ruleSize, int srcSize) {
+	public ResultCache newCache(int ruleSize) {
 		switch(this.kind) {
 		case Empty:
 			return new EmptyCache();

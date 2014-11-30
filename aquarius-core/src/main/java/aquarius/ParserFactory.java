@@ -148,7 +148,6 @@ public class ParserFactory {
 			throw new IllegalArgumentException("unimplemented method: " + method);
 		}
 
-
 		@SuppressWarnings("unchecked")
 		private final <T> T invokeDefaultMethod(Object proxy, Method method, 
 				Object[] args, Class<T> returnClass) throws Throwable {
@@ -172,7 +171,7 @@ public class ParserFactory {
 					.unreflectSpecial(method, declaringClass)
 					.bindTo(proxy).invokeWithArguments(args);
 		}
-	
+
 		private final Rule<?> createRule(Object proxy, Method method, Object[] args) throws Throwable {
 			Rule<?> value = this.invokeDefaultMethod(proxy, method, args, Rule.class);
 			this.ruleMap.put(method.getName(), value);

@@ -161,6 +161,11 @@ public final class Expressions {
 		return new Choice<>((ParsingExpression<R>[]) exprs);
 	}
 
+	@SafeVarargs
+	public final static <R> Choice<R> or(ParsingExpression<? extends R>... exprs) {
+		return choice(exprs);
+	}
+
 	public final static PredictAction predict(PredictiveAction action) {
 		return new PredictAction(action);
 	}

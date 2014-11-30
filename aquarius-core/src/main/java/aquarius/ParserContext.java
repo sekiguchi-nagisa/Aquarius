@@ -9,20 +9,19 @@ public class ParserContext {
 	private ResultCache cache;
 
 	/**
-	 * result value of action or capture, or failure. may be null
+	 * result value of action or capture. may be null
 	 */
 	private Object value;
 
 	/**
-	 * longest matched failure. may be null if has no failure.
+	 * longest matched failure.
 	 */
 	private final Failure longestFailure = new Failure();
 
 	private boolean failureCreation = true;
 
 	public ParserContext(AquariusInputStream input) {
-		this.input = input;
-		this.cache = new CacheFactory(CacheKind.Empty).newCache(0, 0);
+		this(input, new CacheFactory(CacheKind.Empty).newCache(0));
 	}
 
 	ParserContext(AquariusInputStream input, ResultCache cache) {

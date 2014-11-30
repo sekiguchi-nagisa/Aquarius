@@ -31,4 +31,9 @@ public interface ParsingExpression<R> {
 	public default Optional<R> opt() {
 		return new Optional<>(this);
 	}
+
+	@SuppressWarnings("unchecked")
+	public default Choice<R> or(ParsingExpression<? extends R> expr) {
+		return new Choice<>(this, (ParsingExpression<R>) expr);
+	}
 }

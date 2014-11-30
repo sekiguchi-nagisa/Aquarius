@@ -1,6 +1,5 @@
 package aquarius;
 
-
 /**
  * 
  * @author skgchxngsxyz-opensuse
@@ -75,11 +74,4 @@ public interface AquariusInputStream {
 	public default Token createToken(int startPos) throws IndexOutOfBoundsException {
 		return this.createToken(startPos, this.getPosition() - startPos);
 	}
-
-	/**
-	 * 
-	 * @return
-	 * return -1, if sub class not support it.
-	 */
-//	public int getInputSize();
 }

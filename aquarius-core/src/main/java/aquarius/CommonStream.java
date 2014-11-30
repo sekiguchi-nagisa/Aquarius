@@ -18,7 +18,7 @@ public class CommonStream implements AquariusInputStream {
 	private final byte[] buffer;
 	private final int bufferSize;
 	private int currentPos = 0;
-	
+
 	public CommonStream(String sourceName, String source) {
 		this(sourceName, source.getBytes(DEFAULT_CHARSET));
 	}
