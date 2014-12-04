@@ -29,7 +29,7 @@ public class Optional<R> implements ParsingExpression<java.util.Optional<R>> {
 	}
 
 	@Override
-	public boolean parse(ParserContext context) {
+	public boolean parseImpl(ParserContext context) {
 		context.setFailureCreation(false);
 		this.expr.parse(context);
 		if(this.returnable) {

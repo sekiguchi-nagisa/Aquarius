@@ -30,7 +30,7 @@ public class PredictAction implements ParsingExpression<Void> {	// extended expr
 	}
 
 	@Override
-	public boolean parse(ParserContext context) {
+	public boolean parseImpl(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
 		int pos = input.getPosition();
 

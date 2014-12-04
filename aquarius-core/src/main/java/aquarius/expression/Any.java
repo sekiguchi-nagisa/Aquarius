@@ -17,12 +17,10 @@ public class Any implements ParsingExpression<Void> {
 	}
 
 	@Override
-	public boolean parse(ParserContext context) {
+	public boolean parseImpl(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
-		int pos = input.getPosition();
-
 		if(input.fetch() == AquariusInputStream.EOF) {
-			context.pushFailure(pos, this);
+			context.pushFailure(input.getPosition(), this);
 			return false;
 		}
 		input.consume();

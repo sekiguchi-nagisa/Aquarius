@@ -8,7 +8,16 @@ import aquarius.action.ParsingAction.Mapper;
 public interface ParsingExpression<R> {
 	public <T> T accept(ExpressionVisitor<T> visitor);
 
-	public boolean parse(ParserContext context);
+	public default boolean parse(ParserContext context) {
+		int pos = context.getInputStream().getPosition();
+		if(!this.parseImpl(context)) {
+			context.getInputStream().setPosition(pos);
+			return false;
+		}
+		return true;
+	}
+
+	public boolean parseImpl(ParserContext context);
 
 	public boolean isReturnable();
 

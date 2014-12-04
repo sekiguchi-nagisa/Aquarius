@@ -24,6 +24,6 @@ public class ActionTest extends TestBase<Integer> {
 		this.expr = ANY.map((ctx, a) -> {throw new FailedActionException("fail");});
 		this.initContext("12+34");
 		result = this.expr.parse(this.context);
-		this.failure(result, 1, 1);
+		this.failure(result, 0, 1);
 	}
 }

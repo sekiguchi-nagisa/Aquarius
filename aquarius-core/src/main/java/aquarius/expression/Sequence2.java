@@ -1,6 +1,5 @@
 package aquarius.expression;
 
-import aquarius.AquariusInputStream;
 import aquarius.ExpressionVisitor;
 import aquarius.ParserContext;
 import aquarius.misc.Tuple2;
@@ -29,15 +28,12 @@ public class Sequence2<A, B> implements ParsingExpression<Tuple2<A, B>> {
 	}
 
 	@Override
-	public boolean parse(ParserContext context) {
-		AquariusInputStream input = context.getInputStream();
-		int pos = input.getPosition();
-
-		if(this.exprs.get0().parse(context)) {
+	public boolean parseImpl(ParserContext context) {
+		if(this.exprs.get0().parseImpl(context)) {
 			@SuppressWarnings("unchecked")
 			A a = (A) context.popValue();
 
-			if(this.exprs.get1().parse(context)) {
+			if(this.exprs.get1().parseImpl(context)) {
 				@SuppressWarnings("unchecked")
 				B b = (B) context.popValue();
 
@@ -47,7 +43,6 @@ public class Sequence2<A, B> implements ParsingExpression<Tuple2<A, B>> {
 				return true;
 			}
 		}
-		input.setPosition(pos);
 		return false;
 	}
 

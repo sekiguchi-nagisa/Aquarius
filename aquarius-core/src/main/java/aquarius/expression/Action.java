@@ -43,9 +43,9 @@ public class Action<R, A> implements ParsingExpression<R> {	// extended expressi
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean parse(ParserContext context) {
+	public boolean parseImpl(ParserContext context) {
 		// parser preceding expression
-		if(!this.expr.parse(context)) {
+		if(!this.expr.parseImpl(context)) {
 			return false;
 		}
 
@@ -62,7 +62,6 @@ public class Action<R, A> implements ParsingExpression<R> {	// extended expressi
 			}
 			return true;
 		} catch(FailedActionException e) {
-			input.setPosition(pos);
 			context.pushFailure(pos, e);
 			return false;
 		} catch(Exception e) {

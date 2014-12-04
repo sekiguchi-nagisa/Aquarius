@@ -57,6 +57,10 @@ public class ParserContext {
 		return (T) this.popValue();
 	}
 
+	public Object getValue() {
+		return this.value;
+	}
+
 	/**
 	 * 
 	 * @param failureCreation
@@ -99,36 +103,5 @@ public class ParserContext {
 	 */
 	public String createTokenText(Token token) {
 		return token.getText(this.input);
-	}
-
-	/**
-	 * 
-	 * @param <R>
-	 * @param rule
-	 * @return
-	 * parsed result of dispatched rule. if match is failed, return Failure
-	 */
-	<R> boolean dispatchRule(Rule<R> rule) {
-		final int ruleIndex = rule.getRuleIndex();
-		final int srcPos = this.input.getPosition();
-
-		CacheEntry entry = this.cache.get(ruleIndex, srcPos);
-		if(entry != null) {
-			if(!entry.getStatus()) {
-				this.value = null;
-				return false;
-			}
-			this.input.setPosition(entry.getCurrentPos());
-			this.value = entry.getValue();
-			return true;
-		}
-		// if not found previous parsed result, invoke rule
-		boolean status = rule.getPattern().parse(this);
-		if(status) {
-			this.cache.set(ruleIndex, srcPos, this.value, this.input.getPosition());
-		} else {
-			this.cache.setFailure(ruleIndex, srcPos);
-		}
-		return status;
 	}
 }

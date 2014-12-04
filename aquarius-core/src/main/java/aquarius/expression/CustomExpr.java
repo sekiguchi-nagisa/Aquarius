@@ -12,7 +12,7 @@ public interface CustomExpr<R> extends ParsingExpression<R> {
 		return visitor.visitCustomExpr(this);
 	}
 
-	public default boolean parse(ParserContext context) {
+	public default boolean parseImpl(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
 		int pos = input.getPosition();
 
@@ -20,7 +20,6 @@ public interface CustomExpr<R> extends ParsingExpression<R> {
 			context.pushValue(this.apply(context));
 			return true;
 		} catch(FailedActionException e) {
-			input.setPosition(pos);
 			context.pushFailure(pos, e);
 			return false;
 		} catch(Exception e) {

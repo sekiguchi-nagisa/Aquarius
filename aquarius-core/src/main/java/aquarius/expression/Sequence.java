@@ -35,11 +35,9 @@ public class Sequence implements ParsingExpression<Void> {
 	}
 
 	@Override
-	public boolean parse(ParserContext context) {
-		int pos = context.getInputStream().getPosition();
+	public boolean parseImpl(ParserContext context) {
 		for(ParsingExpression<?> e : this.exprs) {
-			if(!e.parse(context)) {
-				context.getInputStream().setPosition(pos);
+			if(!e.parseImpl(context)) {
 				return false;
 			}
 		}

@@ -120,13 +120,11 @@ public class CharSet implements ParsingExpression<Void> {
 	}
 
 	@Override
-	public boolean parse(ParserContext context) {
+	public boolean parseImpl(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
-		int pos = input.getPosition();
-
 		final int fetchedCh = input.fetch();
 		if(fetchedCh == AquariusInputStream.EOF) {
-			context.pushFailure(pos, this);
+			context.pushFailure(input.getPosition(), this);
 			return false;
 		}
 		// match chars
@@ -146,7 +144,7 @@ public class CharSet implements ParsingExpression<Void> {
 				}
 			}
 		}
-		context.pushFailure(pos, this);
+		context.pushFailure(input.getPosition(), this);
 		return false;
 	}
 

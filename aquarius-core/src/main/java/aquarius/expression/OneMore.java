@@ -3,6 +3,7 @@ package aquarius.expression;
 import java.util.LinkedList;
 import java.util.List;
 
+import aquarius.AquariusInputStream;
 import aquarius.ExpressionVisitor;
 import aquarius.ParserContext;
 
@@ -33,9 +34,9 @@ public class OneMore<R> implements ParsingExpression<List<R>> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean parse(ParserContext context) {
+	public boolean parseImpl(ParserContext context) {
 		// match at least once
-		if(!this.expr.parse(context)) {
+		if(!this.expr.parseImpl(context)) {
 			return false;
 		}
 		List<R> result = null;
@@ -45,11 +46,15 @@ public class OneMore<R> implements ParsingExpression<List<R>> {
 		}
 
 		context.setFailureCreation(false);
-		while(this.expr.parse(context)) {
+		AquariusInputStream input = context.getInputStream();
+		int pos = input.getPosition();
+		while(this.expr.parseImpl(context)) {
 			if(this.returnable) {
 				result.add((R) context.popValue());
 			}
+			pos = input.getPosition();
 		}
+		input.setPosition(pos);
 		context.pushValue(result);
 		context.setFailureCreation(true);
 		return true;

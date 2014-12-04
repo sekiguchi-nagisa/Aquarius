@@ -36,8 +36,31 @@ public class Rule<R> implements ParsingExpression<R> {
 	}
 
 	@Override
-	public boolean parse(ParserContext context) {
-		return context.dispatchRule(this);
+	public boolean parseImpl(ParserContext context) {
+		AquariusInputStream input = context.getInputStream();
+		ResultCache cache = context.getCache();
+
+		final int ruleIndex = this.ruleIndex;
+		final int srcPos = input.getPosition();
+
+		CacheEntry entry = cache.get(ruleIndex, srcPos);
+		if(entry != null) {
+			if(!entry.getStatus()) {
+				context.pushValue(null);
+				return false;
+			}
+			input.setPosition(entry.getCurrentPos());
+			context.pushValue(entry.getValue());
+			return true;
+		}
+		// if not found previous parsed result, invoke rule
+		boolean status = this.pattern.parseImpl(context);
+		if(status) {
+			cache.set(ruleIndex, srcPos, context.getValue(), input.getPosition());
+		} else {
+			cache.setFailure(ruleIndex, srcPos);
+		}
+		return status;
 	}
 
 	@Override
@@ -68,7 +91,7 @@ public class Rule<R> implements ParsingExpression<R> {
 		ParserContext context = new ParserContext(input, factory.newCache(this.ruleSize));
 
 		// start parsing
-		boolean status = this.parse(context);
+		boolean status = this.parseImpl(context);
 
 		// create result
 		return new ParsedResult<>(status ? context.popValue() : context.getFailure());

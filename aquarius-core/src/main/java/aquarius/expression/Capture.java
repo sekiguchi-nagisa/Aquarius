@@ -39,12 +39,11 @@ public class Capture implements ParsingExpression<Token> {	// extended expressio
 	}
 
 	@Override
-	public boolean parse(ParserContext context) {
+	public boolean parseImpl(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
 		int pos = input.getPosition();
 		for(ParsingExpression<?> e : this.exprs) {
-			if(!e.parse(context)) {
-				input.setPosition(pos);
+			if(!e.parseImpl(context)) {
 				return false;
 			}
 		}
