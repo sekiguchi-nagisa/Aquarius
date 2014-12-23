@@ -17,20 +17,45 @@ public class Utils {
 	 * print this message before printing memory
 	 */
 	public final static void showMemory(String message) {
-		System.gc();
-		long total = Runtime.getRuntime().totalMemory() / 1024;
-		long free = Runtime.getRuntime().freeMemory() / 1024;
-		long max = Runtime.getRuntime().maxMemory() / 1024;
-		long used = total - free;
-		double ratio = used * 100 / (double) total;
+		MemoryInfo info = getMemoryInfo();
 
 		System.err.println(message);
-
-		System.err.println("total memory: " + f.format(total));
-		System.err.println("free  memory: " + f.format(free));
-		System.err.println("used  memory: " + f.format(used) + " (" + f2.format(ratio) + "%)");
-		System.err.println("max   memory: " + f.format(max));
+		System.err.println(info);
 		System.err.println();
+	}
+
+	public final static MemoryInfo getMemoryInfo() {
+		System.gc();
+		return new MemoryInfo();
+	}
+
+	public static class MemoryInfo {
+		public final long total;
+		public final long free;
+		public final long max;
+		public final long used;
+		public final double ratio;
+
+		private MemoryInfo() {
+			this.total = Runtime.getRuntime().totalMemory() / 1024;
+			this.free = Runtime.getRuntime().freeMemory() / 1024;
+			this.max = Runtime.getRuntime().maxMemory() / 1024;
+			this.used = this.total - this.free;
+			this.ratio = this.used * 100 / (double) this.total;
+		}
+
+		@Override
+		public String toString() {
+			StringBuilder sBuilder = new StringBuilder();
+			sBuilder.append("total memory: " + f.format(this.total));
+			sBuilder.append(System.lineSeparator());
+			sBuilder.append("free  memory: " + f.format(this.free));
+			sBuilder.append(System.lineSeparator());
+			sBuilder.append("used  memory: " + f.format(this.used) + " (" + f2.format(this.ratio) + "%)");
+			sBuilder.append(System.lineSeparator());
+			sBuilder.append("max   memory: " + f.format(this.max));
+			return sBuilder.toString();
+		}
 	}
 
 	public final static boolean propagate(Exception e) throws RuntimeException {
