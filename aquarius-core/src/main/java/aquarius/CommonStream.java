@@ -107,6 +107,23 @@ public class CommonStream implements AquariusInputStream {
 	}
 
 	@Override
+	public byte fetchByte() {
+		int pos = this.currentPos;
+		if(pos == this.bufferSize) {
+			return EOF;
+		}
+		return this.buffer[pos];
+	}
+
+	@Override
+	public void consumeByte() {
+		if(this.currentPos == this.bufferSize) {
+			return;
+		}
+		this.currentPos++;
+	}
+
+	@Override
 	public Token createToken(int startPos, int length)
 			throws IndexOutOfBoundsException {
 		if(!this.checkIndexRange(startPos)) {

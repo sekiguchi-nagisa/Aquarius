@@ -12,10 +12,24 @@ import static aquarius.misc.Utf8Util.*;
 *
 */
 public class Literal implements ParsingExpression<Void> {
-	private final int[] targetCodes;
+	protected final int[] targetCodes;
+
+	public static Literal newLiteral(String target) {
+		int[] codes = toUtfCodes(target);
+		for(int code: codes) {
+			if(!isAsciiCode(code)) {
+				return new Literal(codes);
+			}
+		}
+		return new AsciiLiteral(codes);
+	}
 
 	public Literal(String target) {
-		this.targetCodes = toUtfCodes(target);
+		this(toUtfCodes(target));
+	}
+
+	protected Literal(int[] targetCodes) {
+		this.targetCodes = targetCodes;
 	}
 
 	public int[] getTargetCodes() {

@@ -34,23 +34,23 @@ public final class Expressions {
 	public final static Any ANY = new Any();
 
 	public final static Literal str(String target) {
-		return new Literal(target);
+		return Literal.newLiteral(target);
 	}
 
 	public final static CharSet ch(char... chars) {
-		return new CharSet(chars);
+		return CharSet.newCharSet(chars);
 	}
 
 	public final static CharSet ch(int ...chars) {
-		return new CharSet(chars);
+		return CharSet.newCharSet(chars);
 	}
 
 	public final static CharSet r(char start, char stop) {
-		return new CharSet(new int[]{}).r(start, stop);
+		return CharSet.newCharSet(new int[]{}).r(start, stop);
 	}
 
 	public final static CharSet r(int start, int stop) {
-		return new CharSet(new int[]{}).r(start, stop);
+		return CharSet.newCharSet(new int[]{}).r(start, stop);
 	}
 
 	// ZeroMore

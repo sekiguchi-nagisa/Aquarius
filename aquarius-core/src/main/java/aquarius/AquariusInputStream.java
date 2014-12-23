@@ -40,6 +40,10 @@ public interface AquariusInputStream {
 	 */
 	public void consume();
 
+	public byte fetchByte();
+
+	public void consumeByte();
+
 	/**
 	 * 
 	 * @return

@@ -16,8 +16,8 @@ import aquarius.misc.Utf8Util;
 *
 */
 public class CharSet implements ParsingExpression<Void> {
-	private final int[] chars;
-	private List<IntRange> rangeList;
+	protected final int[] chars;
+	protected List<IntRange> rangeList;
 
 	private static int[] toUtf8Chars(char[] chars) {
 		int[] encoddedChars = new int[chars.length];
@@ -27,8 +27,17 @@ public class CharSet implements ParsingExpression<Void> {
 		return encoddedChars;
 	}
 
-	public CharSet(char... chars) {
-		this(toUtf8Chars(chars));
+	public static CharSet newCharSet(char... chars) {
+		return newCharSet(toUtf8Chars(chars));
+	}
+
+	public static CharSet newCharSet(int... chars) {
+		for(int ch : chars) {
+			if(!Utf8Util.isAsciiCode(ch)) {
+				return new CharSet(chars);
+			}
+		}
+		return new AsciiCharSet(chars);
 	}
 
 	/**
@@ -36,7 +45,7 @@ public class CharSet implements ParsingExpression<Void> {
 	 * @param chars
 	 * must be utf8 character
 	 */
-	public CharSet(int... chars) {
+	public CharSet(int[] chars) {
 		this.chars = chars;
 	}
 
