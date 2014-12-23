@@ -8,9 +8,6 @@ import java.text.DecimalFormat;
  *
  */
 public class Utils {
-	private final static DecimalFormat f = new DecimalFormat("#,###KB");
-	private final static DecimalFormat f2 = new DecimalFormat("##.#");
-
 	/**
 	 * show memory
 	 * @param message
@@ -18,7 +15,6 @@ public class Utils {
 	 */
 	public final static void showMemory(String message) {
 		MemoryInfo info = getMemoryInfo();
-
 		System.err.println(message);
 		System.err.println(info);
 		System.err.println();
@@ -30,6 +26,9 @@ public class Utils {
 	}
 
 	public static class MemoryInfo {
+		private final static DecimalFormat f = new DecimalFormat("#,###KB");
+		private final static DecimalFormat f2 = new DecimalFormat("##.#");
+
 		public final long total;
 		public final long free;
 		public final long max;

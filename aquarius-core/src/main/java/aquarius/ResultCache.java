@@ -1,7 +1,5 @@
 package aquarius;
 
-
-
 /**
  * for memoization
  * @author skgchxngsxyz-opensuse

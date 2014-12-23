@@ -8,7 +8,7 @@ import aquarius.misc.Utils;
 
 /**
 * execute semantic action. if return value is not failed, not advance parsing position.
-* otherwise, match failed. not return value
+* otherwise, match failed.
 * -> & { action }
 * @author skgchxngsxyz-opensuse
 *

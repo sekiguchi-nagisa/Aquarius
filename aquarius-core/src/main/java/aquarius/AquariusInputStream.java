@@ -29,19 +29,27 @@ public interface AquariusInputStream {
 	public void setPosition(int position) throws IndexOutOfBoundsException;
 
 	/**
-	 * get character in current position.
+	 * get utf8 character in current position.
 	 * @return
-	 * consumed character. if input is end of file, return EOF.
+	 * if input is end of file, return EOF.
 	 */
 	public int fetch();
 
 	/**
-	 * consume character in current position and increment position.
+	 * consume utf8 character in current position and increment position (1-4).
 	 */
 	public void consume();
 
+	/**
+	 * get byte in current position.
+	 * @return
+	 * if input is end of file, return EOF.
+	 */
 	public byte fetchByte();
 
+	/**
+	 * consume byte in current position and increment position.
+	 */
 	public void consumeByte();
 
 	/**

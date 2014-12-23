@@ -10,7 +10,7 @@ import aquarius.misc.IntRange;
 import aquarius.misc.Utf8Util;
 
 /**
-* try to match one character from char set. return matched character
+* try to match one utf8 character from char set.
 * -> [12a-c]   1, 2, a, b, c
 * @author skgchxngsxyz-opensuse
 *
@@ -132,24 +132,22 @@ public class CharSet implements ParsingExpression<Void> {
 	public boolean parseImpl(ParserContext context) {
 		AquariusInputStream input = context.getInputStream();
 		final int fetchedCh = input.fetch();
-		if(fetchedCh == AquariusInputStream.EOF) {
-			context.pushFailure(input.getPosition(), this);
-			return false;
-		}
-		// match chars
-		for(int ch : this.chars) {
-			if(fetchedCh == ch) {
-				input.consume();
-				return true;
-			}
-		}
-		// match char range
-		List<IntRange> rangeList = this.getRangeList();
-		if(rangeList != null) {
-			for(IntRange range : rangeList) {
-				if(range.withinRange(fetchedCh)) {
+		if(fetchedCh != AquariusInputStream.EOF) {
+			// match chars
+			for(int ch : this.chars) {
+				if(fetchedCh == ch) {
 					input.consume();
 					return true;
+				}
+			}
+			// match char range
+			List<IntRange> rangeList = this.getRangeList();
+			if(rangeList != null) {
+				for(IntRange range : rangeList) {
+					if(range.withinRange(fetchedCh)) {
+						input.consume();
+						return true;
+					}
 				}
 			}
 		}

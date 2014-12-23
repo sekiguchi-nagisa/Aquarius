@@ -7,27 +7,13 @@ import aquarius.ParserContext;
 import aquarius.misc.IntRange;
 import aquarius.misc.Utf8Util;
 
+/**
+ * try to match one ascii character from char set.
+ * @author skgchxngsxyz-opensuse
+ *
+ */
 public class AsciiCharSet extends CharSet {
 	private final byte[] asciiMap;
-
-	private void updateAsciiMap(int[] chars) {
-		for(int ch: chars) {
-			this.updateAsciiMap(ch);
-		}
-	}
-
-	private void updateAsciiMap(int start, int stop) {
-		int size = stop - start + 1;
-		int[] codes = new int[size];
-		for(int i = 0; i < size; i++) {
-			codes[i] = start + i;
-		}
-		this.updateAsciiMap(codes);
-	}
-
-	private void updateAsciiMap(int ch) {
-		this.asciiMap[ch] = 1;
-	}
 
 	public AsciiCharSet(int[] chars) {
 		super(chars);
@@ -48,6 +34,42 @@ public class AsciiCharSet extends CharSet {
 			newCharSet.r(range.getStart(), range.getStop());
 		}
 		return newCharSet;
+	}
+
+	/**
+	 * set characters to ascii map
+	 * @param chars
+	 * must be ascii characters.
+	 */
+	private void updateAsciiMap(int[] chars) {
+		for(int ch: chars) {
+			this.updateAsciiMap(ch);
+		}
+	}
+
+	/**
+	 * set characters(start ~ stop) to ascii map
+	 * @param start
+	 * must be ascii character.
+	 * @param stop
+	 * must be ascii character.
+	 */
+	private void updateAsciiMap(int start, int stop) {
+		int size = stop - start + 1;
+		int[] codes = new int[size];
+		for(int i = 0; i < size; i++) {
+			codes[i] = start + i;
+		}
+		this.updateAsciiMap(codes);
+	}
+
+	/**
+	 * set character to ascii map
+	 * @param ch
+	 * must be ascii character. (ch > -1 && ch < 128)
+	 */
+	private void updateAsciiMap(int ch) {
+		this.asciiMap[ch] = 1;
 	}
 
 	@Override

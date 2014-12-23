@@ -4,7 +4,7 @@ import aquarius.ExpressionVisitor;
 import aquarius.ParserContext;
 
 /**
-* try to match the expression. return matched result or null
+* try to match the expression. return matched result as java.util.Optional
 * -> expr ?
 * @author skgchxngsxyz-opensuse
  * @param <R>

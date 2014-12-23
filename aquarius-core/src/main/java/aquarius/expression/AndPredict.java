@@ -6,7 +6,6 @@ import aquarius.ParserContext;
 
 /**
 * try to match the expression. if success, not advance parsing position.
-* not return value.
 * otherwise, match failed
 * -> & expr 
 * @author skgchxngsxyz-opensuse

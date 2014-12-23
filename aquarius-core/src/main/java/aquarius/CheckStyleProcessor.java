@@ -19,10 +19,16 @@ import javax.tools.Diagnostic.Kind;
 import aquarius.annotation.Grammar;
 import aquarius.annotation.RuleDefinition;
 
+/**
+ * for verification of user defined parser interface.
+ * @author skgchxngsxyz-opensuse
+ *
+ */
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes({"aquarius.annotation.Grammar", "aquarius.annotation.RuleDefinition"})
 public class CheckStyleProcessor extends AbstractProcessor {
 	private final static boolean debugMode = false;
+
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 		annotations.stream()
@@ -38,9 +44,8 @@ public class CheckStyleProcessor extends AbstractProcessor {
 
 	/**
 	 * verify parser class.
-	 * if verify is failed, report error and exit processor
+	 * if verify is failed, report error and exit processor.
 	 * @param typeElement
-	 * must be TypeElement
 	 */
 	private void verifyParserClass(TypeElement typeElement) {
 		// check if is interface
@@ -69,6 +74,11 @@ public class CheckStyleProcessor extends AbstractProcessor {
 			.forEach(this::verifyRuleMethod);
 	}
 
+	/**
+	 * verify parsing rule method.
+	 * if verify is failed, report error and exit processor.
+	 * @param element
+	 */
 	private void verifyRuleMethod(ExecutableElement element) {
 		// check if default method
 		if(!element.isDefault()) {
@@ -86,10 +96,11 @@ public class CheckStyleProcessor extends AbstractProcessor {
 
 	// helper methods
 	/**
-	 * match annotation 
+	 * check if TypeElement is correspond to Annotation class.
 	 * @param annotation
 	 * @param annotationClass
 	 * @return
+	 * return true if annotation is correspond to annotationClasss.
 	 */
 	private boolean matchAnnotation(TypeElement annotation, Class<? extends Annotation> annotationClass) {
 		this.debugPrint("target name-> " + annotationClass.getSimpleName());
@@ -101,6 +112,13 @@ public class CheckStyleProcessor extends AbstractProcessor {
 		return name.equals(annotationClass.getCanonicalName());
 	}
 
+	/**
+	 * check if TypeMirror is correspond to Class.
+	 * @param type
+	 * @param targetClass
+	 * @return
+	 * return true if type is correspond to targetClass.
+	 */
 	private boolean matchClass(TypeMirror type, Class<?> targetClass) {
 		String typeName = type.toString();
 		int index = typeName.indexOf('<');

@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import static aquarius.misc.Utf8Util.*;
 
 /**
- * input stream for common usage.
+ * input stream implementation for common usage.
  * @author skgchxngsxyz-opensuse
  *
  */

@@ -10,7 +10,7 @@ import aquarius.misc.Utils;
 
 /**
 * try to match the expression, if success execute action. preceding expression result
-* is treated as the argument of action. return the result of action.
+* is treated as the argument of action.
 * -> expr { action }
 * @author skgchxngsxyz-opensuse
  * @param <A>

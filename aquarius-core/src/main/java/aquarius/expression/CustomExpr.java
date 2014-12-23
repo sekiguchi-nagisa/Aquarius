@@ -6,6 +6,12 @@ import aquarius.ParserContext;
 import aquarius.action.FailedActionException;
 import aquarius.misc.Utils;
 
+/**
+ * for user defined operator. must return non null value.
+ * @author skgchxngsxyz-opensuse
+ *
+ * @param <R>
+ */
 @FunctionalInterface
 public interface CustomExpr<R> extends ParsingExpression<R> {
 	public default <T> T accept(ExpressionVisitor<T> visitor) {
@@ -31,5 +37,13 @@ public interface CustomExpr<R> extends ParsingExpression<R> {
 		return true;
 	}
 
+	/**
+	 * user defined operator implementation.
+	 * @param context
+	 * @return
+	 * constructed value of this operator. must not be null.
+	 * @throws FailedActionException
+	 * @throws Exception
+	 */
 	public R apply(ParserContext context) throws FailedActionException, Exception;
 }

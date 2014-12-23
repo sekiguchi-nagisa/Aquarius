@@ -3,6 +3,11 @@ package aquarius.expression;
 import aquarius.AquariusInputStream;
 import aquarius.ParserContext;
 
+/**
+ * try to match ascii string literal.
+ * @author skgchxngsxyz-opensuse
+ *
+ */
 public class AsciiLiteral extends Literal {
 	public AsciiLiteral(int[] targetCodes) {
 		super(targetCodes);

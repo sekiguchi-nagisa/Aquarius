@@ -1,10 +1,31 @@
 package aquarius;
 
-
 public abstract class CacheEntry {
+	/**
+	 * get input position which this entry contains
+	 * @return
+	 */
 	public abstract int getCurrentPos();
+
+	/**
+	 * get status
+	 * @return
+	 */
 	public abstract boolean getStatus();
+
+	/**
+	 * 
+	 * @return
+	 * may be null
+	 */
 	public abstract Object getValue();
+
+	/**
+	 * reuse this entry for saving memory consumption
+	 * @param pos
+	 * @param value
+	 * may be null
+	 */
 	public abstract void reuse(int pos, Object value);
 
 	public final static CacheEntry FAILURE_ENTRY = new CacheEntry() {

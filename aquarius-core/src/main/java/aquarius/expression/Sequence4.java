@@ -5,6 +5,15 @@ import aquarius.ParserContext;
 import aquarius.misc.Tuple4;
 import static aquarius.misc.Tuples.*;
 
+/**
+ * try to match the sequence of expressions and return matched results as tuple4.
+ * @author skgchxngsxyz-opensuse
+ *
+ * @param <A>
+ * @param <B>
+ * @param <C>
+ * @param <D>
+ */
 public class Sequence4<A, B, C, D> implements ParsingExpression<Tuple4<A, B, C, D>> {
 	private final Tuple4<ParsingExpression<A>, ParsingExpression<B>, 
 			ParsingExpression<C>, ParsingExpression<D>> exprs;

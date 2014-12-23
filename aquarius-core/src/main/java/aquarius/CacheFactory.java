@@ -20,9 +20,14 @@ public class CacheFactory {
 		case Limit:
 			return new LimitedSizeCache(ruleSize);
 		}
-		return null;
+		return new LimitedSizeCache(ruleSize);
 	}
 
+	/**
+	 * not use memoization
+	 * @author skgchxngsxyz-opensuse
+	 *
+	 */
 	protected static class EmptyCache extends ResultCache {
 		@Override
 		public CacheEntry get(int ruleIndex, int srcPos) {

@@ -6,6 +6,11 @@ import aquarius.ParserContext;
 import aquarius.action.FailedActionException;
 import aquarius.misc.Utils;
 
+/**
+ * for user defined operator.
+ * @author skgchxngsxyz-opensuse
+ *
+ */
 @FunctionalInterface
 public interface VoidCustomExpr extends ParsingExpression<Void> {
 	public default <T> T accept(ExpressionVisitor<T> visitor) {
@@ -31,5 +36,11 @@ public interface VoidCustomExpr extends ParsingExpression<Void> {
 		return false;
 	}
 
+	/**
+	 * user definition operator implementation
+	 * @param context
+	 * @throws FailedActionException
+	 * @throws Exception
+	 */
 	public void apply(ParserContext context) throws FailedActionException, Exception;
 }

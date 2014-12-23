@@ -5,7 +5,7 @@ import aquarius.ExpressionVisitor;
 import aquarius.ParserContext;
 
 /**
-* try to match any one character. return mached character
+* try to match any one utf8 character.
 * -> .
 * @author skgchxngsxyz-opensuse
 *

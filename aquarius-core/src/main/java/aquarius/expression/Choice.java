@@ -6,7 +6,6 @@ import aquarius.ParserContext;
 
 /**
 * try to match first expression and if failed try the second one ...
-* return matched result.
 * -> expr1 / expr2 / ... / exprN
 * @author skgchxngsxyz-opensuse
  * @param <R>

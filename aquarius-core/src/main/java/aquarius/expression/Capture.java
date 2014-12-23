@@ -6,7 +6,7 @@ import aquarius.ParserContext;
 import aquarius.Token;
 
 /**
-* try to match sub expression sequence and return matched result as one string.
+* try to match sub expression sequence and return matched result as one token.
 * -> < expr1 expr2 ... exprN >
 * @author skgchxngsxyz-opensuse
 *

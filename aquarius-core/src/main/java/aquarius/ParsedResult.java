@@ -1,6 +1,9 @@
 package aquarius;
 
 public class ParsedResult<R> {
+	/**
+	 * may be null if has no constructed value.
+	 */
 	private final Object value;
 
 	ParsedResult(Object value) {

@@ -6,7 +6,7 @@ import aquarius.ParserContext;
 import static aquarius.misc.Utf8Util.*;
 
 /**
-* try to match string literal. return matched string
+* try to match utf8 string literal.
 * -> 'literal'
 * @author skgchxngsxyz-opensuse
 *
