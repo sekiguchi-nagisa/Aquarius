@@ -22,7 +22,7 @@ public class Bench {
 
 		BenchResultRecord record = new BenchResultRecord();
 
-		final int count = 30;
+		final int count = 50;
 		for(int i = 0; i < count; i++) {
 			input.setPosition(0);
 
