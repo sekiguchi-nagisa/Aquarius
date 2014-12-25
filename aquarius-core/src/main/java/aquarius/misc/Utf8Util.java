@@ -111,7 +111,7 @@ public final class Utf8Util {
 	 * not null
 	 * @return
 	 */
-	public final static int[] toUtfCodes(String str) {
+	public final static int[] toUtf8Codes(String str) {
 		byte[] buf = str.getBytes(DEFAULT_CHARSET);
 		int startIndex = 0;
 		List<Integer> utf8CodeList = new ArrayList<>();
@@ -146,12 +146,12 @@ public final class Utf8Util {
 
 	/**
 	 * convert utf8 code list to string
-	 * @param utfCodeList
+	 * @param utf8CodeList
 	 * @return
 	 */
-	public final static String codeListToString(List<Integer> utfCodeList) {
+	public final static String codeListToString(List<Integer> utf8CodeList) {
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-		for(int code : utfCodeList) {
+		for(int code : utf8CodeList) {
 			codeToString(buffer, code);
 		}
 		return new String(buffer.toByteArray(), DEFAULT_CHARSET);

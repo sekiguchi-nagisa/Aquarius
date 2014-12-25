@@ -68,8 +68,7 @@ public interface JSONParser extends Parser {
 	@RuleDefinition
 	public default Rule<JSON> json() {
 		return rule(() -> 
-			seq(ws(), or(object(), array()))
-			.map((ctx, a) -> 
+			seq(ws(), or(object(), array())).map((ctx, a) -> 
 				a.get1()
 			)
 		);
@@ -156,9 +155,9 @@ public interface JSONParser extends Parser {
 					escape(), 
 					seqN(not(ch('"', '\\')), ANY)
 				).zeroMore(), 
-				str("\"")).map((ctx, a) -> 
-					new JSONString(ctx.createTokenText(a)
-				)
+				str("\"")
+			).map((ctx, a) -> 
+				new JSONString(ctx.createTokenText(a))
 			)
 		);
 	}
@@ -186,8 +185,8 @@ public interface JSONParser extends Parser {
 				new JSONNumber(Double.parseDouble(ctx.createTokenText(a)))
 			)
 			.or($(str("-").opt(), integer()).map((ctx, a) -> 
-				new JSONNumber(Long.parseLong(ctx.createTokenText(a))
-			)))
+				new JSONNumber(Long.parseLong(ctx.createTokenText(a)))
+			))
 		);
 	}
 }

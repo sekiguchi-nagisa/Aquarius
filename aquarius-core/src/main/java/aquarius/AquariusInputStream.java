@@ -45,7 +45,7 @@ public interface AquariusInputStream {
 	 * @return
 	 * if input is end of file, return EOF.
 	 */
-	public byte fetchByte();
+	public int fetchByte();
 
 	/**
 	 * consume byte in current position and increment position.

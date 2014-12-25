@@ -107,7 +107,7 @@ public class CommonStream implements AquariusInputStream {
 	}
 
 	@Override
-	public byte fetchByte() {
+	public int fetchByte() {
 		int pos = this.currentPos;
 		if(pos == this.bufferSize) {
 			return EOF;

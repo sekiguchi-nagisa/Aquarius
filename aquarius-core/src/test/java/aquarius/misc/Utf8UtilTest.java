@@ -16,7 +16,7 @@ public class Utf8UtilTest {
 
 		// test2
 		String a = "あ";
-		int[] result = toUtfCodes(a);
+		int[] result = toUtf8Codes(a);
 		assertEquals(1, result.length);
 		assertEquals(expected, result[0]);
 

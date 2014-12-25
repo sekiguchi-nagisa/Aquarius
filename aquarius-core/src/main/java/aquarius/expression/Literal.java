@@ -15,7 +15,7 @@ public class Literal implements ParsingExpression<Void> {
 	protected final int[] targetCodes;
 
 	public static Literal newLiteral(String target) {
-		int[] codes = toUtfCodes(target);
+		int[] codes = toUtf8Codes(target);
 		for(int code: codes) {
 			if(!isAsciiCode(code)) {
 				return new Literal(codes);
@@ -25,7 +25,7 @@ public class Literal implements ParsingExpression<Void> {
 	}
 
 	public Literal(String target) {
-		this(toUtfCodes(target));
+		this(toUtf8Codes(target));
 	}
 
 	protected Literal(int[] targetCodes) {
