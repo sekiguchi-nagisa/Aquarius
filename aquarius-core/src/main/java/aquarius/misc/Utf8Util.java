@@ -11,7 +11,7 @@ import java.util.List;
  *
  */
 public final class Utf8Util {
-	private Utf8Util(){}
+	private Utf8Util() {}
 
 	public final static Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 
@@ -132,16 +132,25 @@ public final class Utf8Util {
 	}
 
 	/**
+	 * convert utf8 code to string
+	 * @param utf8Code
+	 * @return
+	 */
+	public final static String codeToString(int utf8Code) {
+		return codesToString(new int[]{utf8Code});
+	}
+
+	/**
 	 * convert utf8 codes to string
 	 * @param utf8Codes
 	 * @return
 	 */
 	public final static String codesToString(int[] utf8Codes) {
-		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-		for(int code : utf8Codes) {
-			codeToString(buffer, code);
+		List<Integer> codeList = new ArrayList<>(utf8Codes.length);
+		for(int code: utf8Codes) {
+			codeList.add(code);
 		}
-		return new String(buffer.toByteArray(), DEFAULT_CHARSET);
+		return codeListToString(codeList);
 	}
 
 	/**
@@ -154,17 +163,6 @@ public final class Utf8Util {
 		for(int code : utf8CodeList) {
 			codeToString(buffer, code);
 		}
-		return new String(buffer.toByteArray(), DEFAULT_CHARSET);
-	}
-
-	/**
-	 * convert utf8 code to string
-	 * @param utf8Code
-	 * @return
-	 */
-	public final static String codeToString(int utf8Code) {
-		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-		codeToString(buffer, utf8Code);
 		return new String(buffer.toByteArray(), DEFAULT_CHARSET);
 	}
 
@@ -185,6 +183,23 @@ public final class Utf8Util {
 	}
 
 	public final static boolean isAsciiCode(int utf8Code) {
-		return utf8Code > -1 && utf8Code < 128;
+		return utf8Code >= 0 && utf8Code <= 127;
+	}
+
+	public final static boolean isUtf8Code(int code) {
+		// 1 byte code
+		if(isAsciiCode(code)) {
+			return true;
+		}
+		// 2 byte code
+		if(code >= 0x0080 && code <= 0x07ff) {
+			return true;
+		}
+		// 3 byte code
+		if(code >= 0x0800 && code <= 0xffff) {
+			return true;
+		}
+		// 4 byte code
+		return code >= 0x10000 && code <= 0x1fffff;
 	}
 }

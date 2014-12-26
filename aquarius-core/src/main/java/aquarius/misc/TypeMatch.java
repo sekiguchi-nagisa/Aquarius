@@ -28,8 +28,8 @@ public final class TypeMatch {
 					if(action != null) {
 						action.apply(Optional.ofNullable(value));
 					}
-				} catch (Exception e) {
-					throw new RuntimeException(e);
+				} catch(Exception e) {
+					Utils.propagate(e);
 				}
 			}
 		};
@@ -51,8 +51,8 @@ public final class TypeMatch {
 					if(this.action != null) {
 						this.action.apply((T) value);
 					}
-				} catch (Exception e) {
-					throw new RuntimeException(e);
+				} catch(Exception e) {
+					Utils.propagate(e);
 				}
 				return true;
 			}

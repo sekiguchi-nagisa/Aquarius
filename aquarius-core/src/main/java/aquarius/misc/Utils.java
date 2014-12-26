@@ -8,6 +8,8 @@ import java.text.DecimalFormat;
  *
  */
 public class Utils {
+	private Utils() {}
+
 	/**
 	 * show memory
 	 * @param message
@@ -57,6 +59,15 @@ public class Utils {
 		}
 	}
 
+	/**
+	 * propagate exception
+	 * @param e
+	 * @return
+	 * never return. 
+	 * @throws RuntimeException
+	 * if e is RuntimeException, rethrow it.
+	 * otherwise wrapped by RuntimeException.
+	 */
 	public final static boolean propagate(Exception e) throws RuntimeException {
 		if(e instanceof RuntimeException) {
 			throw (RuntimeException) e;

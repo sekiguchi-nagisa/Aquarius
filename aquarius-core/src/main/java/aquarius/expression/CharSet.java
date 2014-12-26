@@ -3,11 +3,12 @@ package aquarius.expression;
 import java.util.ArrayList;
 import java.util.List;
 
+import static aquarius.misc.Utf8Util.*;
+
 import aquarius.AquariusInputStream;
 import aquarius.ExpressionVisitor;
 import aquarius.ParserContext;
 import aquarius.misc.IntRange;
-import aquarius.misc.Utf8Util;
 
 /**
 * try to match one utf8 character from char set.
@@ -19,21 +20,20 @@ public class CharSet implements ParsingExpression<Void> {
 	protected final int[] chars;
 	protected List<IntRange> rangeList;
 
-	private static int[] toUtf8Chars(char[] chars) {
-		int[] encoddedChars = new int[chars.length];
-		for(int i = 0; i < chars.length; i++) {
-			encoddedChars[i] = Utf8Util.toUtf8Code(chars[i]);
-		}
-		return encoddedChars;
-	}
-
 	public static CharSet newCharSet(char... chars) {
-		return newCharSet(toUtf8Chars(chars));
+		int[] codes = new int[chars.length];
+		for(int i = 0; i < chars.length; i++) {
+			codes[i] = toUtf8Code(chars[i]);
+		}
+		return newCharSet(codes);
 	}
 
 	public static CharSet newCharSet(int... chars) {
 		for(int ch : chars) {
-			if(!Utf8Util.isAsciiCode(ch)) {
+			if(!isUtf8Code(ch)) {
+				throw new IllegalArgumentException("must be utf8 code: " + Integer.toHexString(ch));
+			}
+			if(!isAsciiCode(ch)) {
 				return new CharSet(chars);
 			}
 		}
@@ -59,7 +59,7 @@ public class CharSet implements ParsingExpression<Void> {
 	 * this
 	 */
 	public CharSet r(char start, char stop) {
-		return this.r(Utf8Util.toUtf8Code(start), Utf8Util.toUtf8Code(stop));
+		return this.r(toUtf8Code(start), toUtf8Code(stop));
 	}
 
 	/**
@@ -71,9 +71,16 @@ public class CharSet implements ParsingExpression<Void> {
 	 * @return
 	 * this
 	 * @throws IllegalArgumentException
+	 * if start or stop is not utf8 code
 	 * if start >= stop
 	 */
 	public CharSet r(int start, int stop) throws IllegalArgumentException {
+		if(!isUtf8Code(start)) {
+			throw new IllegalArgumentException("must be utf8 code: " + Integer.toHexString(start));
+		}
+		if(!isUtf8Code(stop)) {
+			throw new IllegalArgumentException("must be utf8 code: " + Integer.toHexString(stop));
+		}
 		if(start >= stop) {
 			throw new IllegalArgumentException(
 					"start is larger than stop. start: " + start + "stop: " + stop);
