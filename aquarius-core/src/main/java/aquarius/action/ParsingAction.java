@@ -8,6 +8,7 @@ public interface ParsingAction<R, A> {
 		public R invoke(ParserContext context, A arg) throws FailedActionException, Exception;
 	}
 
+	@FunctionalInterface
 	public static interface Consumer<A> extends ParsingAction<Void, A> {
 		public void invoke(ParserContext context, A arg) throws FailedActionException, Exception;
 	}
