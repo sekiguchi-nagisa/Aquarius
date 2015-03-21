@@ -45,7 +45,7 @@ import aquarius.misc.Utils.MemoryInfo;
 public class Bench {
 	public static void main(String[] args) throws IOException {
 		System.out.println("run json bench mark");
-		JSONParser parser = ParserFactory.createParser(JSONParser.class);
+		SimpleJSONParser parser = ParserFactory.createParser(SimpleJSONParser.class);
 		CommonStream input = new CommonStream(args[0]);
 
 		MemoryInfo beforeInfo = null;
@@ -59,7 +59,7 @@ public class Bench {
 
 			beforeInfo = Utils.getMemoryInfo();
 			long start = System.currentTimeMillis();
-			ParsedResult<JSON> result = parser.json().parse(input);
+			ParsedResult<Void> result = parser.json().parse(input);
 			long stop = System.currentTimeMillis();
 			afterInfo = Utils.getMemoryInfo();
 
