@@ -36,7 +36,7 @@ public class SampleParserTest {
 		ParsedResult<Token> result = parser.Expr().parse(input);
 		assertTrue(result.isSucess());
 		assertEquals(input.getPosition(), input.getBufferSize());
-		assertEquals(result.getValue().getText(input), source.trim());
+		assertEquals(input.getTokenText(result.getValue()), source.trim());
 
 		// parser instance test
 		assertNotNull(parser.toString());

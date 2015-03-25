@@ -44,7 +44,7 @@ public class CaptureTest extends TestBase<Token> {
 		this.initContext("12");
 		result = this.expr.parse(this.context);
 		this.success(result, 0);
-		assertEquals("", ((Token) this.context.popValue()).getText(this.input));
+		assertEquals("", this.input.getTokenText((Token) this.context.popValue()));
 
 		// failure test
 		this.expr = $(str("1"), r('a', 'z'), ANY, ch('A', 'Z', 'E'));

@@ -38,7 +38,7 @@ public class TokenTest {
 		assertEquals(1, input.getPosition());
 		assertEquals(AquariusInputStream.EOF, input.fetch());
 		Token token = input.createToken(0);
-		assertEquals("a", token.getText(input));
+		assertEquals("a", input.getTokenText(token));
 		assertEquals(1, token.getSize());
 
 		// test2
@@ -50,7 +50,7 @@ public class TokenTest {
 		assertEquals(2, input.getPosition());
 		assertEquals(AquariusInputStream.EOF, input.fetch());
 		token = input.createToken(0);
-		assertEquals("ω", token.getText(input));
+		assertEquals("ω", input.getTokenText(token));
 		assertEquals(2, token.getSize());
 
 		// test3
@@ -62,7 +62,7 @@ public class TokenTest {
 		assertEquals(3, input.getPosition());
 		assertEquals(AquariusInputStream.EOF, input.fetch());
 		token = input.createToken(0);
-		assertEquals("あ", token.getText(input));
+		assertEquals("あ", input.getTokenText(token));
 		assertEquals(3, token.getSize());
 
 		String s = new String(Character.toChars(0x21c56));
@@ -75,7 +75,7 @@ public class TokenTest {
 		assertEquals(4, input.getPosition());
 		assertEquals(AquariusInputStream.EOF, input.fetch());
 		token = input.createToken(0);
-		assertEquals(s, token.getText(input));
+		assertEquals(s, input.getTokenText(token));
 		assertEquals(4, token.getSize());
 	}
 

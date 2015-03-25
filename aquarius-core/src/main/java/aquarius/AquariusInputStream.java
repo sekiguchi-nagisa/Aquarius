@@ -102,4 +102,54 @@ public interface AquariusInputStream {
 	public default Token createToken(int startPos) throws IndexOutOfBoundsException {
 		return this.createToken(startPos, this.getPosition() - startPos);
 	}
+
+	// some token api
+
+	public String getTokenText(Token token);
+
+	/**
+	 * get line number of token.
+	 * @param token
+	 * @return
+	 */
+	public int getLineNumber(Token token);
+
+	/**
+	 * get position of starting new line
+	 * @param token
+	 * @return
+	 */
+	public int getLineStartPos(Token token);
+
+	/**
+	 * get position in line
+	 * @param srcInput
+	 * @return
+	 */
+	public default int getPosInLine(Token token) {
+		return token.getStartPos() - this.getLineStartPos(token);
+	}
+
+	/**
+	 * get utf8 code position in line.
+	 * @param srcInput
+	 * @return
+	 * not equivalent to getPosInLine if has some utf8 characters.
+	 */
+	public default int getCodePosInLine(Token token) {
+		int curPos = this.getPosition();
+
+		final int startPos = token.getStartPos();
+		int pos = this.getLineStartPos(token);
+		this.setPosition(pos);
+		int count = 0;
+		while(pos < startPos) {
+			this.consume();
+			pos = this.getPosition();
+			count++;
+		}
+
+		this.setPosition(curPos);
+		return count;
+	}
 }

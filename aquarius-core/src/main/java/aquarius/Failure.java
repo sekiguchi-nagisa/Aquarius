@@ -126,9 +126,9 @@ public class Failure {
 		sBuilder.append(input.getSourceName());
 		sBuilder.append(')');
 		sBuilder.append(':');
-		sBuilder.append(token.getLineNumber(input));
+		sBuilder.append(input.getLineNumber(token));
 		sBuilder.append(':');
-		sBuilder.append(token.getCodePosInLine(input));
+		sBuilder.append(input.getCodePosInLine(token));
 		sBuilder.append(": ");
 	}
 
@@ -136,10 +136,10 @@ public class Failure {
 		int curPos = input.getPosition();
 
 		// create line
-		final int lineStartPos = input.createToken(pos, 0).getLineStartPos(input);
+		final int lineStartPos = input.getLineStartPos(input.createToken(pos, 0));
 		input.setPosition(pos);
 		input.consume();
-		String line = input.createToken(lineStartPos).getText(input);
+		String line = input.getTokenText(input.createToken(lineStartPos));
 		sBuilder.append(System.lineSeparator());
 		sBuilder.append(line);
 		sBuilder.append(System.lineSeparator());

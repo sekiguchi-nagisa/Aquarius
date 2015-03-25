@@ -118,6 +118,6 @@ public class ParserContext {
 	 * @return
 	 */
 	public String createTokenText(Token token) {
-		return token.getText(this.input);
+		return this.input.getTokenText(token);
 	}
 }

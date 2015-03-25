@@ -21,74 +21,44 @@ package aquarius;
  * @author skgchxngsxyz-opensuse
  *
  */
-public interface Token {
+public class Token {
+	protected int startPos;
+	protected int size;
+
+	public Token(int startPos, int size) {
+		this.startPos = startPos;
+		this.size = size;
+	}
+
 	/**
 	 * get token start position. inclusive
 	 * @return
 	 * 
 	 */
-	public int getStartPos();
+	public int getStartPos() {
+		return this.startPos;
+	}
 
 	/**
 	 * get token text size.
 	 * @return
 	 */
-	public int getSize();
-
-	/**
-	 * get token text.
-	 * @param srcInput
-	 * token source. not null.
-	 * @return
-	 */
-	public String getText(AquariusInputStream srcInput);
-
-	/**
-	 * get line number of token
-	 * @param srcInput
-	 * token source. not null
-	 * @return
-	 */
-	public int getLineNumber(AquariusInputStream srcInput);
-
-	/**
-	 * get position of starting new line
-	 * @param srcInput
-	 * @return
-	 */
-	public int getLineStartPos(AquariusInputStream srcInput);
-
-	/**
-	 * get position in line.
-	 * @param srcInput
-	 * not null
-	 * @return
-	 */
-	public default int getPosInLine(AquariusInputStream srcInput) {
-		return this.getStartPos() - this.getLineStartPos(srcInput);
+	public int getSize() {
+		return this.size;
 	}
 
-	/**
-	 * get utf8 code position in line.
-	 * @param srcInput
-	 * not null
-	 * @return
-	 * not equivalent to getPosInLine if has some utf8 characters.
-	 */
-	public default int getCodePosInLine(AquariusInputStream srcInput) {
-		int curPos = srcInput.getPosition();
+	@Override
+	public String toString() {
+		return "token<" + this.startPos + ":" + this.size + ">";
+	}
 
-		final int startPos = this.getStartPos();
-		int pos = this.getLineStartPos(srcInput);
-		srcInput.setPosition(pos);
-		int count = 0;
-		while(pos < startPos) {
-			srcInput.consume();
-			pos = srcInput.getPosition();
-			count++;
+	@Override
+	public boolean equals(Object target) {
+		if(target instanceof Token) {
+			Token token = (Token) target;
+			return this.getStartPos() == token.getStartPos() && 
+					this.getSize() == token.getSize();
 		}
-
-		srcInput.setPosition(curPos);
-		return count;
+		return false;
 	}
 }

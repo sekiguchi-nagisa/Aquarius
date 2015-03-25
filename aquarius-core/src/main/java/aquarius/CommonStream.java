@@ -140,6 +140,16 @@ public class CommonStream implements AquariusInputStream {
 	}
 
 	@Override
+	public String getSourceName() {
+		return this.sourceName;
+	}
+
+	@Override
+	public void setSourceName(String sourceName) {
+		this.sourceName = sourceName;
+	}
+
+	@Override
 	public Token createToken(int startPos, int length)
 			throws IndexOutOfBoundsException {
 		if(!this.checkIndexRange(startPos)) {
@@ -152,91 +162,43 @@ public class CommonStream implements AquariusInputStream {
 		if(startPos + length > this.bufferSize) {
 			length = this.bufferSize - startPos;
 		}
-		return new CommonToken(startPos, length);
-	}
-
-	private static class CommonToken implements Token {
-		private final int startPos;
-		private final int length;
-
-		private CommonToken(int startPos, int length) {
-			this.startPos = startPos;
-			this.length = length;
-		}
-
-		@Override
-		public int getStartPos() {
-			return this.startPos;
-		}
-
-		@Override
-		public int getSize() {
-			return this.length;
-		}
-
-		@Override
-		public String getText(AquariusInputStream srcInput) {
-			CommonStream stream = (CommonStream) srcInput;
-			return new String(stream.buffer, this.startPos, this.getSize(), DEFAULT_CHARSET);
-		}
-
-		@Override
-		public int getLineNumber(AquariusInputStream srcInput) {
-			CommonStream stream = (CommonStream) srcInput;
-			int lineNum = 1;
-			for(int i = 0; i < stream.bufferSize; i++) {
-				if(stream.buffer[i] == '\n') {
-					lineNum++;
-				}
-				if(i == this.getStartPos()) {
-					break;
-				}
-			}
-			return lineNum;
-		}
-
-		@Override
-		public int getLineStartPos(AquariusInputStream srcInput) {
-			CommonStream stream = (CommonStream) srcInput;
-			int latestNewLinePos = 0;
-			for(int i = 0; i < stream.bufferSize; i++) {
-				if(stream.buffer[i] == '\n') {
-					latestNewLinePos = i;
-				}
-				if(i == this.getStartPos()) {
-					break;
-				}
-			}
-			return latestNewLinePos;
-		}
-
-		@Override
-		public String toString() {
-			return "token<" + this.startPos + ":" + this.length + ">";
-		}
-
-		@Override
-		public boolean equals(Object target) {
-			if(target instanceof Token) {
-				Token token = (Token) target;
-				return this.getStartPos() == token.getStartPos() && 
-						this.getSize() == token.getSize();
-			}
-			return false;
-		}
-	}
-
-	@Override
-	public String getSourceName() {
-		return this.sourceName;
-	}
-
-	@Override
-	public void setSourceName(String sourceName) {
-		this.sourceName = sourceName;
+		return new Token(startPos, length);
 	}
 
 	public int getBufferSize() {
 		return this.bufferSize;
+	}
+
+	@Override
+	public String getTokenText(Token token) {
+		return new String(this.buffer, token.getStartPos(), token.getSize(), DEFAULT_CHARSET);
+	}
+
+	@Override
+	public int getLineNumber(Token token) {
+		int lineNum = 1;
+		for(int i = 0; i < this.bufferSize; i++) {
+			if(this.buffer[i] == '\n') {
+				lineNum++;
+			}
+			if(i == token.getStartPos()) {
+				break;
+			}
+		}
+		return lineNum;
+	}
+
+	@Override
+	public int getLineStartPos(Token token) {
+		int latestNewLinePos = 0;
+		for(int i = 0; i < this.bufferSize; i++) {
+			if(this.buffer[i] == '\n') {
+				latestNewLinePos = i;
+			}
+			if(i == token.getStartPos()) {
+				break;
+			}
+		}
+		return latestNewLinePos;
 	}
 }
