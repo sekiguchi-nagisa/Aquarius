@@ -19,16 +19,18 @@ package aquarius;
 import java.lang.annotation.Annotation;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import aquarius.Parser.PatternWrapper;
 import aquarius.annotation.Grammar;
 import aquarius.annotation.RuleDefinition;
 
@@ -41,7 +43,7 @@ public class ParserFactory {
 		R parserInstance = (R) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), 
 				new Class[]{baseParserClass}, proxy);
 
-		invokeRuleMethods(parserInstance, baseParserClass.getDeclaredMethods());
+		invokeRuleMethods(proxy, parserInstance, baseParserClass.getDeclaredMethods());
 
 		proxy.initializeRules();
 		return parserInstance;
@@ -68,11 +70,12 @@ public class ParserFactory {
 		return false;
 	}
 
-	private static void invokeRuleMethods(Object instance, Method[] methods) {
+	private static void invokeRuleMethods(ParserProxy proxy, Object instance, Method[] methods) {
 		for(Method method : methods) {
 			if(matchAnnotation(method.getAnnotations(), RuleDefinition.class) 
 					&& matchMethod(method, Rule.class, null)) {
 				try {
+					proxy.returnable = !asVoid(method.getGenericReturnType());
 					method.invoke(instance);
 				} catch(IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
@@ -80,6 +83,38 @@ public class ParserFactory {
 				}
 			}
 		}
+	}
+
+	private static boolean asVoid(Type type) {
+		/**
+		 * ex. String
+		 */
+		if(type instanceof Class) {
+			Class<?> clazz = (Class<?>) type;
+			return clazz.equals(Void.class);
+		}
+
+		/**
+		 * ex. String[], T[]
+		 */
+		if(type instanceof GenericArrayType) {
+			GenericArrayType arrayType = (GenericArrayType) type;
+			return asVoid(arrayType.getGenericComponentType());
+		}
+
+		/**
+		 * ex. Map<String, T[]>
+		 */
+		if(type instanceof ParameterizedType) {
+			ParameterizedType paramType = (ParameterizedType) type;
+			for(Type elemType : paramType.getActualTypeArguments()) {
+				if(!asVoid(elemType)) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -118,6 +153,7 @@ public class ParserFactory {
 		private boolean invokeRule = true;
 		private int ruleIndexCount = 0;
 		private final Map<String, Rule<?>> ruleMap;
+		private boolean returnable = false;
 
 		public ParserProxy() {
 			this.ruleMap = new HashMap<>();
@@ -134,17 +170,6 @@ public class ParserFactory {
 						this.createRule(proxy, method, args) : this.getCachedRule(methodName);
 			}
 
-			// invoke Parser#rule(Pattern pattern)
-			if(this.invokeRule && method.isDefault()) {
-				if(matchMethod(method, Rule.class, "rule", PatternWrapper.class) 
-						|| matchMethod(method, Rule.class, "ruleVoid", PatternWrapper.class)) {
-					PatternWrapper<?> pattern = (PatternWrapper<?>)args[0];
-					boolean returnable = methodName.equals("rule");
-					Rule<?> expr = new Rule<>(this.ruleIndexCount++, pattern, returnable);
-					return expr;
-				}
-			}
-
 			// hashCode, equals, toString
 			if(matchMethod(method, int.class, "hashCode")) {
 				return this.hashCode();
@@ -155,13 +180,7 @@ public class ParserFactory {
 			}
 
 			// call default method
-			if(method.isDefault() && !matchMethod(method, Rule.class, "rule", PatternWrapper.class) 
-					&& !matchMethod(method, Rule.class, "ruleVoid", PatternWrapper.class)) {
-				return this.invokeDefaultMethod(proxy, method, args);
-			}
-
-			// otherwise
-			throw new IllegalArgumentException("unimplemented method: " + method);
+			return this.invokeDefaultMethod(proxy, method, args);
 		}
 
 		@SuppressWarnings("unchecked")
@@ -190,6 +209,7 @@ public class ParserFactory {
 
 		private final Rule<?> createRule(Object proxy, Method method, Object[] args) throws Throwable {
 			Rule<?> value = this.invokeDefaultMethod(proxy, method, args, Rule.class);
+			value = new RuleImpl<>(this.ruleIndexCount++, value, this.returnable);
 			this.ruleMap.put(method.getName(), value);
 			return value;
 		}

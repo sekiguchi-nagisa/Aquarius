@@ -17,10 +17,48 @@
 package aquarius;
 
 import aquarius.CacheFactory.CacheKind;
-import aquarius.Parser.PatternWrapper;
 import aquarius.expression.ParsingExpression;
 
-public class Rule<R> implements ParsingExpression<R> {
+@FunctionalInterface
+public interface Rule<R> extends ParsingExpression<R> {
+	@Override
+	public default <T> T accept(ExpressionVisitor<T> visitor) {
+		return visitor.visitRule(this);
+	}
+
+	@Override
+	public default boolean parseImpl(ParserContext context) {
+		return false;
+	}
+
+	@Override
+	public default boolean isReturnable() {
+		return false;
+	}
+
+	public default int getRuleIndex() {
+		return 0;
+	}
+
+	public default ParsingExpression<R> getPattern() {
+		return null;
+	}
+
+	public default void init(int ruleSize) {
+	}
+
+	public default ParsedResult<R> parse(AquariusInputStream input) {
+		return this.parse(input, new CacheFactory(CacheKind.Limit));
+	}
+
+	public default ParsedResult<R> parse(AquariusInputStream input, CacheFactory factory) {
+		return null;
+	}
+
+	public ParsingExpression<R> invoke();
+}
+
+class RuleImpl<R> implements Rule<R> {
 	/**
 	 * for memoization
 	 */
@@ -36,19 +74,14 @@ public class Rule<R> implements ParsingExpression<R> {
 	/**
 	 * will be null after call initExpr()
 	 */
-	private PatternWrapper<R> wrapper;
+	private Rule<R> wrapper;
 
 	private ParsingExpression<R> pattern;
 
-	public Rule(int ruleIndex, PatternWrapper<R> wrapper, boolean returnable) {
+	public RuleImpl(int ruleIndex, Rule<R> wrapper, boolean returnable) {
 		this.ruleIndex = ruleIndex;
 		this.wrapper = wrapper;
 		this.returnable = returnable;
-	}
-
-	@Override
-	public <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visitRule(this);
 	}
 
 	@Override
@@ -84,25 +117,26 @@ public class Rule<R> implements ParsingExpression<R> {
 		return this.returnable;
 	}
 
-	void init(int ruleSize) {
-		this.ruleSize = ruleSize;
-		this.pattern = this.wrapper.invoke();
-		this.wrapper = null;
+	@Override
+	public void init(int ruleSize) {
+		if(this.pattern == null) {
+			this.ruleSize = ruleSize;
+			this.pattern = this.wrapper.invoke();
+			this.wrapper = null;
+		}
 	}
 
+	@Override
 	public int getRuleIndex() {
 		return this.ruleIndex;
 	}
 
+	@Override
 	public ParsingExpression<R> getPattern() {
 		return this.pattern;
 	}
 
-	// parser entry point
-	public ParsedResult<R> parse(AquariusInputStream input) {
-		return this.parse(input, new CacheFactory(CacheKind.Limit));
-	}
-
+	@Override
 	public ParsedResult<R> parse(AquariusInputStream input, CacheFactory factory) {
 		ParserContext context = new ParserContext(input, factory.newCache(this.ruleSize));
 
@@ -111,5 +145,10 @@ public class Rule<R> implements ParsingExpression<R> {
 
 		// create result
 		return new ParsedResult<>(status ? context.popValue() : context.getFailure());
+	}
+
+	@Override
+	public ParsingExpression<R> invoke() {
+		return null;	// do nothing
 	}
 }

@@ -42,17 +42,5 @@ public class SampleParserTest {
 		assertNotNull(parser.toString());
 		assertTrue(parser.equals(parser));
 		assertEquals(parser.hashCode(), parser.hashCode());
-
-		try {
-			assertNull(parser.rule(null));
-			fail();
-		} catch(IllegalArgumentException e) {
-		}
-
-		try {
-			assertNull(parser.ruleVoid(null));
-			fail();
-		} catch(IllegalArgumentException e) {
-		}
 	}
 }

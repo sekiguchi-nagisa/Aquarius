@@ -31,86 +31,75 @@ public interface SimpleJSONParser extends Parser {
 
 	@RuleDefinition
 	public default Rule<List<Void>> ws() {
-		return rule(() ->
-			ch(' ', '\t', '\r', '\n').zeroMore()
-		);
+		return () ->
+			ch(' ', '\t', '\r', '\n').zeroMore();
 	}
 
 	@RuleDefinition
 	public default Rule<Void> objectOpen() {
-		return ruleVoid(() ->
-			seqN(str("{"), ws())
-		);
+		return () ->
+			seqN(str("{"), ws());
 	}
 
 	@RuleDefinition
 	public default Rule<Void> objectClose() {
-		return ruleVoid(() ->
-			seqN(str("}"), ws())
-		);
+		return () ->
+			seqN(str("}"), ws());
 	}
 
 	@RuleDefinition
 	public default Rule<Void> arrayOpen() {
-		return ruleVoid(() ->
-			seqN(str("["), ws())
-		);
+		return () ->
+			seqN(str("["), ws());
 	}
 
 	@RuleDefinition
 	public default Rule<Void> arrayClose() {
-		return ruleVoid(() ->
-			seqN(str("]"), ws())
-		);
+		return () ->
+			seqN(str("]"), ws());
 	}
 
 	@RuleDefinition
 	public default Rule<Void> keyValueSep() {
-		return ruleVoid(() ->
-			seqN(ws(), str(":"), ws())
-		);
+		return () ->
+			seqN(ws(), str(":"), ws());
 	}
 
 	@RuleDefinition
 	public default Rule<Void> valueSep() {
-		return ruleVoid(() ->
-			seqN(str(","), ws())
-		);
+		return () ->
+			seqN(str(","), ws());
 	}
 
 	@RuleDefinition
 	public default Rule<Void> json() {
-		return rule(() -> 
-			seqN(ws(), or(object(), array()))
-		);
+		return () -> 
+			seqN(ws(), or(object(), array()));
 	}
 
 	@RuleDefinition
 	public default Rule<Void> object() {
-		return rule(() ->
+		return () ->
 			seqN(objectOpen(), keyValue(), zeroMore(valueSep(), keyValue()), objectClose())
-			.or(seqN(objectOpen(), objectClose()))
-		);
+			.or(seqN(objectOpen(), objectClose()));
 	}
 
 	@RuleDefinition
 	public default Rule<Void> array() {
-		return rule(() ->
+		return () ->
 			seqN(arrayOpen(), value(), zeroMore(valueSep(), value()), arrayClose())
-			.or(seqN(arrayOpen(), arrayClose()))
-		);
+			.or(seqN(arrayOpen(), arrayClose()));
 	}
 
 	@RuleDefinition
 	public default Rule<Void> keyValue() {
-		return rule(() ->
-			seqN(string(), keyValueSep(), value(), ws())
-		);
+		return () ->
+			seqN(string(), keyValueSep(), value(), ws());
 	}
 
 	@RuleDefinition
 	public default Rule<Void> value() {
-		return rule(() ->
+		return () ->
 			seqN(
 				or(
 					string(),
@@ -122,20 +111,18 @@ public interface SimpleJSONParser extends Parser {
 					str("null")
 				), 
 				ws()
-			)
-		);
+			);
 	}
 
 	@RuleDefinition
 	public default Rule<Void> escape() {
-		return ruleVoid(() ->
-			seqN(str("\\"), ch('"', '\\', '/', 'b', 'f', 'n', 'r', 't'))
-		);
+		return () ->
+			seqN(str("\\"), ch('"', '\\', '/', 'b', 'f', 'n', 'r', 't'));
 	}
 
 	@RuleDefinition
 	public default Rule<Void> string() {
-		return rule(() ->
+		return () ->
 			seqN(
 				str("\""), 
 				or(
@@ -143,30 +130,26 @@ public interface SimpleJSONParser extends Parser {
 					seqN(not(ch('"', '\\')), ANY)
 				).zeroMore(), 
 				str("\"")
-			)
-		);
+			);
 	}
 
 	@RuleDefinition
 	public default Rule<Void> integer() {
-		return ruleVoid(() ->
+		return () ->
 			str("0")
-			.or(seqN(r('1', '9'), r('0', '9').zeroMore()))
-		);
+			.or(seqN(r('1', '9'), r('0', '9').zeroMore()));
 	}
 
 	@RuleDefinition
 	public default Rule<Void> exp() {
-		return ruleVoid(() ->
-			seqN(ch('E', 'e'), ch('+', '-').opt(), integer())
-		);
+		return () ->
+			seqN(ch('E', 'e'), ch('+', '-').opt(), integer());
 	}
 
 	@RuleDefinition
 	public default Rule<Void> number() {
-		return rule(() ->
+		return () ->
 			seqN(str("-").opt(), integer(), str("."), r('0', '9').oneMore(), exp().opt())
-			.or(seqN(str("-").opt(), integer()))
-		);
+			.or(seqN(str("-").opt(), integer()));
 	}
 }

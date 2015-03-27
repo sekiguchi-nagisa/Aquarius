@@ -31,56 +31,49 @@ public interface SampleParser extends Parser {
 
 	@RuleDefinition
 	public default Rule<Void> EOF() {
-		return ruleVoid(() ->
-			not(ANY)
-		);
+		return () ->
+			not(ANY);
 	}
 
 	@RuleDefinition
 	public default Rule<List<Void>> __() {
-		return rule(() -> 
-			ch(' ', '\t', '\n', '\r').zeroMore()
-		);
+		return () -> 
+			ch(' ', '\t', '\n', '\r').zeroMore();
 	}
 
 	@RuleDefinition
 	public default Rule<Token> Expr() {
-		return rule(() -> 
-			seq(__(), Add(), __()).map((ctx, a) -> a.get1())
-		);
+		return () -> 
+			seq(__(), Add(), __()).map((ctx, a) -> a.get1());
 	}
 
 	@RuleDefinition
 	public default Rule<Token> Add() {
-		return rule(() ->
+		return () ->
 			$(Mul(), __(), str("+"), __(), Add())
 			.or($(Mul(), __(), str("-"), __(), Add()))
-			.or(Mul())
-		);
+			.or(Mul());
 	}
 
 	@RuleDefinition
 	public default Rule<Token> Mul() {
-		return rule(() -> 
+		return () -> 
 			$(Primary(), __(), str("*"), __(), Mul())
 			.or($(Primary(), __(), str("/"), __(), Mul()))
-			.or(Primary())
-		);
+			.or(Primary());
 	}
 
 	@RuleDefinition
 	public default Rule<Token> Primary() {
-		return rule(() ->
+		return () ->
 			$(str("("), __(), Add(), __(), str(")"))
-			.or(Num())
-		);
+			.or(Num());
 	}
 
 	@RuleDefinition
 	public default Rule<Token> Num() {
-		return rule(() -> 
+		return () -> 
 			$(str("0"))
-			.or($(ch('-', '+').opt(), r('1', '9'), r('0', '9').zeroMore()))
-		);
+			.or($(ch('-', '+').opt(), r('1', '9'), r('0', '9').zeroMore()));
 	}
 }

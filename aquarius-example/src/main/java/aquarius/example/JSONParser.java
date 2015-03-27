@@ -34,65 +34,57 @@ public interface JSONParser extends Parser {
 
 	@RuleDefinition
 	public default Rule<List<Void>> ws() {
-		return rule(() ->
-			ch(' ', '\t', '\r', '\n').zeroMore()
-		);
+		return () ->
+			ch(' ', '\t', '\r', '\n').zeroMore();
 	}
 
 	@RuleDefinition
 	public default Rule<Void> objectOpen() {
-		return ruleVoid(() ->
-			seqN(str("{"), ws())
-		);
+		return () ->
+			seqN(str("{"), ws());
 	}
 
 	@RuleDefinition
 	public default Rule<Void> objectClose() {
-		return ruleVoid(() ->
-			seqN(str("}"), ws())
-		);
+		return () ->
+			seqN(str("}"), ws());
 	}
 
 	@RuleDefinition
 	public default Rule<Void> arrayOpen() {
-		return ruleVoid(() ->
-			seqN(str("["), ws())
-		);
+		return () ->
+			seqN(str("["), ws());
 	}
 
 	@RuleDefinition
 	public default Rule<Void> arrayClose() {
-		return ruleVoid(() ->
-			seqN(str("]"), ws())
-		);
+		return () ->
+			seqN(str("]"), ws());
 	}
 
 	@RuleDefinition
 	public default Rule<Void> keyValueSep() {
-		return ruleVoid(() ->
-			seqN(ws(), str(":"), ws())
-		);
+		return () ->
+			seqN(ws(), str(":"), ws());
 	}
 
 	@RuleDefinition
 	public default Rule<Void> valueSep() {
-		return ruleVoid(() ->
-			seqN(str(","), ws())
-		);
+		return () ->
+			seqN(str(","), ws());
 	}
 
 	@RuleDefinition
 	public default Rule<JSON> json() {
-		return rule(() -> 
+		return () -> 
 			seq(ws(), or(object(), array())).map((ctx, a) -> 
 				a.get1()
-			)
-		);
+			);
 	}
 
 	@RuleDefinition
 	public default Rule<JSONObject> object() {
-		return rule(() ->
+		return () ->
 			seq(objectOpen(), keyValue(), zeroMore(valueSep(), keyValue()), objectClose())
 			.map((ctx, a) -> {
 				JSONObject object = new JSONObject();
@@ -104,13 +96,12 @@ public interface JSONParser extends Parser {
 			})
 			.or(seq(objectOpen(), objectClose()).map((ctx, a) -> 
 				new JSONObject()
-			))
-		);
+			));
 	}
 
 	@RuleDefinition
 	public default Rule<JSONArray> array() {
-		return rule(() ->
+		return () ->
 			seq(arrayOpen(), value(), zeroMore(valueSep(), value()), arrayClose())
 			.map((ctx, a) -> {
 				JSONArray array = new JSONArray();
@@ -122,22 +113,20 @@ public interface JSONParser extends Parser {
 			})
 			.or(seq(arrayOpen(), arrayClose()).map((ctx, a) -> 
 				new JSONArray()
-			))
-		);
+			));
 	}
 
 	@RuleDefinition
 	public default Rule<Tuple2<JSONString, JSON>> keyValue() {
-		return rule(() ->
+		return () ->
 			seq(string(), keyValueSep(), value(), ws()).map((ctx, a) -> 
 				of(a.get0(), a.get2())
-			)
-		);
+			);
 	}
 
 	@RuleDefinition
 	public default Rule<JSON> value() {
-		return rule(() ->
+		return () ->
 			seq(
 				or(
 					string(),
@@ -151,20 +140,18 @@ public interface JSONParser extends Parser {
 				ws()
 			).map((ctx, a) -> 
 				a.get0()
-			)
-		);
+			);
 	}
 
 	@RuleDefinition
 	public default Rule<Void> escape() {
-		return ruleVoid(() ->
-			seqN(str("\\"), ch('"', '\\', '/', 'b', 'f', 'n', 'r', 't'))
-		);
+		return () ->
+			seqN(str("\\"), ch('"', '\\', '/', 'b', 'f', 'n', 'r', 't'));
 	}
 
 	@RuleDefinition
 	public default Rule<JSONString> string() {
-		return rule(() ->
+		return () ->
 			$(
 				str("\""), 
 				or(
@@ -174,35 +161,31 @@ public interface JSONParser extends Parser {
 				str("\"")
 			).map((ctx, a) -> 
 				new JSONString(ctx.createTokenText(a))
-			)
-		);
+			);
 	}
 
 	@RuleDefinition
 	public default Rule<Void> integer() {
-		return ruleVoid(() ->
+		return () ->
 			str("0")
-			.or(seqN(r('1', '9'), r('0', '9').zeroMore()))
-		);
+			.or(seqN(r('1', '9'), r('0', '9').zeroMore()));
 	}
 
 	@RuleDefinition
 	public default Rule<Void> exp() {
-		return ruleVoid(() ->
-			seqN(ch('E', 'e'), ch('+', '-').opt(), integer())
-		);
+		return () ->
+			seqN(ch('E', 'e'), ch('+', '-').opt(), integer());
 	}
 
 	@RuleDefinition
 	public default Rule<JSONNumber> number() {
-		return rule(() ->
+		return () ->
 			$(str("-").opt(), integer(), str("."), r('0', '9').oneMore(), exp().opt())
 			.map((ctx, a) -> 
 				new JSONNumber(Double.parseDouble(ctx.createTokenText(a)))
 			)
 			.or($(str("-").opt(), integer()).map((ctx, a) -> 
 				new JSONNumber(Long.parseLong(ctx.createTokenText(a)))
-			))
-		);
+			));
 	}
 }
