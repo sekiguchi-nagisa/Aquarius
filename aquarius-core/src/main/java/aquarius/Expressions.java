@@ -185,4 +185,16 @@ public final class Expressions {
 	public final static Capture $(ParsingExpression<?>... exprs) {
 		return new Capture(exprs);
 	}
+
+	public final static Capture $(String target) {
+		return new Capture(Literal.newLiteral(target));
+	}
+
+	public final static Capture $(char... chars) {
+		return new Capture(CharSet.newCharSet(chars));
+	}
+
+	public final static Capture $(int... chars) {
+		return new Capture(CharSet.newCharSet(chars));
+	}
 }
