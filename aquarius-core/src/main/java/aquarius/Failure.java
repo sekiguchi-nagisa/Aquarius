@@ -106,7 +106,7 @@ public class Failure {
 					throw new RuntimeException("must not null value");
 				}
 			});
-		appendFialureLine(sBuilder, input, this.getFailurePos());
+		appendFailureLine(sBuilder, input, this.getFailurePos());
 		return sBuilder.toString();
 	}
 
@@ -132,7 +132,7 @@ public class Failure {
 		sBuilder.append(": ");
 	}
 
-	private static void appendFialureLine(StringBuilder sBuilder, AquariusInputStream input, int pos) {
+	private static void appendFailureLine(StringBuilder sBuilder, AquariusInputStream input, int pos) {
 		int curPos = input.getPosition();
 
 		// create line
