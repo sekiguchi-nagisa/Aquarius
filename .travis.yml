@@ -1,0 +1,16 @@
+language: java
+
+jdk:
+  - oraclejdk8
+
+before_script:
+  - mvn clean
+
+script:
+  - mvn package
+
+notifications:
+  emails:
+    - s.nagisa.xyz@gmail.com
+  on_success: change
+  on_failure: always
