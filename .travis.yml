@@ -3,11 +3,8 @@ language: java
 jdk:
   - oraclejdk8
 
-before_script:
-  - mvn clean
-
 script:
-  - mvn package
+  - mvn clean package
 
 notifications:
   emails:
