@@ -81,13 +81,13 @@ public final class Utf8Util {
 	}
 
 	/**
-	 * convert java codepoint to utf8 code
-	 * @param uft16CodePoint
+	 * convert unicode code point to utf8 code
+	 * @param codePoint
 	 * @return
 	 * utf8 code
 	 */
-	public final static int toUtf8Code(int uft16CodePoint) {
-		byte[] buf = new String(Character.toChars(uft16CodePoint)).getBytes(DEFAULT_CHARSET);
+	public final static int toUtf8Code(int codePoint) {
+		byte[] buf = new String(Character.toChars(codePoint)).getBytes(DEFAULT_CHARSET);
 		return toUtf8Code(buf, 0, buf.length);
 	}
 

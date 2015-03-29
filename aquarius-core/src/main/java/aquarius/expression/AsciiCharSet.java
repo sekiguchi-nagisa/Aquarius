@@ -29,12 +29,12 @@ import aquarius.misc.Utf8Util;
  *
  */
 public class AsciiCharSet extends CharSet {
-	private final byte[] asciiMap;
+	private final boolean[] asciiMap;
 
 	public AsciiCharSet(int[] chars) {
 		super(chars);
-		this.asciiMap = new byte[128];
-		Arrays.fill(this.asciiMap, (byte)0);
+		this.asciiMap = new boolean[128];
+		Arrays.fill(this.asciiMap, false);
 		this.updateAsciiMap(chars);
 	}
 
@@ -85,7 +85,7 @@ public class AsciiCharSet extends CharSet {
 	 * must be ascii character. (ch > -1 && ch < 128)
 	 */
 	private void updateAsciiMap(int ch) {
-		this.asciiMap[ch] = 1;
+		this.asciiMap[ch] = true;
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class AsciiCharSet extends CharSet {
 		final int fetchedCh = input.fetchByte();
 
 		if(Utf8Util.isAsciiCode(fetchedCh)) {
-			if(this.asciiMap[fetchedCh] == 1) {
+			if(this.asciiMap[fetchedCh]) {
 				input.consumeByte();
 				return true;
 			}

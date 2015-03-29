@@ -34,7 +34,7 @@ public class SampleParserTest {
 		CommonStream input = new CommonStream("ex", source);
 
 		ParsedResult<Token> result = parser.Expr().parse(input);
-		assertTrue(result.isSucess());
+		assertTrue(result.isSuccess());
 		assertEquals(input.getPosition(), input.getBufferSize());
 		assertEquals(input.getTokenText(result.getValue()), source.trim());
 

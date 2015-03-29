@@ -82,7 +82,7 @@ public class JSONParserTest {
 		CommonStream input = new CommonStream("ex", jsonString);
 		JSONParser parser = ParserFactory.createParser(JSONParser.class);
 		ParsedResult<JSON> result = parser.json().parse(input);
-		assertTrue(result.isSucess());
+		assertTrue(result.isSuccess());
 		assertEquals(input.getPosition(), input.getBufferSize());
 
 		JSON json = result.getValue();

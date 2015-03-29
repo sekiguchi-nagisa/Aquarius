@@ -26,7 +26,7 @@ public class ParsedResult<R> {
 		this.value = value;
 	}
 
-	public final boolean isSucess() {
+	public final boolean isSuccess() {
 		return !this.isFailure();
 	}
 
@@ -50,6 +50,6 @@ public class ParsedResult<R> {
 	 */
 	@SuppressWarnings("unchecked")
 	public R getValue() {
-		return this.value != null && this.isSucess() ? (R) this.value : null;
+		return this.value != null && this.isSuccess() ? (R) this.value : null;
 	}
 }

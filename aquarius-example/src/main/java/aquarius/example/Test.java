@@ -43,7 +43,7 @@ public class Test {
 		System.out.println("parse time: " + (stop - start) + "ms");
 
 		// print result
-		if(result.isSucess()) {
+		if(result.isSuccess()) {
 			System.out.println("success");
 		} else {
 			Failure f = result.getFailure();
@@ -63,7 +63,7 @@ public class Test {
 		System.out.println("parse time: " + (stop - start) + "ms");
 
 		// print result
-		if(result.isSucess()) {
+		if(result.isSuccess()) {
 			System.out.println("success");
 		} else {
 			Failure f = result.getFailure();

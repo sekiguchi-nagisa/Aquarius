@@ -50,7 +50,7 @@ public class Bench {
 
 			record.add(stop - start);
 			System.out.println((i + 1) + "/" + count);
-			result.isSucess();
+			result.isSuccess();
 		}
 
 		System.err.println("before parsing");
