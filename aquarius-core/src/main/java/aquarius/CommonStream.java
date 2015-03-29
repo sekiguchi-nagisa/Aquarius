@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 import static aquarius.misc.Utf8Util.*;
 
@@ -34,6 +36,7 @@ public class CommonStream implements AquariusInputStream {
 	private final byte[] buffer;
 	private final int bufferSize;
 	private int currentPos = 0;
+	private int[] lineNumTable;
 
 	public CommonStream(String sourceName, String source) {
 		this(sourceName, source.getBytes(DEFAULT_CHARSET));
@@ -176,16 +179,32 @@ public class CommonStream implements AquariusInputStream {
 
 	@Override
 	public int getLineNumber(Token token) {
-		int lineNum = 1;
+		if(this.lineNumTable == null) {
+			this.createLineNumberTable();
+		}
+
+		int index = Arrays.binarySearch(this.lineNumTable, token.getStartPos());
+		if(index >= 0) {
+			return index;
+		} else {
+			return -index - 1;
+		}
+	}
+
+	private void createLineNumberTable() {
+		LinkedList<Integer> newLineList = new LinkedList<>();
+		newLineList.add(-1);
 		for(int i = 0; i < this.bufferSize; i++) {
 			if(this.buffer[i] == '\n') {
-				lineNum++;
-			}
-			if(i == token.getStartPos()) {
-				break;
+				newLineList.add(i);
 			}
 		}
-		return lineNum;
+
+		int index = -1;
+		this.lineNumTable = new int[newLineList.size()];
+		for(int newLinePos : newLineList) {
+			this.lineNumTable[++index] = newLinePos;
+		}
 	}
 
 	@Override
