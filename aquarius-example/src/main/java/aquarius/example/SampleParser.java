@@ -18,8 +18,6 @@ package aquarius.example;
 
 import static aquarius.Expressions.*;
 
-import java.util.List;
-
 import aquarius.annotation.Grammar;
 import aquarius.annotation.RuleDefinition;
 import aquarius.Rule;
@@ -28,45 +26,32 @@ import aquarius.Token;
 
 @Grammar
 public interface SampleParser extends Parser {
-
-	@RuleDefinition
-	public default Rule<Void> EOF() {
-		return () ->
-			not(ANY);
-	}
-
-	@RuleDefinition
-	public default Rule<List<Void>> __() {
-		return () -> 
-			ch(' ', '\t', '\n', '\r').zeroMore();
-	}
-
 	@RuleDefinition
 	public default Rule<Token> Expr() {
 		return () -> 
-			seq(__(), Add(), __()).map((ctx, a) -> a.get1());
+			seq(__, Add(), __).map((ctx, a) -> a.get1());
 	}
 
 	@RuleDefinition
 	public default Rule<Token> Add() {
 		return () ->
-			$(Mul(), __(), str("+"), __(), Add())
-			.or($(Mul(), __(), str("-"), __(), Add()))
+			$(Mul(), __, str("+"), __, Add())
+			.or($(Mul(), __, str("-"), __, Add()))
 			.or(Mul());
 	}
 
 	@RuleDefinition
 	public default Rule<Token> Mul() {
 		return () -> 
-			$(Primary(), __(), str("*"), __(), Mul())
-			.or($(Primary(), __(), str("/"), __(), Mul()))
+			$(Primary(), __, str("*"), __, Mul())
+			.or($(Primary(), __, str("/"), __, Mul()))
 			.or(Primary());
 	}
 
 	@RuleDefinition
 	public default Rule<Token> Primary() {
 		return () ->
-			$(str("("), __(), Add(), __(), str(")"))
+			$(str("("), __, Add(), __, str(")"))
 			.or(Num());
 	}
 

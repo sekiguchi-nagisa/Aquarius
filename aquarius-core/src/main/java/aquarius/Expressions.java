@@ -48,6 +48,11 @@ public final class Expressions {
 	private Expressions(){}
 
 	public final static Any ANY = new Any();
+	
+	public final static NotPredict EOF = not(ANY);
+	
+	public final static ZeroMore<Void> WS = ch(' ', '\t', '\r', '\n').zeroMore();
+	public final static ZeroMore<Void> __ = WS;
 
 	public final static Literal str(String target) {
 		return Literal.newLiteral(target);

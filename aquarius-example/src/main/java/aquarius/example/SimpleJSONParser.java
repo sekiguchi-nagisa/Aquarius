@@ -30,51 +30,45 @@ public interface SimpleJSONParser extends Parser {
 	//separator definition
 
 	@RuleDefinition
-	public default Rule<List<Void>> ws() {
-		return () ->
-			ch(' ', '\t', '\r', '\n').zeroMore();
-	}
-
-	@RuleDefinition
 	public default Rule<Void> objectOpen() {
 		return () ->
-			seqN(str("{"), ws());
+			seqN(str("{"), WS);
 	}
 
 	@RuleDefinition
 	public default Rule<Void> objectClose() {
 		return () ->
-			seqN(str("}"), ws());
+			seqN(str("}"), WS);
 	}
 
 	@RuleDefinition
 	public default Rule<Void> arrayOpen() {
 		return () ->
-			seqN(str("["), ws());
+			seqN(str("["), WS);
 	}
 
 	@RuleDefinition
 	public default Rule<Void> arrayClose() {
 		return () ->
-			seqN(str("]"), ws());
+			seqN(str("]"), WS);
 	}
 
 	@RuleDefinition
 	public default Rule<Void> keyValueSep() {
 		return () ->
-			seqN(ws(), str(":"), ws());
+			seqN(WS, str(":"), WS);
 	}
 
 	@RuleDefinition
 	public default Rule<Void> valueSep() {
 		return () ->
-			seqN(str(","), ws());
+			seqN(str(","), WS);
 	}
 
 	@RuleDefinition
 	public default Rule<Void> json() {
 		return () -> 
-			seqN(ws(), or(object(), array()));
+			seqN(WS, or(object(), array()));
 	}
 
 	@RuleDefinition
@@ -94,7 +88,7 @@ public interface SimpleJSONParser extends Parser {
 	@RuleDefinition
 	public default Rule<Void> keyValue() {
 		return () ->
-			seqN(string(), keyValueSep(), value(), ws());
+			seqN(string(), keyValueSep(), value(), WS);
 	}
 
 	@RuleDefinition
@@ -110,7 +104,7 @@ public interface SimpleJSONParser extends Parser {
 					str("false"),
 					str("null")
 				), 
-				ws()
+				WS
 			);
 	}
 

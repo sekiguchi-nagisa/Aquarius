@@ -20,8 +20,6 @@ import static aquarius.Expressions.*;
 import static aquarius.example.JSON.*;
 import static aquarius.misc.Tuples.*;
 
-import java.util.List;
-
 import aquarius.Parser;
 import aquarius.Rule;
 import aquarius.annotation.Grammar;
@@ -31,53 +29,47 @@ import aquarius.misc.Tuple2;
 @Grammar
 public interface JSONParser extends Parser {
 	//separator definition
-
-	@RuleDefinition
-	public default Rule<List<Void>> ws() {
-		return () ->
-			ch(' ', '\t', '\r', '\n').zeroMore();
-	}
-
+	
 	@RuleDefinition
 	public default Rule<Void> objectOpen() {
 		return () ->
-			seqN(str("{"), ws());
+			seqN(str("{"), WS);
 	}
 
 	@RuleDefinition
 	public default Rule<Void> objectClose() {
 		return () ->
-			seqN(str("}"), ws());
+			seqN(str("}"), WS);
 	}
 
 	@RuleDefinition
 	public default Rule<Void> arrayOpen() {
 		return () ->
-			seqN(str("["), ws());
+			seqN(str("["), WS);
 	}
 
 	@RuleDefinition
 	public default Rule<Void> arrayClose() {
 		return () ->
-			seqN(str("]"), ws());
+			seqN(str("]"), WS);
 	}
 
 	@RuleDefinition
 	public default Rule<Void> keyValueSep() {
 		return () ->
-			seqN(ws(), str(":"), ws());
+			seqN(WS, str(":"), WS);
 	}
 
 	@RuleDefinition
 	public default Rule<Void> valueSep() {
 		return () ->
-			seqN(str(","), ws());
+			seqN(str(","), WS);
 	}
 
 	@RuleDefinition
 	public default Rule<JSON> json() {
 		return () -> 
-			seq(ws(), or(object(), array())).map((ctx, a) -> 
+			seq(WS, or(object(), array())).map((ctx, a) -> 
 				a.get1()
 			);
 	}
@@ -119,7 +111,7 @@ public interface JSONParser extends Parser {
 	@RuleDefinition
 	public default Rule<Tuple2<JSONString, JSON>> keyValue() {
 		return () ->
-			seq(string(), keyValueSep(), value(), ws()).map((ctx, a) -> 
+			seq(string(), keyValueSep(), value(), WS).map((ctx, a) -> 
 				of(a.get0(), a.get2())
 			);
 	}
@@ -137,7 +129,7 @@ public interface JSONParser extends Parser {
 					str("false").map((ctx, a) -> new JSONBool(false)),
 					str("null").map((ctx, a) -> new JSONNull())
 				), 
-				ws()
+				WS
 			).map((ctx, a) -> 
 				a.get0()
 			);
