@@ -58,7 +58,7 @@ public interface SampleParser extends Parser {
 	@RuleDefinition
 	public default Rule<Token> Num() {
 		return () -> 
-			$(str("0"))
+			$("0")
 			.or($(ch('-', '+').opt(), r('1', '9'), r('0', '9').zeroMore()));
 	}
 }

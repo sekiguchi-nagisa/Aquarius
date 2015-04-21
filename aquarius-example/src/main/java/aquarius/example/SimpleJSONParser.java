@@ -18,8 +18,6 @@ package aquarius.example;
 
 import static aquarius.Expressions.*;
 
-import java.util.List;
-
 import aquarius.Parser;
 import aquarius.Rule;
 import aquarius.annotation.Grammar;

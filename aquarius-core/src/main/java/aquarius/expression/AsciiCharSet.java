@@ -72,11 +72,9 @@ public class AsciiCharSet extends CharSet {
 	 */
 	private void updateAsciiMap(int start, int stop) {
 		int size = stop - start + 1;
-		int[] codes = new int[size];
 		for(int i = 0; i < size; i++) {
-			codes[i] = start + i;
+			this.updateAsciiMap(start + i);
 		}
-		this.updateAsciiMap(codes);
 	}
 
 	/**
