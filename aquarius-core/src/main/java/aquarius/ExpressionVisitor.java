@@ -23,6 +23,7 @@ import aquarius.expression.Capture;
 import aquarius.expression.CharSet;
 import aquarius.expression.Choice;
 import aquarius.expression.CustomExpr;
+import aquarius.expression.Filter;
 import aquarius.expression.Literal;
 import aquarius.expression.NotPredict;
 import aquarius.expression.OneMore;
@@ -44,6 +45,7 @@ public interface ExpressionVisitor<T> {
 	public                 T visitCharSet       (CharSet expr);
 	public             <R> T visitChoice        (Choice<R> expr);
 	public             <R> T visitCustomExpr    (CustomExpr<R> expr);
+	public             <R> T visitFilter        (Filter<R> expr);
 	public                 T visitLiteral       (Literal expr);
 	public                 T visitNotPredict    (NotPredict expr);
 	public             <R> T visitOneMore       (OneMore<R> expr);

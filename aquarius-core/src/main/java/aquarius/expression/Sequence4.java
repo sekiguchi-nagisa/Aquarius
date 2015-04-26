@@ -98,4 +98,25 @@ public class Sequence4<A, B, C, D> implements ParsingExpression<Tuple4<A, B, C, 
 	public boolean isReturnable() {
 		return this.returnable;
 	}
+
+	// for filter
+	@SuppressWarnings("unchecked")
+	public Filter<A> filter0() {
+		return (Filter<A>) Filter.filter0(this);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Filter<B> filter1() {
+		return (Filter<B>) Filter.filter1(this);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Filter<C> filter2() {
+		return (Filter<C>) Filter.filter2(this);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Filter<D> filter3() {
+		return (Filter<D>) Filter.filter3(this);
+	}
 }

@@ -106,4 +106,30 @@ public class Sequence5<A, B, C, D, E> implements ParsingExpression<Tuple5<A, B, 
 	public boolean isReturnable() {
 		return this.returnable;
 	}
+
+	// for filter
+	@SuppressWarnings("unchecked")
+	public Filter<A> filter0() {
+		return (Filter<A>) Filter.filter0(this);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Filter<B> filter1() {
+		return (Filter<B>) Filter.filter1(this);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Filter<C> filter2() {
+		return (Filter<C>) Filter.filter2(this);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Filter<D> filter3() {
+		return (Filter<D>) Filter.filter3(this);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Filter<E> filter4() {
+		return (Filter<E>) Filter.filter4(this);
+	}
 }

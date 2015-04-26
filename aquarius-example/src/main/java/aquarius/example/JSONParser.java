@@ -130,9 +130,7 @@ public interface JSONParser extends Parser {
 					str("null").map((ctx, a) -> new JSONNull())
 				), 
 				WS
-			).map((ctx, a) -> 
-				a.get0()
-			);
+			).filter0();
 	}
 
 	@RuleDefinition

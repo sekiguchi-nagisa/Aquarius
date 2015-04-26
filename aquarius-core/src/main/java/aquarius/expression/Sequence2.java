@@ -78,4 +78,15 @@ public class Sequence2<A, B> implements ParsingExpression<Tuple2<A, B>> {
 	public boolean isReturnable() {
 		return this.returnable;
 	}
+	
+	// for filter
+	@SuppressWarnings("unchecked")
+	public Filter<A> filter0() {
+		return (Filter<A>) Filter.filter0(this);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Filter<B> filter1() {
+		return (Filter<B>) Filter.filter1(this);
+	}
 }
