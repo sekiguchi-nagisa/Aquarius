@@ -142,14 +142,10 @@ public class ParserFactory {
     }
 
     private static class ParserProxy implements InvocationHandler {
-        private final Map<String, Rule<?>> ruleMap;
+        private final Map<String, Rule<?>> ruleMap = new HashMap<>();
         private boolean invokeRule = true;
         private int ruleIndexCount = 0;
         private boolean returnable = false;
-
-        public ParserProxy() {
-            this.ruleMap = new HashMap<>();
-        }
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {

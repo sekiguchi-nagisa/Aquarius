@@ -119,7 +119,7 @@ public interface AquariusInputStream {
     /**
      * get position in line
      *
-     * @param srcInput
+     * @param token
      * @return
      */
     public default int getPosInLine(Token token) {
@@ -127,9 +127,9 @@ public interface AquariusInputStream {
     }
 
     /**
-     * get utf8 code position in line.
+     * get utf8 code position in line
      *
-     * @param srcInput
+     * @param token
      * @return not equivalent to getPosInLine if has some utf8 characters.
      */
     public default int getCodePosInLine(Token token) {
