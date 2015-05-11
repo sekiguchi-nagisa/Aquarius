@@ -16,29 +16,29 @@
 
 package aquarius.expression;
 
-import static org.junit.Assert.*;
-
+import aquarius.misc.Tuple2;
 import org.junit.Before;
 import org.junit.Test;
 
-import aquarius.misc.Tuple2;
 import static aquarius.Expressions.*;
+import static org.junit.Assert.assertNull;
 
 public class NotTest extends TestBase<Tuple2<Void, Void>> {
-	@Before
-	public void prepare() {
-		this.expr = seq(str("public"), not(r('a', 'z').r('A', 'Z').r('0', '9').oneMore()));
-		this.initContext("public   \t   \t    \t\t");
-	}
-	@Test
-	public void test() {
-		boolean result = this.expr.parse(this.context);
-		this.success(result, 6);
-		assertNull(context.popValue());
+    @Before
+    public void prepare() {
+        this.expr = seq(str("public"), not(r('a', 'z').r('A', 'Z').r('0', '9').oneMore()));
+        this.initContext("public   \t   \t    \t\t");
+    }
 
-		// failure test
-		this.initContext("publicd  ");
-		result = this.expr.parse(this.context);
-		this.failure(result, 0, 6);
-	}
+    @Test
+    public void test() {
+        boolean result = this.expr.parse(this.context);
+        this.success(result, 6);
+        assertNull(context.popValue());
+
+        // failure test
+        this.initContext("publicd  ");
+        result = this.expr.parse(this.context);
+        this.failure(result, 0, 6);
+    }
 }

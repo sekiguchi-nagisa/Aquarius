@@ -16,49 +16,49 @@
 
 package aquarius.example;
 
-import static aquarius.Expressions.*;
-
+import aquarius.Parser;
+import aquarius.Rule;
+import aquarius.Token;
 import aquarius.annotation.Grammar;
 import aquarius.annotation.RuleDefinition;
-import aquarius.Rule;
-import aquarius.Parser;
-import aquarius.Token;
+
+import static aquarius.Expressions.*;
 
 @Grammar
 public interface SampleParser extends Parser {
-	@RuleDefinition
-	public default Rule<Token> Expr() {
-		return () -> 
-			seq(__, Add(), __).map((ctx, a) -> a.get1());
-	}
+    @RuleDefinition
+    public default Rule<Token> Expr() {
+        return () ->
+                seq(__, Add(), __).map((ctx, a) -> a.get1());
+    }
 
-	@RuleDefinition
-	public default Rule<Token> Add() {
-		return () ->
-			$(Mul(), __, str("+"), __, Add())
-			.or($(Mul(), __, str("-"), __, Add()))
-			.or(Mul());
-	}
+    @RuleDefinition
+    public default Rule<Token> Add() {
+        return () ->
+                $(Mul(), __, str("+"), __, Add())
+                        .or($(Mul(), __, str("-"), __, Add()))
+                        .or(Mul());
+    }
 
-	@RuleDefinition
-	public default Rule<Token> Mul() {
-		return () -> 
-			$(Primary(), __, str("*"), __, Mul())
-			.or($(Primary(), __, str("/"), __, Mul()))
-			.or(Primary());
-	}
+    @RuleDefinition
+    public default Rule<Token> Mul() {
+        return () ->
+                $(Primary(), __, str("*"), __, Mul())
+                        .or($(Primary(), __, str("/"), __, Mul()))
+                        .or(Primary());
+    }
 
-	@RuleDefinition
-	public default Rule<Token> Primary() {
-		return () ->
-			$(str("("), __, Add(), __, str(")"))
-			.or(Num());
-	}
+    @RuleDefinition
+    public default Rule<Token> Primary() {
+        return () ->
+                $(str("("), __, Add(), __, str(")"))
+                        .or(Num());
+    }
 
-	@RuleDefinition
-	public default Rule<Token> Num() {
-		return () -> 
-			$("0")
-			.or($(ch('-', '+').opt(), r('1', '9'), r('0', '9').zeroMore()));
-	}
+    @RuleDefinition
+    public default Rule<Token> Num() {
+        return () ->
+                $("0")
+                        .or($(ch('-', '+').opt(), r('1', '9'), r('0', '9').zeroMore()));
+    }
 }

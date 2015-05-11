@@ -21,51 +21,51 @@ import aquarius.ExpressionVisitor;
 import aquarius.ParserContext;
 
 /**
-* try to match the expression. if success, not advance parsing position.
-* otherwise, match failed
-* -> & expr 
-* @author skgchxngsxyz-opensuse
-*
-*/
+ * try to match the expression. if success, not advance parsing position.
+ * otherwise, match failed
+ * -> & expr
+ *
+ * @author skgchxngsxyz-opensuse
+ */
 public class AndPredict implements ParsingExpression<Void> {
-	private final ParsingExpression<?> expr;
+    private final ParsingExpression<?> expr;
 
-	public AndPredict(ParsingExpression<?> expr) {
-		this.expr = expr;
-	}
+    public AndPredict(ParsingExpression<?> expr) {
+        this.expr = expr;
+    }
 
-	public ParsingExpression<?> getExpr() {
-		return this.expr;
-	}
+    public ParsingExpression<?> getExpr() {
+        return this.expr;
+    }
 
-	@Override
-	public String toString() {
-		return "&" + this.expr.toString();
-	}
+    @Override
+    public String toString() {
+        return "&" + this.expr.toString();
+    }
 
-	@Override
-	public boolean parseImpl(ParserContext context) {
-		AquariusInputStream input = context.getInputStream();
-		int pos = input.getPosition();
+    @Override
+    public boolean parseImpl(ParserContext context) {
+        AquariusInputStream input = context.getInputStream();
+        int pos = input.getPosition();
 
-		context.setFailureCreation(false);
-		boolean status = this.expr.parseImpl(context);
-		context.setFailureCreation(true);
+        context.setFailureCreation(false);
+        boolean status = this.expr.parseImpl(context);
+        context.setFailureCreation(true);
 
-		if(!status) {
-			context.pushFailure(pos, this);
-		}
-		input.setPosition(pos);
-		return status;	//if prediction is success, return true 
-	}
+        if(!status) {
+            context.pushFailure(pos, this);
+        }
+        input.setPosition(pos);
+        return status;    //if prediction is success, return true
+    }
 
-	@Override
-	public <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visitAndPredict(this);
-	}
+    @Override
+    public <T> T accept(ExpressionVisitor<T> visitor) {
+        return visitor.visitAndPredict(this);
+    }
 
-	@Override
-	public boolean isReturnable() {
-		return false;
-	}
+    @Override
+    public boolean isReturnable() {
+        return false;
+    }
 }

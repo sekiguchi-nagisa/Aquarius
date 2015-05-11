@@ -16,147 +16,141 @@
 
 package aquarius;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import aquarius.action.FailedActionException;
-import aquarius.expression.AndPredict;
-import aquarius.expression.Any;
-import aquarius.expression.CharSet;
-import aquarius.expression.Literal;
-import aquarius.expression.NotPredict;
-import aquarius.expression.ParsingExpression;
-import aquarius.expression.PredictAction;
+import aquarius.expression.*;
 import aquarius.misc.TypeMatch;
 import aquarius.misc.Utf8Util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Failure {
-	private int failurePos = -1;
-	private Object cause;
+    private int failurePos = -1;
+    private Object cause;
 
-	public int getFailurePos() {
-		return this.failurePos;
-	}
+    private static boolean isEnfOfInput(AquariusInputStream input, int pos) {
+        int curPos = input.getPosition();
+        input.setPosition(pos);
+        try {
+            return input.fetch() == AquariusInputStream.EOF;
+        } finally {
+            input.setPosition(curPos);
+        }
+    }
 
-	public void reuse(int failurePos, ParsingExpression<?> expr) {
-		this.failurePos = failurePos;
-		this.cause = expr;
-	}
+    private static void appendFailurePos(StringBuilder sBuilder, AquariusInputStream input, int pos) {
+        Token token = input.createToken(pos, 0);
+        sBuilder.append('(');
+        sBuilder.append(input.getSourceName());
+        sBuilder.append(')');
+        sBuilder.append(':');
+        sBuilder.append(input.getLineNumber(token));
+        sBuilder.append(':');
+        sBuilder.append(input.getCodePosInLine(token));
+        sBuilder.append(": ");
+    }
 
-	public void reuse(int failurePos, FailedActionException e) {
-		this.failurePos = failurePos;
-		this.cause = e;
-	}
+    private static void appendFailureLine(StringBuilder sBuilder, AquariusInputStream input, int pos) {
+        int curPos = input.getPosition();
 
-	public String getMessage(AquariusInputStream input) {
-		StringBuilder sBuilder = new StringBuilder();
-		appendFailurePos(sBuilder, input, this.getFailurePos());
+        // create line
+        final int lineStartPos = input.getLineStartPos(input.createToken(pos, 0));
+        input.setPosition(pos);
+        input.consume();
+        String line = input.getTokenText(input.createToken(lineStartPos));
+        sBuilder.append(System.lineSeparator());
+        sBuilder.append(line);
+        sBuilder.append(System.lineSeparator());
 
-		TypeMatch.match(this.cause)
-			.when(FailedActionException.class, a -> 
-				sBuilder.append(a.getMessage())
-			)
-			.when(Any.class, a -> 
-				sBuilder.append("require any character, but reach End of File")
-			)
-			.when(CharSet.class, a -> {
-				if(isEnfOfInput(input, this.getFailurePos())) {
-					sBuilder.append("require chars: " + a + ", but reach End of File");
-				} else {
-					int curPos = input.getPosition();
+        // create line marker
+        input.setPosition(lineStartPos);
+        int startPos = lineStartPos;
+        while(startPos < pos) {
+            sBuilder.append(' ');
+            if(!Utf8Util.isAsciiCode(input.fetch())) {
+                sBuilder.append(' ');
+            }
+            input.consume();
+            startPos = input.getPosition();
+        }
+        sBuilder.append('^');
 
-					input.setPosition(failurePos);
-					sBuilder.append("require chars: " + a);
-					sBuilder.append(", but is: " + Utf8Util.codeToString(input.fetch()));
+        input.setPosition(curPos);
+    }
 
-					input.setPosition(curPos);
-				}
-			})
-			.when(Literal.class, a -> {
-				if(isEnfOfInput(input, this.getFailurePos())) {
-					sBuilder.append("require text: " + a.getTarget() + ", but reach End of File");
-				} else {
-					int curPos = input.getPosition();
+    public int getFailurePos() {
+        return this.failurePos;
+    }
 
-					sBuilder.append("require text: " + a.getTarget());
-					int size = a.getTargetCodes().length;
-					List<Integer> codeList = new ArrayList<>(size);
-					for(int i = 0; i < size && input.fetch() != AquariusInputStream.EOF; i++) {
-						codeList.add(input.fetch());
-						input.consume();
-					}
-					sBuilder.append(", but is: " + Utf8Util.codeListToString(codeList));
+    public void reuse(int failurePos, ParsingExpression<?> expr) {
+        this.failurePos = failurePos;
+        this.cause = expr;
+    }
 
-					input.setPosition(curPos);
-				}
-			})
-			.when(AndPredict.class, a -> 
-				sBuilder.append("failed And Prediction")
-			)
-			.when(NotPredict.class, a -> 
-				sBuilder.append("failed Not Prediction")
-			)
-			.when(PredictAction.class, a ->
-				sBuilder.append("failed And Prediction")
-			)
-			.orElse(a -> {
-				if(a.isPresent()) {
-					throw new RuntimeException("unsupported class: " + a.get().getClass());
-				} else {
-					throw new RuntimeException("must not null value");
-				}
-			});
-		appendFailureLine(sBuilder, input, this.getFailurePos());
-		return sBuilder.toString();
-	}
+    public void reuse(int failurePos, FailedActionException e) {
+        this.failurePos = failurePos;
+        this.cause = e;
+    }
 
-	private static boolean isEnfOfInput(AquariusInputStream input, int pos) {
-		int curPos = input.getPosition();
-		input.setPosition(pos);
-		try {
-			return input.fetch() == AquariusInputStream.EOF;
-		} finally {
-			input.setPosition(curPos);
-		}
-	}
+    public String getMessage(AquariusInputStream input) {
+        StringBuilder sBuilder = new StringBuilder();
+        appendFailurePos(sBuilder, input, this.getFailurePos());
 
-	private static void appendFailurePos(StringBuilder sBuilder, AquariusInputStream input, int pos) {
-		Token token = input.createToken(pos, 0);
-		sBuilder.append('(');
-		sBuilder.append(input.getSourceName());
-		sBuilder.append(')');
-		sBuilder.append(':');
-		sBuilder.append(input.getLineNumber(token));
-		sBuilder.append(':');
-		sBuilder.append(input.getCodePosInLine(token));
-		sBuilder.append(": ");
-	}
+        TypeMatch.match(this.cause)
+                .when(FailedActionException.class, a ->
+                                sBuilder.append(a.getMessage())
+                )
+                .when(Any.class, a ->
+                                sBuilder.append("require any character, but reach End of File")
+                )
+                .when(CharSet.class, a -> {
+                    if(isEnfOfInput(input, this.getFailurePos())) {
+                        sBuilder.append("require chars: " + a + ", but reach End of File");
+                    } else {
+                        int curPos = input.getPosition();
 
-	private static void appendFailureLine(StringBuilder sBuilder, AquariusInputStream input, int pos) {
-		int curPos = input.getPosition();
+                        input.setPosition(failurePos);
+                        sBuilder.append("require chars: " + a);
+                        sBuilder.append(", but is: " + Utf8Util.codeToString(input.fetch()));
 
-		// create line
-		final int lineStartPos = input.getLineStartPos(input.createToken(pos, 0));
-		input.setPosition(pos);
-		input.consume();
-		String line = input.getTokenText(input.createToken(lineStartPos));
-		sBuilder.append(System.lineSeparator());
-		sBuilder.append(line);
-		sBuilder.append(System.lineSeparator());
+                        input.setPosition(curPos);
+                    }
+                })
+                .when(Literal.class, a -> {
+                    if(isEnfOfInput(input, this.getFailurePos())) {
+                        sBuilder.append("require text: " + a.getTarget() + ", but reach End of File");
+                    } else {
+                        int curPos = input.getPosition();
 
-		// create line marker
-		input.setPosition(lineStartPos);
-		int startPos = lineStartPos;
-		while(startPos < pos) {
-			sBuilder.append(' ');
-			if(!Utf8Util.isAsciiCode(input.fetch())) {
-				sBuilder.append(' ');
-			}
-			input.consume();
-			startPos = input.getPosition();
-		}
-		sBuilder.append('^');
+                        sBuilder.append("require text: " + a.getTarget());
+                        int size = a.getTargetCodes().length;
+                        List<Integer> codeList = new ArrayList<>(size);
+                        for(int i = 0; i < size && input.fetch() != AquariusInputStream.EOF; i++) {
+                            codeList.add(input.fetch());
+                            input.consume();
+                        }
+                        sBuilder.append(", but is: " + Utf8Util.codeListToString(codeList));
 
-		input.setPosition(curPos);
-	}
+                        input.setPosition(curPos);
+                    }
+                })
+                .when(AndPredict.class, a ->
+                                sBuilder.append("failed And Prediction")
+                )
+                .when(NotPredict.class, a ->
+                                sBuilder.append("failed Not Prediction")
+                )
+                .when(PredictAction.class, a ->
+                                sBuilder.append("failed And Prediction")
+                )
+                .orElse(a -> {
+                    if(a.isPresent()) {
+                        throw new RuntimeException("unsupported class: " + a.get().getClass());
+                    } else {
+                        throw new RuntimeException("must not null value");
+                    }
+                });
+        appendFailureLine(sBuilder, input, this.getFailurePos());
+        return sBuilder.toString();
+    }
 }

@@ -20,5 +20,5 @@ import aquarius.ParserContext;
 
 @FunctionalInterface
 public interface PredictiveAction {
-	public boolean invoke(ParserContext context) throws Exception;
+    public boolean invoke(ParserContext context) throws Exception;
 }

@@ -16,31 +16,30 @@
 
 package aquarius.example;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
 import aquarius.CommonStream;
 import aquarius.ParsedResult;
 import aquarius.ParserFactory;
 import aquarius.Token;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class SampleParserTest {
-	@Test
-	public void test() {
-		SampleParser parser = ParserFactory.createParser(SampleParser.class);
+    @Test
+    public void test() {
+        SampleParser parser = ParserFactory.createParser(SampleParser.class);
 
-		String source = "      (1+ 3) / 2      ";
-		CommonStream input = new CommonStream("ex", source);
+        String source = "      (1+ 3) / 2      ";
+        CommonStream input = new CommonStream("ex", source);
 
-		ParsedResult<Token> result = parser.Expr().parse(input);
-		assertTrue(result.isSuccess());
-		assertEquals(input.getPosition(), input.getBufferSize());
-		assertEquals(input.getTokenText(result.getValue()), source.trim());
+        ParsedResult<Token> result = parser.Expr().parse(input);
+        assertTrue(result.isSuccess());
+        assertEquals(input.getPosition(), input.getBufferSize());
+        assertEquals(input.getTokenText(result.getValue()), source.trim());
 
-		// parser instance test
-		assertNotNull(parser.toString());
-		assertTrue(parser.equals(parser));
-		assertEquals(parser.hashCode(), parser.hashCode());
-	}
+        // parser instance test
+        assertNotNull(parser.toString());
+        assertTrue(parser.equals(parser));
+        assertEquals(parser.hashCode(), parser.hashCode());
+    }
 }

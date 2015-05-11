@@ -21,91 +21,93 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public final class TypeMatch {
-	private TypeMatch() {}
+    private TypeMatch() {
+    }
 
-	public static WhenBuilder match(Object value) {
-		final Set<When<?>> whenSet = new TreeSet<>();
+    public static WhenBuilder match(Object value) {
+        final Set<When<?>> whenSet = new TreeSet<>();
 
-		return new WhenBuilder() {
-			@Override
-			public <T> WhenBuilder when(Class<T> targetClass, WhenAction<T> action) {
-				whenSet.add(new When<>(targetClass, action));
-				return this;
-			}
+        return new WhenBuilder() {
+            @Override
+            public <T> WhenBuilder when(Class<T> targetClass, WhenAction<T> action) {
+                whenSet.add(new When<>(targetClass, action));
+                return this;
+            }
 
-			@Override
-			public void orElse(ElseAction action) {
-				for(When<?> when : whenSet) {
-					if(when.match(value)) {
-						return;
-					}
-				}
-				try {
-					if(action != null) {
-						action.apply(Optional.ofNullable(value));
-					}
-				} catch(Exception e) {
-					Utils.propagate(e);
-				}
-			}
-		};
-	}
+            @Override
+            public void orElse(ElseAction action) {
+                for(When<?> when : whenSet) {
+                    if(when.match(value)) {
+                        return;
+                    }
+                }
+                try {
+                    if(action != null) {
+                        action.apply(Optional.ofNullable(value));
+                    }
+                } catch(Exception e) {
+                    Utils.propagate(e);
+                }
+            }
+        };
+    }
 
-	protected static class When<T> implements Comparable<When<?>> {
-		final Class<T> targetClass;
-		final WhenAction<T> action;
+    public interface WhenBuilder {
+        public <T> WhenBuilder when(Class<T> targetClass, WhenAction<T> action);
 
-		When(Class<T> targetClass, WhenAction<T> action) {
-			this.targetClass = targetClass;
-			this.action = action;
-		}
+        public void orElse(ElseAction action);
+    }
 
-		@SuppressWarnings("unchecked")
-		public boolean match(Object value) {
-			if(this.targetClass.isInstance(value)) {
-				try {
-					if(this.action != null) {
-						this.action.apply((T) value);
-					}
-				} catch(Exception e) {
-					Utils.propagate(e);
-				}
-				return true;
-			}
-			return false;
-		}
+    @FunctionalInterface
+    public static interface WhenAction<T> {
+        public void apply(T value) throws Exception;
+    }
 
-		@Override
-		public int compareTo(When<?> o) {
-			return !this.targetClass.isAssignableFrom(o.targetClass) ? -1 : 1;
-		}
+    @FunctionalInterface
+    public static interface ElseAction {
+        public void apply(Optional<Object> value) throws Exception;
+    }
 
-		@Override
-		public boolean equals(Object t) {
-			if(!(t instanceof When)) {
-				return false;
-			}
-			return this.targetClass.equals(((When<?>)t).targetClass);
-		}
+    protected static class When<T> implements Comparable<When<?>> {
+        final Class<T> targetClass;
+        final WhenAction<T> action;
 
-		@Override
-		public int hashCode() {
-			return this.targetClass.hashCode();
-		}
-	}
+        When(Class<T> targetClass, WhenAction<T> action) {
+            this.targetClass = targetClass;
+            this.action = action;
+        }
 
-	public interface WhenBuilder {
-		public <T> WhenBuilder when(Class<T> targetClass, WhenAction<T> action);
-		public void orElse(ElseAction action);
-	}
+        @SuppressWarnings("unchecked")
+        public boolean match(Object value) {
+            if(this.targetClass.isInstance(value)) {
+                try {
+                    if(this.action != null) {
+                        this.action.apply((T) value);
+                    }
+                } catch(Exception e) {
+                    Utils.propagate(e);
+                }
+                return true;
+            }
+            return false;
+        }
 
-	@FunctionalInterface
-	public static interface WhenAction<T> {
-		public void apply(T value) throws Exception;
-	}
+        @Override
+        public int compareTo(When<?> o) {
+            return !this.targetClass.isAssignableFrom(o.targetClass) ? -1 : 1;
+        }
 
-	@FunctionalInterface
-	public static interface ElseAction {
-		public void apply(Optional<Object> value) throws Exception;
-	}
+        @Override
+        public boolean equals(Object t) {
+            if(!(t instanceof When)) {
+                return false;
+            }
+            return this.targetClass.equals(((When<?>) t).targetClass);
+        }
+
+        @Override
+        public int hashCode() {
+            return this.targetClass.hashCode();
+        }
+    }
 }

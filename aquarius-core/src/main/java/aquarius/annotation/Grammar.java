@@ -23,8 +23,8 @@ import java.lang.annotation.Target;
 
 /**
  * annotate user defined parser interface.
- * @author skgchxngsxyz-opensuse
  *
+ * @author skgchxngsxyz-opensuse
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

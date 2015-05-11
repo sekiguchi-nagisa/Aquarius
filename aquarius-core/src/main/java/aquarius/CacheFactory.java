@@ -17,87 +17,87 @@
 package aquarius;
 
 public class CacheFactory {
-	public static enum CacheKind {
-		Empty, Limit;
-	}
+    protected final CacheKind kind;
 
-	protected final CacheKind kind;
+    public CacheFactory(CacheKind kind) {
+        this.kind = kind;
+    }
 
-	public CacheFactory(CacheKind kind) {
-		this.kind = kind;
-	}
+    public ResultCache newCache(int ruleSize) {
+        switch(this.kind) {
+        case Empty:
+            return new EmptyCache();
+        case Limit:
+            return new LimitedSizeCache(ruleSize);
+        }
+        return new LimitedSizeCache(ruleSize);
+    }
 
-	public ResultCache newCache(int ruleSize) {
-		switch(this.kind) {
-		case Empty:
-			return new EmptyCache();
-		case Limit:
-			return new LimitedSizeCache(ruleSize);
-		}
-		return new LimitedSizeCache(ruleSize);
-	}
+    public static enum CacheKind {
+        Empty, Limit;
+    }
 
-	/**
-	 * not use memoization
-	 * @author skgchxngsxyz-opensuse
-	 *
-	 */
-	protected static class EmptyCache extends ResultCache {
-		@Override
-		public CacheEntry get(int ruleIndex, int srcPos) {
-			return null;	// always null
-		}
+    /**
+     * not use memoization
+     *
+     * @author skgchxngsxyz-opensuse
+     */
+    protected static class EmptyCache extends ResultCache {
+        @Override
+        public CacheEntry get(int ruleIndex, int srcPos) {
+            return null;    // always null
+        }
 
-		@Override
-		public void set(int ruleIndex, int srcPos, Object value, int currentPos) {
-		}
+        @Override
+        public void set(int ruleIndex, int srcPos, Object value, int currentPos) {
+        }
 
-		@Override
-		public void setFailure(int ruleIndex, int srcPos) {
-		}
-	}
+        @Override
+        public void setFailure(int ruleIndex, int srcPos) {
+        }
+    }
 
-	private static class LimitedSizeCache extends ResultCache {
-		private final static int rowSize = 16;
+    private static class LimitedSizeCache extends ResultCache {
+        private final static int rowSize = 16;
 
-		private final int tableSize;
-		private final Entry[] entries;
+        private final int tableSize;
+        private final Entry[] entries;
 
-		public LimitedSizeCache(int ruleSize) {
-			this.tableSize = rowSize * ruleSize;
-			this.entries = new Entry[this.tableSize];
-			for(int i = 0; i < this.tableSize; i++) {
-				this.entries[i] = new Entry();
-			}
-		}
+        public LimitedSizeCache(int ruleSize) {
+            this.tableSize = rowSize * ruleSize;
+            this.entries = new Entry[this.tableSize];
+            for(int i = 0; i < this.tableSize; i++) {
+                this.entries[i] = new Entry();
+            }
+        }
 
-		private static int toIndex(int ruleIndex, int srcPos) {
-			return (srcPos % rowSize) + (ruleIndex * rowSize);
-		}
+        private static int toIndex(int ruleIndex, int srcPos) {
+            return (srcPos % rowSize) + (ruleIndex * rowSize);
+        }
 
-		@Override
-		public CacheEntry get(int ruleIndex, int srcPos) {
-			Entry e = this.entries[toIndex(ruleIndex, srcPos)];
-			return e.srcPos == srcPos ? e.entry : null;
-		}
+        @Override
+        public CacheEntry get(int ruleIndex, int srcPos) {
+            Entry e = this.entries[toIndex(ruleIndex, srcPos)];
+            return e.srcPos == srcPos ? e.entry : null;
+        }
 
-		@Override
-		public void set(int ruleIndex, int srcPos, Object value, int currentPos) {
-			Entry e = this.entries[toIndex(ruleIndex, srcPos)];
-			e.srcPos = srcPos;
-			e.entry.reuse(currentPos, value);
-		}
+        @Override
+        public void set(int ruleIndex, int srcPos, Object value, int currentPos) {
+            Entry e = this.entries[toIndex(ruleIndex, srcPos)];
+            e.srcPos = srcPos;
+            e.entry.reuse(currentPos, value);
+        }
 
-		@Override
-		public void setFailure(int ruleIndex, int srcPos) {
-			Entry e = this.entries[toIndex(ruleIndex, srcPos)];
-			e.srcPos = srcPos;
-			e.entry.reuse(-1, null);
-		}
-	}
+        @Override
+        public void setFailure(int ruleIndex, int srcPos) {
+            Entry e = this.entries[toIndex(ruleIndex, srcPos)];
+            e.srcPos = srcPos;
+            e.entry.reuse(-1, null);
+        }
+    }
 
-	private static class Entry {
-		public int srcPos = -1;
-		public CacheEntry entry = new CacheEntry();
-	}
+    private static class Entry {
+        public int srcPos = -1;
+        public CacheEntry entry = new CacheEntry();
+    }
 }

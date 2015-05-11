@@ -18,47 +18,48 @@ package aquarius;
 
 /**
  * represent for token
- * @author skgchxngsxyz-opensuse
  *
+ * @author skgchxngsxyz-opensuse
  */
 public class Token {
-	protected int startPos;
-	protected int size;
+    protected int startPos;
+    protected int size;
 
-	public Token(int startPos, int size) {
-		this.startPos = startPos;
-		this.size = size;
-	}
+    public Token(int startPos, int size) {
+        this.startPos = startPos;
+        this.size = size;
+    }
 
-	/**
-	 * get token start position. inclusive
-	 * @return
-	 * 
-	 */
-	public int getStartPos() {
-		return this.startPos;
-	}
+    /**
+     * get token start position. inclusive
+     *
+     * @return
+     */
+    public int getStartPos() {
+        return this.startPos;
+    }
 
-	/**
-	 * get token text size.
-	 * @return
-	 */
-	public int getSize() {
-		return this.size;
-	}
+    /**
+     * get token text size.
+     *
+     * @return
+     */
+    public int getSize() {
+        return this.size;
+    }
 
-	@Override
-	public String toString() {
-		return "token<" + this.startPos + ":" + this.size + ">";
-	}
+    @Override
+    public String toString() {
+        return "token<" + this.startPos + ":" + this.size + ">";
+    }
 
-	@Override
-	public boolean equals(Object target) {
-		if(target instanceof Token) {
-			Token token = (Token) target;
-			return this.getStartPos() == token.getStartPos() && 
-					this.getSize() == token.getSize();
-		}
-		return false;
-	}
+    @Override
+    public boolean equals(Object target) {
+        if(target instanceof Token) {
+            Token token = (Token) target;
+            return this.getStartPos() == token.getStartPos() &&
+                    this.getSize() == token.getSize();
+        }
+        return false;
+    }
 }

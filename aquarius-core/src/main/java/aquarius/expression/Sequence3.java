@@ -19,87 +19,88 @@ package aquarius.expression;
 import aquarius.ExpressionVisitor;
 import aquarius.ParserContext;
 import aquarius.misc.Tuple3;
-import static aquarius.misc.Tuples.*;
+
+import static aquarius.misc.Tuples.of;
 
 /**
  * try to match the sequence of expressions and return matched results as tuple3.
- * @author skgchxngsxyz-opensuse
  *
  * @param <A>
  * @param <B>
  * @param <C>
+ * @author skgchxngsxyz-opensuse
  */
 public class Sequence3<A, B, C> implements ParsingExpression<Tuple3<A, B, C>> {
-	private final Tuple3<ParsingExpression<A>, ParsingExpression<B>, ParsingExpression<C>> exprs;
-	private final boolean returnable;
+    private final Tuple3<ParsingExpression<A>, ParsingExpression<B>, ParsingExpression<C>> exprs;
+    private final boolean returnable;
 
-	public Sequence3(ParsingExpression<A> a, ParsingExpression<B> b, ParsingExpression<C> c) {
-		this.exprs = of(a, b, c);
-		this.returnable = a.isReturnable() || b.isReturnable() || c.isReturnable();
-	}
+    public Sequence3(ParsingExpression<A> a, ParsingExpression<B> b, ParsingExpression<C> c) {
+        this.exprs = of(a, b, c);
+        this.returnable = a.isReturnable() || b.isReturnable() || c.isReturnable();
+    }
 
-	public Tuple3<ParsingExpression<A>, ParsingExpression<B>, ParsingExpression<C>> getExprs() {
-		return this.exprs;
-	}
+    public Tuple3<ParsingExpression<A>, ParsingExpression<B>, ParsingExpression<C>> getExprs() {
+        return this.exprs;
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sBuilder = new StringBuilder();
-		sBuilder.append(this.exprs.get0());
-		sBuilder.append(' ');
-		sBuilder.append(this.exprs.get1());
-		sBuilder.append(' ');
-		sBuilder.append(this.exprs.get2());
-		return sBuilder.toString();
-	}
+    @Override
+    public String toString() {
+        StringBuilder sBuilder = new StringBuilder();
+        sBuilder.append(this.exprs.get0());
+        sBuilder.append(' ');
+        sBuilder.append(this.exprs.get1());
+        sBuilder.append(' ');
+        sBuilder.append(this.exprs.get2());
+        return sBuilder.toString();
+    }
 
-	@Override
-	public boolean parseImpl(ParserContext context) {
-		if(this.exprs.get0().parseImpl(context)) {
-			@SuppressWarnings("unchecked")
-			A a = (A) context.popValue();
+    @Override
+    public boolean parseImpl(ParserContext context) {
+        if(this.exprs.get0().parseImpl(context)) {
+            @SuppressWarnings("unchecked")
+            A a = (A) context.popValue();
 
-			if(this.exprs.get1().parseImpl(context)) {
-				@SuppressWarnings("unchecked")
-				B b = (B) context.popValue();
+            if(this.exprs.get1().parseImpl(context)) {
+                @SuppressWarnings("unchecked")
+                B b = (B) context.popValue();
 
-				if(this.exprs.get2().parseImpl(context)) {
-					@SuppressWarnings("unchecked")
-					C c = (C) context.popValue();
+                if(this.exprs.get2().parseImpl(context)) {
+                    @SuppressWarnings("unchecked")
+                    C c = (C) context.popValue();
 
-					if(this.returnable) {
-						context.pushValue(of(a, b, c));
-					}
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+                    if(this.returnable) {
+                        context.pushValue(of(a, b, c));
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visitSequence3(this);
-	}
+    @Override
+    public <T> T accept(ExpressionVisitor<T> visitor) {
+        return visitor.visitSequence3(this);
+    }
 
-	@Override
-	public boolean isReturnable() {
-		return this.returnable;
-	}
+    @Override
+    public boolean isReturnable() {
+        return this.returnable;
+    }
 
-	// for filter
-	@SuppressWarnings("unchecked")
-	public Filter<A> filter0() {
-		return (Filter<A>) Filter.filter0(this);
-	}
+    // for filter
+    @SuppressWarnings("unchecked")
+    public Filter<A> filter0() {
+        return (Filter<A>) Filter.filter0(this);
+    }
 
-	@SuppressWarnings("unchecked")
-	public Filter<B> filter1() {
-		return (Filter<B>) Filter.filter1(this);
-	}
+    @SuppressWarnings("unchecked")
+    public Filter<B> filter1() {
+        return (Filter<B>) Filter.filter1(this);
+    }
 
-	@SuppressWarnings("unchecked")
-	public Filter<C> filter2() {
-		return (Filter<C>) Filter.filter2(this);
-	}
+    @SuppressWarnings("unchecked")
+    public Filter<C> filter2() {
+        return (Filter<C>) Filter.filter2(this);
+    }
 }

@@ -21,134 +21,131 @@ import aquarius.expression.ParsingExpression;
 
 @FunctionalInterface
 public interface Rule<R> extends ParsingExpression<R> {
-	@Override
-	public default <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visitRule(this);
-	}
+    @Override
+    public default <T> T accept(ExpressionVisitor<T> visitor) {
+        return visitor.visitRule(this);
+    }
 
-	@Override
-	public default boolean parseImpl(ParserContext context) {
-		return false;
-	}
+    @Override
+    public default boolean parseImpl(ParserContext context) {
+        return false;
+    }
 
-	@Override
-	public default boolean isReturnable() {
-		return false;
-	}
+    @Override
+    public default boolean isReturnable() {
+        return false;
+    }
 
-	public default int getRuleIndex() {
-		return 0;
-	}
+    public default int getRuleIndex() {
+        return 0;
+    }
 
-	public default ParsingExpression<R> getPattern() {
-		return null;
-	}
+    public default ParsingExpression<R> getPattern() {
+        return null;
+    }
 
-	public default void init(int ruleSize) {
-	}
+    public default void init(int ruleSize) {
+    }
 
-	public default ParsedResult<R> parse(AquariusInputStream input) {
-		return this.parse(input, new CacheFactory(CacheKind.Limit));
-	}
+    public default ParsedResult<R> parse(AquariusInputStream input) {
+        return this.parse(input, new CacheFactory(CacheKind.Limit));
+    }
 
-	public default ParsedResult<R> parse(AquariusInputStream input, CacheFactory factory) {
-		return null;
-	}
+    public default ParsedResult<R> parse(AquariusInputStream input, CacheFactory factory) {
+        return null;
+    }
 
-	public ParsingExpression<R> invoke();
+    public ParsingExpression<R> invoke();
 }
 
 class RuleImpl<R> implements Rule<R> {
-	/**
-	 * for memoization
-	 */
-	private final int ruleIndex;
+    /**
+     * for memoization
+     */
+    private final int ruleIndex;
+    private final boolean returnable;
+    /**
+     * for initialization of memo
+     */
+    private int ruleSize;
+    /**
+     * will be null after call initExpr()
+     */
+    private Rule<R> wrapper;
 
-	/**
-	 * for initialization of memo
-	 */
-	private int ruleSize;
+    private ParsingExpression<R> pattern;
 
-	private final boolean returnable;
+    public RuleImpl(int ruleIndex, Rule<R> wrapper, boolean returnable) {
+        this.ruleIndex = ruleIndex;
+        this.wrapper = wrapper;
+        this.returnable = returnable;
+    }
 
-	/**
-	 * will be null after call initExpr()
-	 */
-	private Rule<R> wrapper;
+    @Override
+    public boolean parseImpl(ParserContext context) {
+        AquariusInputStream input = context.getInputStream();
+        ResultCache cache = context.getCache();
 
-	private ParsingExpression<R> pattern;
+        final int ruleIndex = this.ruleIndex;
+        final int srcPos = input.getPosition();
 
-	public RuleImpl(int ruleIndex, Rule<R> wrapper, boolean returnable) {
-		this.ruleIndex = ruleIndex;
-		this.wrapper = wrapper;
-		this.returnable = returnable;
-	}
+        CacheEntry entry = cache.get(ruleIndex, srcPos);
+        if(entry != null) {
+            if(!entry.getStatus()) {
+                context.pushValue(null);
+                return false;
+            }
+            input.setPosition(entry.getCurrentPos());
+            context.pushValue(entry.getValue());
+            return true;
+        }
+        // if not found previous parsed result, invoke rule
+        boolean status = this.pattern.parseImpl(context);
+        if(status) {
+            cache.set(ruleIndex, srcPos, context.getValue(), input.getPosition());
+        } else {
+            cache.setFailure(ruleIndex, srcPos);
+        }
+        return status;
+    }
 
-	@Override
-	public boolean parseImpl(ParserContext context) {
-		AquariusInputStream input = context.getInputStream();
-		ResultCache cache = context.getCache();
+    @Override
+    public boolean isReturnable() {
+        return this.returnable;
+    }
 
-		final int ruleIndex = this.ruleIndex;
-		final int srcPos = input.getPosition();
+    @Override
+    public void init(int ruleSize) {
+        if(this.pattern == null) {
+            this.ruleSize = ruleSize;
+            this.pattern = this.wrapper.invoke();
+            this.wrapper = null;
+        }
+    }
 
-		CacheEntry entry = cache.get(ruleIndex, srcPos);
-		if(entry != null) {
-			if(!entry.getStatus()) {
-				context.pushValue(null);
-				return false;
-			}
-			input.setPosition(entry.getCurrentPos());
-			context.pushValue(entry.getValue());
-			return true;
-		}
-		// if not found previous parsed result, invoke rule
-		boolean status = this.pattern.parseImpl(context);
-		if(status) {
-			cache.set(ruleIndex, srcPos, context.getValue(), input.getPosition());
-		} else {
-			cache.setFailure(ruleIndex, srcPos);
-		}
-		return status;
-	}
+    @Override
+    public int getRuleIndex() {
+        return this.ruleIndex;
+    }
 
-	@Override
-	public boolean isReturnable() {
-		return this.returnable;
-	}
+    @Override
+    public ParsingExpression<R> getPattern() {
+        return this.pattern;
+    }
 
-	@Override
-	public void init(int ruleSize) {
-		if(this.pattern == null) {
-			this.ruleSize = ruleSize;
-			this.pattern = this.wrapper.invoke();
-			this.wrapper = null;
-		}
-	}
+    @Override
+    public ParsedResult<R> parse(AquariusInputStream input, CacheFactory factory) {
+        ParserContext context = new ParserContext(input, factory.newCache(this.ruleSize));
 
-	@Override
-	public int getRuleIndex() {
-		return this.ruleIndex;
-	}
+        // start parsing
+        boolean status = this.pattern.parse(context);
 
-	@Override
-	public ParsingExpression<R> getPattern() {
-		return this.pattern;
-	}
+        // create result
+        return new ParsedResult<>(status ? context.popValue() : context.getFailure());
+    }
 
-	@Override
-	public ParsedResult<R> parse(AquariusInputStream input, CacheFactory factory) {
-		ParserContext context = new ParserContext(input, factory.newCache(this.ruleSize));
-
-		// start parsing
-		boolean status = this.pattern.parse(context);
-
-		// create result
-		return new ParsedResult<>(status ? context.popValue() : context.getFailure());
-	}
-
-	@Override
-	public ParsingExpression<R> invoke() {
-		return null;	// do nothing
-	}
+    @Override
+    public ParsingExpression<R> invoke() {
+        return null;    // do nothing
+    }
 }

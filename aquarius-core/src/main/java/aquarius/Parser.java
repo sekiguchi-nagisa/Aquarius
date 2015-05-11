@@ -18,8 +18,8 @@ package aquarius;
 
 /**
  * just a marker interface. if define new parse class, must be extends this interface.
- * @author skgchxngsxyz-opensuse
  *
+ * @author skgchxngsxyz-opensuse
  */
 public interface Parser {
 }

@@ -17,39 +17,35 @@
 package aquarius;
 
 public class ParsedResult<R> {
-	/**
-	 * may be null if has no constructed value.
-	 */
-	private final Object value;
+    /**
+     * may be null if has no constructed value.
+     */
+    private final Object value;
 
-	ParsedResult(Object value) {
-		this.value = value;
-	}
+    ParsedResult(Object value) {
+        this.value = value;
+    }
 
-	public final boolean isSuccess() {
-		return !this.isFailure();
-	}
+    public final boolean isSuccess() {
+        return !this.isFailure();
+    }
 
-	public boolean isFailure() {
-		return this.value instanceof Failure;
-	}
+    public boolean isFailure() {
+        return this.value instanceof Failure;
+    }
 
-	/**
-	 * 
-	 * @return
-	 * return null if parsing success
-	 */
-	public Failure getFailure() {
-		return this.isFailure() ? (Failure) this.value : null;
-	}
+    /**
+     * @return return null if parsing success
+     */
+    public Failure getFailure() {
+        return this.isFailure() ? (Failure) this.value : null;
+    }
 
-	/**
-	 * 
-	 * @return
-	 * may be null if has no constructed value.
-	 */
-	@SuppressWarnings("unchecked")
-	public R getValue() {
-		return this.value != null && this.isSuccess() ? (R) this.value : null;
-	}
+    /**
+     * @return may be null if has no constructed value.
+     */
+    @SuppressWarnings("unchecked")
+    public R getValue() {
+        return this.value != null && this.isSuccess() ? (R) this.value : null;
+    }
 }

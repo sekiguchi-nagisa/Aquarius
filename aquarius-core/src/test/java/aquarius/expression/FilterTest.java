@@ -16,113 +16,112 @@
 
 package aquarius.expression;
 
-import static aquarius.Expressions.*;
-import static org.junit.Assert.*;
-
+import aquarius.Token;
 import org.junit.Before;
 import org.junit.Test;
 
-import aquarius.Token;
+import static aquarius.Expressions.*;
+import static org.junit.Assert.assertEquals;
 
 public class FilterTest extends TestBase<Token> {
-	private String getText() {
-		return this.input.getTokenText(this.context.popValue(Token.class));
-	}
+    private String getText() {
+        return this.input.getTokenText(this.context.popValue(Token.class));
+    }
 
-	@Before
-	public void prepare() {
-		this.expr = seq($("hello"), ANY).filter0();
-		this.initContext("hello46");
-	}
+    @Before
+    public void prepare() {
+        this.expr = seq($("hello"), ANY).filter0();
+        this.initContext("hello46");
+    }
 
-	@Test
-	public void test() {
-		// test1
-		boolean result = this.expr.parse(this.context);
-		this.success(result, 6);
-		assertEquals("hello", this.getText());
+    @Test
+    public void test() {
+        // test1
+        boolean result = this.expr.parse(this.context);
+        this.success(result, 6);
+        assertEquals("hello", this.getText());
 
-		this.expr = seq($('h'), $('0')).filter1();
-		this.initContext("h02");
-		result = this.expr.parse(this.context);
-		this.success(result, 2);
-		assertEquals("0", this.getText());
+        this.expr = seq($('h'), $('0')).filter1();
+        this.initContext("h02");
+        result = this.expr.parse(this.context);
+        this.success(result, 2);
+        assertEquals("0", this.getText());
 
-		// test2
-		this.expr = seq($('a'), $('b'), $('c')).filter0();
-		this.initContext("abc");
-		result = this.expr.parse(this.context);
-		this.success(result, 3);
-		assertEquals("a", this.getText());
+        // test2
+        this.expr = seq($('a'), $('b'), $('c')).filter0();
+        this.initContext("abc");
+        result = this.expr.parse(this.context);
+        this.success(result, 3);
+        assertEquals("a", this.getText());
 
-		// test2
-		this.expr = seq($('a'), $('b'), $('c')).filter1();
-		this.initContext("abc");
-		result = this.expr.parse(this.context);
-		this.success(result, 3);
-		assertEquals("b", this.getText());
+        // test2
+        this.expr = seq($('a'), $('b'), $('c')).filter1();
+        this.initContext("abc");
+        result = this.expr.parse(this.context);
+        this.success(result, 3);
+        assertEquals("b", this.getText());
 
-		// test2
-		this.expr = seq($('a'), $('b'), $('c')).filter2();
-		this.initContext("abc");
-		result = this.expr.parse(this.context);
-		this.success(result, 3);
-		assertEquals("c", this.getText());
+        // test2
+        this.expr = seq($('a'), $('b'), $('c')).filter2();
+        this.initContext("abc");
+        result = this.expr.parse(this.context);
+        this.success(result, 3);
+        assertEquals("c", this.getText());
 
-		// test3
-		this.expr = seq($('a'), $('b'), $('c'), $('d')).filter0();
-		this.initContext("abcd");
-		result = this.expr.parse(this.context);
-		this.success(result, 4);
-		assertEquals("a", this.getText());
+        // test3
+        this.expr = seq($('a'), $('b'), $('c'), $('d')).filter0();
+        this.initContext("abcd");
+        result = this.expr.parse(this.context);
+        this.success(result, 4);
+        assertEquals("a", this.getText());
 
-		this.expr = seq($('a'), $('b'), $('c'), $('d')).filter1();
-		this.initContext("abcd");
-		result = this.expr.parse(this.context);
-		this.success(result, 4);
-		assertEquals("b", this.getText());
+        this.expr = seq($('a'), $('b'), $('c'), $('d')).filter1();
+        this.initContext("abcd");
+        result = this.expr.parse(this.context);
+        this.success(result, 4);
+        assertEquals("b", this.getText());
 
-		this.expr = seq($('a'), $('b'), $('c'), $('d')).filter2();
-		this.initContext("abcd");
-		result = this.expr.parse(this.context);
-		this.success(result, 4);
-		assertEquals("c", this.getText());
+        this.expr = seq($('a'), $('b'), $('c'), $('d')).filter2();
+        this.initContext("abcd");
+        result = this.expr.parse(this.context);
+        this.success(result, 4);
+        assertEquals("c", this.getText());
 
-		this.expr = seq($('a'), $('b'), $('c'), $('d')).filter3();
-		this.initContext("abcd");
-		result = this.expr.parse(this.context);
-		this.success(result, 4);
-		assertEquals("d", this.getText());
+        this.expr = seq($('a'), $('b'), $('c'), $('d')).filter3();
+        this.initContext("abcd");
+        result = this.expr.parse(this.context);
+        this.success(result, 4);
+        assertEquals("d", this.getText());
 
-		// test4
-		this.expr = seq($('a'), $('b'), $('c'), $('d'), $('e')).filter0();
-		this.initContext("abcde");
-		result = this.expr.parse(this.context);
-		this.success(result, 5);
-		assertEquals("a", this.getText());
+        // test4
+        this.expr = seq($('a'), $('b'), $('c'), $('d'), $('e')).filter0();
+        this.initContext("abcde");
+        result = this.expr.parse(this.context);
+        this.success(result, 5);
+        assertEquals("a", this.getText());
 
-		this.expr = seq($('a'), $('b'), $('c'), $('d'), $('e')).filter1();
-		this.initContext("abcde");
-		result = this.expr.parse(this.context);
-		this.success(result, 5);
-		assertEquals("b", this.getText());
+        this.expr = seq($('a'), $('b'), $('c'), $('d'), $('e')).filter1();
+        this.initContext("abcde");
+        result = this.expr.parse(this.context);
+        this.success(result, 5);
+        assertEquals("b", this.getText());
 
-		this.expr = seq($('a'), $('b'), $('c'), $('d'), $('e')).filter2();
-		this.initContext("abcde");
-		result = this.expr.parse(this.context);
-		this.success(result, 5);
-		assertEquals("c", this.getText());
+        this.expr = seq($('a'), $('b'), $('c'), $('d'), $('e')).filter2();
+        this.initContext("abcde");
+        result = this.expr.parse(this.context);
+        this.success(result, 5);
+        assertEquals("c", this.getText());
 
-		this.expr = seq($('a'), $('b'), $('c'), $('d'), $('e')).filter3();
-		this.initContext("abcde");
-		result = this.expr.parse(this.context);
-		this.success(result, 5);
-		assertEquals("d", this.getText());
+        this.expr = seq($('a'), $('b'), $('c'), $('d'), $('e')).filter3();
+        this.initContext("abcde");
+        result = this.expr.parse(this.context);
+        this.success(result, 5);
+        assertEquals("d", this.getText());
 
-		this.expr = seq($('a'), $('b'), $('c'), $('d'), $('e')).filter4();
-		this.initContext("abcde");
-		result = this.expr.parse(this.context);
-		this.success(result, 5);
-		assertEquals("e", this.getText());
-	}
+        this.expr = seq($('a'), $('b'), $('c'), $('d'), $('e')).filter4();
+        this.initContext("abcde");
+        result = this.expr.parse(this.context);
+        this.success(result, 5);
+        assertEquals("e", this.getText());
+    }
 }
