@@ -1,101 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="61c24903-7737-4825-8baf-f2e123530fbf" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_11.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/aquarius-example/aquarius-example.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/aquarius-root.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/aquarius-core/aquarius.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Action.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Action.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/ActionTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/ActionTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/AndPredict.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/AndPredict.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/AndTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/AndTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Any.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Any.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/AnyTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/AnyTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/AquariusInputStream.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/AquariusInputStream.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/AsciiCharSet.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/AsciiCharSet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/AsciiLiteral.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/AsciiLiteral.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-example/src/main/java/aquarius/example/Bench.java" afterPath="$PROJECT_DIR$/aquarius-example/src/main/java/aquarius/example/Bench.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/CacheEntry.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/CacheEntry.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/CacheFactory.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/CacheFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Capture.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Capture.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/CaptureTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/CaptureTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/CharSet.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/CharSet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/CharSetTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/CharSetTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/CheckStyleProcessor.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/CheckStyleProcessor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Choice.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Choice.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/ChoiceTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/ChoiceTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/CommonStream.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/CommonStream.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/CustomExpr.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/CustomExpr.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/ExpressionVisitor.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/ExpressionVisitor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/Expressions.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/Expressions.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/action/FailedActionException.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/action/FailedActionException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/Failure.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/Failure.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Filter.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Filter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/FilterTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/FilterTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/annotation/Grammar.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/annotation/Grammar.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/IntRange.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/IntRange.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-example/src/main/java/aquarius/example/JSON.java" afterPath="$PROJECT_DIR$/aquarius-example/src/main/java/aquarius/example/JSON.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-example/src/main/java/aquarius/example/JSONParser.java" afterPath="$PROJECT_DIR$/aquarius-example/src/main/java/aquarius/example/JSONParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-example/src/test/java/aquarius/example/JSONParserTest.java" afterPath="$PROJECT_DIR$/aquarius-example/src/test/java/aquarius/example/JSONParserTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/LineNumberTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/LineNumberTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Literal.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Literal.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/LiteralTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/LiteralTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/NotPredict.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/NotPredict.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/NotTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/NotTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/OneMore.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/OneMore.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/OneMoreTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/OneMoreTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Optional.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Optional.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/OptionalTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/OptionalTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/ParsedResult.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/ParsedResult.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/Parser.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/Parser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/ParserContext.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/ParserContext.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/ParserFactory.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/ParserFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/action/ParsingAction.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/action/ParsingAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/ParsingExpression.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/ParsingExpression.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/PredictAction.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/PredictAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/PredictActionTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/PredictActionTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/action/PredictiveAction.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/action/PredictiveAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/ResultCache.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/ResultCache.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/Rule.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/Rule.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/annotation/RuleDefinition.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/annotation/RuleDefinition.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-example/src/main/java/aquarius/example/SampleParser.java" afterPath="$PROJECT_DIR$/aquarius-example/src/main/java/aquarius/example/SampleParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-example/src/test/java/aquarius/example/SampleParserTest.java" afterPath="$PROJECT_DIR$/aquarius-example/src/test/java/aquarius/example/SampleParserTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Sequence.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Sequence.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Sequence2.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Sequence2.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/Sequence2Test.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/Sequence2Test.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Sequence3.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Sequence3.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/Sequence3Test.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/Sequence3Test.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Sequence4.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Sequence4.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/Sequence4Test.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/Sequence4Test.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Sequence5.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/Sequence5.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/Sequence5Test.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/Sequence5Test.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/SequenceTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/SequenceTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-example/src/main/java/aquarius/example/SimpleJSONParser.java" afterPath="$PROJECT_DIR$/aquarius-example/src/main/java/aquarius/example/SimpleJSONParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-example/src/main/java/aquarius/example/Test.java" afterPath="$PROJECT_DIR$/aquarius-example/src/main/java/aquarius/example/Test.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/TestBase.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/TestBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/Token.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/Token.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/TokenTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/TokenTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/Tuple2.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/Tuple2.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/Tuple3.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/Tuple3.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/Tuple4.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/Tuple4.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/Tuple5.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/Tuple5.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/Tuples.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/Tuples.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/TypeMatch.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/TypeMatch.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/misc/TypeMatchTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/misc/TypeMatchTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/Utf8Util.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/Utf8Util.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/misc/Utf8UtilTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/misc/Utf8UtilTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/Utils.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/misc/Utils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/VoidCustomExpr.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/VoidCustomExpr.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/VoidCustomExprTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/VoidCustomExprTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/ZeroMore.java" afterPath="$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/expression/ZeroMore.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/ZeroMoreTest.java" afterPath="$PROJECT_DIR$/aquarius-core/src/test/java/aquarius/expression/ZeroMoreTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-core/pom.xml" afterPath="$PROJECT_DIR$/aquarius-core/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aquarius-example/pom.xml" afterPath="$PROJECT_DIR$/aquarius-example/pom.xml" />
-    </list>
+    <list default="true" id="61c24903-7737-4825-8baf-f2e123530fbf" name="Default" comment="" />
     <ignored path="aquarius-root.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -131,7 +37,7 @@
       <file leaf-file-name="Test.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/aquarius-example/src/main/java/aquarius/example/Test.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.11526147">
+            <state vertical-scroll-proportion="0.0010672358">
               <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
               <folding />
             </state>
@@ -143,9 +49,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="59" column="29" selection-start-line="59" selection-start-column="29" selection-end-line="59" selection-end-column="29" />
-              <folding>
-                <element signature="imports" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -218,6 +122,9 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -384,9 +291,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -585,31 +489,31 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-2" y="-3" width="1924" height="1055" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952183" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13541667" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13541667" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952183" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -624,6 +528,38 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/aquarius-example/src/main/java/aquarius/example/JSONParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="29" column="17" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/aquarius-example/src/main/java/aquarius/example/Test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/aquarius-example/src/main/java/aquarius/example/JSON.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="59" column="29" selection-start-line="59" selection-start-column="29" selection-end-line="59" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/AquariusInputStream.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/aquarius-core/src/main/java/aquarius/CacheEntry.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.07684098">
@@ -644,9 +580,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="59" column="29" selection-start-line="59" selection-start-column="29" selection-end-line="59" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -660,7 +594,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/aquarius-example/src/main/java/aquarius/example/Test.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.11526147">
+        <state vertical-scroll-proportion="0.0010672358">
           <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
           <folding />
         </state>
