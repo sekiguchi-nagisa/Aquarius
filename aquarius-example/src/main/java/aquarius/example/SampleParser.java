@@ -19,20 +19,17 @@ package aquarius.example;
 import aquarius.Parser;
 import aquarius.Rule;
 import aquarius.Token;
-import aquarius.annotation.Grammar;
-import aquarius.annotation.RuleDefinition;
+import aquarius.Grammar;
 
 import static aquarius.Expressions.*;
 
 @Grammar
 public interface SampleParser extends Parser {
-    @RuleDefinition
     public default Rule<Token> Expr() {
         return () ->
                 seq(__, Add(), __).map((ctx, a) -> a.get1());
     }
 
-    @RuleDefinition
     public default Rule<Token> Add() {
         return () ->
                 $(Mul(), __, str("+"), __, Add())
@@ -40,7 +37,6 @@ public interface SampleParser extends Parser {
                         .or(Mul());
     }
 
-    @RuleDefinition
     public default Rule<Token> Mul() {
         return () ->
                 $(Primary(), __, str("*"), __, Mul())
@@ -48,14 +44,12 @@ public interface SampleParser extends Parser {
                         .or(Primary());
     }
 
-    @RuleDefinition
     public default Rule<Token> Primary() {
         return () ->
                 $(str("("), __, Add(), __, str(")"))
                         .or(Num());
     }
 
-    @RuleDefinition
     public default Rule<Token> Num() {
         return () ->
                 $("0")

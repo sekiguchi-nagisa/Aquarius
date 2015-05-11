@@ -18,8 +18,7 @@ package aquarius.example;
 
 import aquarius.Parser;
 import aquarius.Rule;
-import aquarius.annotation.Grammar;
-import aquarius.annotation.RuleDefinition;
+import aquarius.Grammar;
 import aquarius.misc.Tuple2;
 
 import static aquarius.Expressions.*;
@@ -30,43 +29,36 @@ import static aquarius.misc.Tuples.of;
 public interface JSONParser extends Parser {
     //separator definition
 
-    @RuleDefinition
     public default Rule<Void> objectOpen() {
         return () ->
                 seqN(str("{"), WS);
     }
 
-    @RuleDefinition
     public default Rule<Void> objectClose() {
         return () ->
                 seqN(str("}"), WS);
     }
 
-    @RuleDefinition
     public default Rule<Void> arrayOpen() {
         return () ->
                 seqN(str("["), WS);
     }
 
-    @RuleDefinition
     public default Rule<Void> arrayClose() {
         return () ->
                 seqN(str("]"), WS);
     }
 
-    @RuleDefinition
     public default Rule<Void> keyValueSep() {
         return () ->
                 seqN(WS, str(":"), WS);
     }
 
-    @RuleDefinition
     public default Rule<Void> valueSep() {
         return () ->
                 seqN(str(","), WS);
     }
 
-    @RuleDefinition
     public default Rule<JSON> json() {
         return () ->
                 seq(WS, or(object(), array())).map((ctx, a) ->
@@ -74,7 +66,6 @@ public interface JSONParser extends Parser {
                 );
     }
 
-    @RuleDefinition
     public default Rule<JSONObject> object() {
         return () ->
                 seq(objectOpen(), keyValue(), zeroMore(valueSep(), keyValue()), objectClose())
@@ -91,7 +82,6 @@ public interface JSONParser extends Parser {
                         ));
     }
 
-    @RuleDefinition
     public default Rule<JSONArray> array() {
         return () ->
                 seq(arrayOpen(), value(), zeroMore(valueSep(), value()), arrayClose())
@@ -108,7 +98,6 @@ public interface JSONParser extends Parser {
                         ));
     }
 
-    @RuleDefinition
     public default Rule<Tuple2<JSONString, JSON>> keyValue() {
         return () ->
                 seq(string(), keyValueSep(), value(), WS).map((ctx, a) ->
@@ -116,7 +105,6 @@ public interface JSONParser extends Parser {
                 );
     }
 
-    @RuleDefinition
     public default Rule<JSON> value() {
         return () ->
                 seq(
@@ -133,13 +121,11 @@ public interface JSONParser extends Parser {
                 ).filter0();
     }
 
-    @RuleDefinition
     public default Rule<Void> escape() {
         return () ->
                 seqN(str("\\"), ch('"', '\\', '/', 'b', 'f', 'n', 'r', 't'));
     }
 
-    @RuleDefinition
     public default Rule<JSONString> string() {
         return () ->
                 $(
@@ -154,20 +140,17 @@ public interface JSONParser extends Parser {
                 );
     }
 
-    @RuleDefinition
     public default Rule<Void> integer() {
         return () ->
                 str("0")
                         .or(seqN(r('1', '9'), r('0', '9').zeroMore()));
     }
 
-    @RuleDefinition
     public default Rule<Void> exp() {
         return () ->
                 seqN(ch('E', 'e'), ch('+', '-').opt(), integer());
     }
 
-    @RuleDefinition
     public default Rule<JSONNumber> number() {
         return () ->
                 $(str("-").opt(), integer(), str("."), r('0', '9').oneMore(), exp().opt())

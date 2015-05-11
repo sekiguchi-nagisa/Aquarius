@@ -18,8 +18,7 @@ package aquarius.example;
 
 import aquarius.Parser;
 import aquarius.Rule;
-import aquarius.annotation.Grammar;
-import aquarius.annotation.RuleDefinition;
+import aquarius.Grammar;
 
 import static aquarius.Expressions.*;
 
@@ -27,69 +26,58 @@ import static aquarius.Expressions.*;
 public interface SimpleJSONParser extends Parser {
     //separator definition
 
-    @RuleDefinition
     public default Rule<Void> objectOpen() {
         return () ->
                 seqN(str("{"), WS);
     }
 
-    @RuleDefinition
     public default Rule<Void> objectClose() {
         return () ->
                 seqN(str("}"), WS);
     }
 
-    @RuleDefinition
     public default Rule<Void> arrayOpen() {
         return () ->
                 seqN(str("["), WS);
     }
 
-    @RuleDefinition
     public default Rule<Void> arrayClose() {
         return () ->
                 seqN(str("]"), WS);
     }
 
-    @RuleDefinition
     public default Rule<Void> keyValueSep() {
         return () ->
                 seqN(WS, str(":"), WS);
     }
 
-    @RuleDefinition
     public default Rule<Void> valueSep() {
         return () ->
                 seqN(str(","), WS);
     }
 
-    @RuleDefinition
     public default Rule<Void> json() {
         return () ->
                 seqN(WS, or(object(), array()));
     }
 
-    @RuleDefinition
     public default Rule<Void> object() {
         return () ->
                 seqN(objectOpen(), keyValue(), zeroMore(valueSep(), keyValue()), objectClose())
                         .or(seqN(objectOpen(), objectClose()));
     }
 
-    @RuleDefinition
     public default Rule<Void> array() {
         return () ->
                 seqN(arrayOpen(), value(), zeroMore(valueSep(), value()), arrayClose())
                         .or(seqN(arrayOpen(), arrayClose()));
     }
 
-    @RuleDefinition
     public default Rule<Void> keyValue() {
         return () ->
                 seqN(string(), keyValueSep(), value(), WS);
     }
 
-    @RuleDefinition
     public default Rule<Void> value() {
         return () ->
                 seqN(
@@ -106,13 +94,11 @@ public interface SimpleJSONParser extends Parser {
                 );
     }
 
-    @RuleDefinition
     public default Rule<Void> escape() {
         return () ->
                 seqN(str("\\"), ch('"', '\\', '/', 'b', 'f', 'n', 'r', 't'));
     }
 
-    @RuleDefinition
     public default Rule<Void> string() {
         return () ->
                 seqN(
@@ -125,20 +111,17 @@ public interface SimpleJSONParser extends Parser {
                 );
     }
 
-    @RuleDefinition
     public default Rule<Void> integer() {
         return () ->
                 str("0")
                         .or(seqN(r('1', '9'), r('0', '9').zeroMore()));
     }
 
-    @RuleDefinition
     public default Rule<Void> exp() {
         return () ->
                 seqN(ch('E', 'e'), ch('+', '-').opt(), integer());
     }
 
-    @RuleDefinition
     public default Rule<Void> number() {
         return () ->
                 seqN(str("-").opt(), integer(), str("."), r('0', '9').oneMore(), exp().opt())

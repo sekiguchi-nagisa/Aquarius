@@ -16,9 +16,6 @@
 
 package aquarius;
 
-import aquarius.annotation.Grammar;
-import aquarius.annotation.RuleDefinition;
-
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -26,6 +23,7 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.AbstractElementVisitor8;
 import javax.tools.Diagnostic.Kind;
 import java.lang.annotation.Annotation;
 import java.util.Set;
@@ -36,7 +34,7 @@ import java.util.Set;
  * @author skgchxngsxyz-opensuse
  */
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-@SupportedAnnotationTypes({"aquarius.annotation.Grammar", "aquarius.annotation.RuleDefinition"})
+@SupportedAnnotationTypes({"aquarius.Grammar"})
 public class CheckStyleProcessor extends AbstractProcessor {
     private final static boolean debugMode = false;
 
@@ -79,31 +77,10 @@ public class CheckStyleProcessor extends AbstractProcessor {
             return;
         }
 
-        // check rule method
-        typeElement.getEnclosedElements().parallelStream()
-                .filter(ExecutableElement.class::isInstance)
-                .map(ExecutableElement.class::cast)
-                .forEach(this::verifyRuleMethod);
-    }
-
-    /**
-     * verify parsing rule method.
-     * if verify is failed, report error and exit processor.
-     *
-     * @param element
-     */
-    private void verifyRuleMethod(ExecutableElement element) {
-        // check if default method
-        if(!element.isDefault()) {
-            this.reportErrorAndExit("must be default method", element);
-        }
-
-        // check method parameter and return type
-        if(element.getAnnotation(RuleDefinition.class) != null) {
-            if(element.getParameters().size() != 0
-                    || !this.matchClass(this.processingEnv.getTypeUtils().erasure(element.getReturnType()), Rule.class)) {
-                this.reportErrorAndExit("must be return type: Rule, and has no parameters", element);
-            }
+        // verify
+        ElementVerifier verifier = new ElementVerifier();
+        for(Element e : typeElement.getEnclosedElements()) {
+            verifier.visit(e);
         }
     }
 
@@ -155,6 +132,62 @@ public class CheckStyleProcessor extends AbstractProcessor {
     private void debugPrint(String message) {
         if(debugMode) {
             this.processingEnv.getMessager().printMessage(Kind.NOTE, "DEBUG: " + message);
+        }
+    }
+
+    class ElementVerifier extends AbstractElementVisitor8<Void, Void> {
+
+        @Override
+        public Void visitPackage(PackageElement e, Void aVoid) {
+            reportErrorAndExit("unsupported element", e);
+            return null;
+        }
+
+        @Override
+        public Void visitType(TypeElement e, Void aVoid) {
+            reportErrorAndExit("unsupported element", e);
+            return null;
+        }
+
+        @Override
+        public Void visitVariable(VariableElement e, Void aVoid) {
+            if(!e.getModifiers().contains(Modifier.STATIC)) {
+                reportErrorAndExit("must be static field", e);
+            }
+
+            if(matchClass(processingEnv.getTypeUtils().erasure(e.asType()), Rule.class)) {
+                reportErrorAndExit("field class must not be Rule", e);
+            }
+            return null;
+        }
+
+        @Override
+        public Void visitExecutable(ExecutableElement e, Void aVoid) {
+            // check static method
+            if(e.getModifiers().contains(Modifier.STATIC)) {
+                if(matchClass(processingEnv.getTypeUtils().erasure(e.getReturnType()), Rule.class)) {
+                    reportErrorAndExit("static method's return type must not be Rule.", e);
+                }
+                return null;
+            }
+
+            // check if default method
+            if(!e.isDefault()) {
+                reportErrorAndExit("must be default method", e);
+            }
+
+            // check method parameter and return type
+            if(e.getParameters().size() != 0
+                    || !matchClass(processingEnv.getTypeUtils().erasure(e.getReturnType()), Rule.class)) {
+                reportErrorAndExit("must be return type: Rule, and has no parameters", e);
+            }
+            return null;
+        }
+
+        @Override
+        public Void visitTypeParameter(TypeParameterElement e, Void aVoid) {
+            reportErrorAndExit("unsupported element", e);
+            return null;
         }
     }
 }

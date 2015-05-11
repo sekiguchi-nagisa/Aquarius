@@ -16,9 +16,6 @@
 
 package aquarius;
 
-import aquarius.annotation.Grammar;
-import aquarius.annotation.RuleDefinition;
-
 import java.lang.annotation.Annotation;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.*;
@@ -64,8 +61,7 @@ public class ParserFactory {
 
     private static void invokeRuleMethods(ParserProxy proxy, Object instance, Method[] methods) {
         for(Method method : methods) {
-            if(matchAnnotation(method.getAnnotations(), RuleDefinition.class)
-                    && matchMethod(method, Rule.class, null)) {
+            if(matchMethod(method, Rule.class, null)) {
                 try {
                     proxy.returnable = !asVoid(method.getGenericReturnType());
                     method.invoke(instance);
@@ -153,7 +149,7 @@ public class ParserFactory {
             String methodName = method.getName();
 
             // call user defined Rule method
-            if(matchAnnotation(annos, RuleDefinition.class) && matchMethod(method, Rule.class, null)) {
+            if(matchMethod(method, Rule.class, null) && method.isDefault()) {
                 return this.invokeRule ?
                         this.createRule(proxy, method, args) : this.getCachedRule(methodName);
             }

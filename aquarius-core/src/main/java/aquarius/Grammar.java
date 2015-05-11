@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package aquarius.annotation;
+package aquarius;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
