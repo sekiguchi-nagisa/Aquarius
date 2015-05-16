@@ -98,6 +98,6 @@ public class CacheFactory {
 
     private static class Entry {
         public int srcPos = -1;
-        public CacheEntry entry = new CacheEntry();
+        public final CacheEntry entry = new CacheEntry();
     }
 }

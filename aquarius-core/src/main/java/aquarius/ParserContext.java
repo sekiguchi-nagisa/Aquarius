@@ -25,8 +25,8 @@ public class ParserContext {
      * longest matched failure.
      */
     private final Failure longestFailure = new Failure();
-    private AquariusInputStream input;
-    private ResultCache cache;
+    private final AquariusInputStream input;
+    private final ResultCache cache;
     /**
      * result value of action or capture. may be null
      */

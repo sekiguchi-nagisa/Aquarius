@@ -78,8 +78,8 @@ public class Bench {
         public long getMean() {
             int size = results.size();
             long sum = 0;
-            for(Long result : this.results) {
-                sum += result.longValue();
+            for(long result : this.results) {
+                sum += result;
             }
             return Math.round(sum / (double) size);
         }

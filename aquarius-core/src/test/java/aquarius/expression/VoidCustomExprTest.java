@@ -25,8 +25,7 @@ import static org.junit.Assert.assertNull;
 public class VoidCustomExprTest extends TestBase<Void> {
     @Before
     public void prepare() {
-        VoidCustomExpr c = ctx -> ctx.getInputStream().consume();
-        this.expr = c;
+        this.expr = (VoidCustomExpr) ctx -> ctx.getInputStream().consume();
         this.initContext("hfreui");
     }
 
@@ -37,10 +36,9 @@ public class VoidCustomExprTest extends TestBase<Void> {
         assertNull(context.popValue());
 
         // failure test
-        VoidCustomExpr c = ctx -> {
+        this.expr = (VoidCustomExpr) ctx -> {
             throw new FailedActionException("fail");
         };
-        this.expr = c;
         this.initContext("12+34");
         result = this.expr.parse(this.context);
         this.failure(result, 0, 0);

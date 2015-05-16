@@ -39,7 +39,6 @@ public class SampleParserTest {
 
         // parser instance test
         assertNotNull(parser.toString());
-        assertTrue(parser.equals(parser));
         assertEquals(parser.hashCode(), parser.hashCode());
     }
 }

@@ -94,10 +94,7 @@ public class CommonStream implements AquariusInputStream {
      * @return if index out of range, return false
      */
     private boolean checkIndexRange(int position) {
-        if(position < 0 || position > this.bufferSize) {
-            return false;
-        }
-        return true;
+        return !(position < 0 || position > this.bufferSize);
     }
 
     @Override
