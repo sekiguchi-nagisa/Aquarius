@@ -63,14 +63,18 @@ public interface SimpleJSONParser extends Parser {
 
     default Rule<Void> object() {
         return () ->
-                seqN(objectOpen(), keyValue(), zeroMore(valueSep(), keyValue()), objectClose())
-                        .or(seqN(objectOpen(), objectClose()));
+                or(
+                        seqN(objectOpen(), keyValue(), zeroMore(valueSep(), keyValue()), objectClose()),
+                        seqN(objectOpen(), objectClose())
+                );
     }
 
     default Rule<Void> array() {
         return () ->
-                seqN(arrayOpen(), value(), zeroMore(valueSep(), value()), arrayClose())
-                        .or(seqN(arrayOpen(), arrayClose()));
+                or(
+                        seqN(arrayOpen(), value(), zeroMore(valueSep(), value()), arrayClose()),
+                        seqN(arrayOpen(), arrayClose())
+                );
     }
 
     default Rule<Void> keyValue() {
@@ -113,8 +117,10 @@ public interface SimpleJSONParser extends Parser {
 
     default Rule<Void> integer() {
         return () ->
-                str("0")
-                        .or(seqN(r('1', '9'), r('0', '9').zeroMore()));
+                or(
+                        str("0"),
+                        seqN(r('1', '9'), r('0', '9').zeroMore())
+                );
     }
 
     default Rule<Void> exp() {
@@ -124,7 +130,9 @@ public interface SimpleJSONParser extends Parser {
 
     default Rule<Void> number() {
         return () ->
-                seqN(str("-").opt(), integer(), str("."), r('0', '9').oneMore(), exp().opt())
-                        .or(seqN(str("-").opt(), integer()));
+                or(
+                        seqN(str("-").opt(), integer(), str("."), r('0', '9').oneMore(), exp().opt()),
+                        seqN(str("-").opt(), integer())
+                );
     }
 }
