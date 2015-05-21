@@ -25,7 +25,7 @@ import java.util.Map.Entry;
 
 public class ParserFactory {
     @SuppressWarnings("unchecked")
-    public final static <R extends Parser> R createParser(Class<R> baseParserClass) {
+    public static <R extends Parser> R createParser(Class<R> baseParserClass) {
         verifyParserClass(baseParserClass);
 
         ParserProxy proxy = new ParserProxy();
@@ -145,7 +145,6 @@ public class ParserFactory {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            Annotation[] annos = method.getAnnotations();
             String methodName = method.getName();
 
             // call user defined Rule method
@@ -168,12 +167,12 @@ public class ParserFactory {
         }
 
         @SuppressWarnings("unchecked")
-        private final <T> T invokeDefaultMethod(Object proxy, Method method,
+        private <T> T invokeDefaultMethod(Object proxy, Method method,
                                                 Object[] args, Class<T> returnClass) throws Throwable {
             return (T) this.invokeDefaultMethod(proxy, method, args);
         }
 
-        private final Object invokeDefaultMethod(Object proxy, Method method,
+        private Object invokeDefaultMethod(Object proxy, Method method,
                                                  Object[] args) throws Throwable {
             if(!method.isDefault()) {
                 throw new IllegalArgumentException("must be default method: " + method.getName());
@@ -191,14 +190,14 @@ public class ParserFactory {
                     .bindTo(proxy).invokeWithArguments(args);
         }
 
-        private final Rule<?> createRule(Object proxy, Method method, Object[] args) throws Throwable {
+        private Rule<?> createRule(Object proxy, Method method, Object[] args) throws Throwable {
             Rule<?> value = this.invokeDefaultMethod(proxy, method, args, Rule.class);
             value = new RuleImpl<>(this.ruleIndexCount++, value, this.returnable);
             this.ruleMap.put(method.getName(), value);
             return value;
         }
 
-        private final Rule<?> getCachedRule(String ruleName) {
+        private Rule<?> getCachedRule(String ruleName) {
             Rule<?> rule = this.ruleMap.get(ruleName);
             if(rule == null) {
                 throw new RuntimeException("not found rule: " + ruleName);

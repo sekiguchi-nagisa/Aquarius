@@ -88,7 +88,7 @@ public class Filter<R> implements ParsingExpression<R> {
             context.pushValue(((Tuple5<?, ?, ?, ?, ?>) value).get4());
             break;
         default:
-            new AssertionError("unsupported target kind: " + this.targetKind);
+            throw new AssertionError("unsupported target kind: " + this.targetKind);
         }
         return true;
     }

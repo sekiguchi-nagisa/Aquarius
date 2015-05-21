@@ -22,9 +22,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public interface JSON {
-    public static JSONNull NULL = new JSONNull();
-
-    public static class JSONObject extends LinkedHashMap<JSONString, JSON> implements JSON {
+    class JSONObject extends LinkedHashMap<JSONString, JSON> implements JSON {
         private static final long serialVersionUID = 4227513440823211948L;
 
         public void add(Tuple2<JSONString, JSON> entry) {
@@ -32,11 +30,11 @@ public interface JSON {
         }
     }
 
-    public static class JSONArray extends ArrayList<JSON> implements JSON {
+    class JSONArray extends ArrayList<JSON> implements JSON {
         private static final long serialVersionUID = -8956079238990577189L;
     }
 
-    public static class JSONString implements JSON {
+    class JSONString implements JSON {
         private final String value;
 
         public JSONString(String value) {
@@ -114,7 +112,7 @@ public interface JSON {
         }
     }
 
-    public static class JSONNumber implements JSON {
+    class JSONNumber implements JSON {
         private final Number value;
 
         public JSONNumber(long value) {
@@ -146,7 +144,7 @@ public interface JSON {
         }
     }
 
-    public static class JSONBool implements JSON {
+    class JSONBool implements JSON {
         private final boolean value;
 
         public JSONBool(boolean value) {
@@ -158,6 +156,6 @@ public interface JSON {
         }
     }
 
-    public static class JSONNull implements JSON {
+    class JSONNull implements JSON {
     }
 }

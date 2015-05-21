@@ -29,11 +29,11 @@ import aquarius.misc.Utils;
  */
 @FunctionalInterface
 public interface VoidCustomExpr extends ParsingExpression<Void> {
-    public default <T> T accept(ExpressionVisitor<T> visitor) {
+    default <T> T accept(ExpressionVisitor<T> visitor) {
         return visitor.visitVoidCustomExpr(this);
     }
 
-    public default boolean parseImpl(ParserContext context) {
+    default boolean parseImpl(ParserContext context) {
         AquariusInputStream input = context.getInputStream();
         int pos = input.getPosition();
 
@@ -48,7 +48,7 @@ public interface VoidCustomExpr extends ParsingExpression<Void> {
         }
     }
 
-    public default boolean isReturnable() {
+    default boolean isReturnable() {
         return false;
     }
 
@@ -59,5 +59,5 @@ public interface VoidCustomExpr extends ParsingExpression<Void> {
      * @throws FailedActionException
      * @throws Exception
      */
-    public void apply(ParserContext context) throws FailedActionException, Exception;
+    void apply(ParserContext context) throws FailedActionException, Exception;
 }

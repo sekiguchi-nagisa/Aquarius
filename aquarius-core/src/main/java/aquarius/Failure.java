@@ -105,31 +105,31 @@ public class Failure {
                 )
                 .when(CharSet.class, a -> {
                     if(isEnfOfInput(input, this.getFailurePos())) {
-                        sBuilder.append("require chars: " + a + ", but reach End of File");
+                        sBuilder.append("require chars: ").append(a).append(", but reach End of File");
                     } else {
                         int curPos = input.getPosition();
 
                         input.setPosition(failurePos);
-                        sBuilder.append("require chars: " + a);
-                        sBuilder.append(", but is: " + Utf8Util.codeToString(input.fetch()));
+                        sBuilder.append("require chars: ").append(a);
+                        sBuilder.append(", but is: ").append(Utf8Util.codeToString(input.fetch()));
 
                         input.setPosition(curPos);
                     }
                 })
                 .when(Literal.class, a -> {
                     if(isEnfOfInput(input, this.getFailurePos())) {
-                        sBuilder.append("require text: " + a.getTarget() + ", but reach End of File");
+                        sBuilder.append("require text: ").append(a.getTarget()).append(", but reach End of File");
                     } else {
                         int curPos = input.getPosition();
 
-                        sBuilder.append("require text: " + a.getTarget());
+                        sBuilder.append("require text: ").append(a.getTarget());
                         int size = a.getTargetCodes().length;
                         List<Integer> codeList = new ArrayList<>(size);
                         for(int i = 0; i < size && input.fetch() != AquariusInputStream.EOF; i++) {
                             codeList.add(input.fetch());
                             input.consume();
                         }
-                        sBuilder.append(", but is: " + Utf8Util.codeListToString(codeList));
+                        sBuilder.append(", but is: ").append(Utf8Util.codeListToString(codeList));
 
                         input.setPosition(curPos);
                     }

@@ -53,19 +53,19 @@ public final class TypeMatch {
     }
 
     public interface WhenBuilder {
-        public <T> WhenBuilder when(Class<T> targetClass, WhenAction<T> action);
+        <T> WhenBuilder when(Class<T> targetClass, WhenAction<T> action);
 
-        public void orElse(ElseAction action);
+        void orElse(ElseAction action);
     }
 
     @FunctionalInterface
-    public static interface WhenAction<T> {
-        public void apply(T value) throws Exception;
+    public interface WhenAction<T> {
+        void apply(T value) throws Exception;
     }
 
     @FunctionalInterface
-    public static interface ElseAction {
-        public void apply(Optional<Object> value) throws Exception;
+    public interface ElseAction {
+        void apply(Optional<Object> value) throws Exception;
     }
 
     protected static class When<T> implements Comparable<When<?>> {
@@ -99,10 +99,7 @@ public final class TypeMatch {
 
         @Override
         public boolean equals(Object t) {
-            if(!(t instanceof When)) {
-                return false;
-            }
-            return this.targetClass.equals(((When<?>) t).targetClass);
+            return (t instanceof When) && this.targetClass.equals(((When<?>) t).targetClass);
         }
 
         @Override

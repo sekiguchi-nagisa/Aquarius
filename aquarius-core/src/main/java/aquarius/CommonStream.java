@@ -60,7 +60,7 @@ public class CommonStream implements AquariusInputStream {
         ByteArrayOutputStream bufStream = new ByteArrayOutputStream();
         final int size = 512;
         byte[] buf = new byte[size];
-        int readSize = 0;
+        int readSize;
         try {
             while((readSize = inputStream.read(buf, 0, size)) > -1) {
                 bufStream.write(buf, 0, readSize);

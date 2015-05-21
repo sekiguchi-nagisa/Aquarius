@@ -79,9 +79,7 @@ public class CheckStyleProcessor extends AbstractProcessor {
 
         // verify
         ElementVerifier verifier = new ElementVerifier();
-        for(Element e : typeElement.getEnclosedElements()) {
-            verifier.visit(e);
-        }
+        typeElement.getEnclosedElements().forEach(verifier::visit);
     }
 
     // helper methods

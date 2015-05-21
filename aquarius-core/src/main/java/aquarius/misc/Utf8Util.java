@@ -52,7 +52,7 @@ public final class Utf8Util {
      * @param ch  character of current position
      * @return next utf8 character position
      */
-    public final static int getUtf8NextPos(int pos, byte ch) {
+    public static int getUtf8NextPos(int pos, byte ch) {
         return pos + utf8SkipData[Byte.toUnsignedInt(ch)];
     }
 
@@ -62,7 +62,7 @@ public final class Utf8Util {
      * @param ch start character.
      * @return
      */
-    public final static int getUtf8Length(byte ch) {
+    public static int getUtf8Length(byte ch) {
         return utf8SkipData[Byte.toUnsignedInt(ch)];
     }
 
@@ -72,7 +72,7 @@ public final class Utf8Util {
      * @param utf16 java character literal
      * @return utf8 code
      */
-    public final static int toUtf8Code(char utf16) {
+    public static int toUtf8Code(char utf16) {
         byte[] buf = Character.toString(utf16).getBytes(DEFAULT_CHARSET);
         return toUtf8Code(buf, 0, buf.length);
     }
@@ -83,7 +83,7 @@ public final class Utf8Util {
      * @param codePoint
      * @return utf8 code
      */
-    public final static int toUtf8Code(int codePoint) {
+    public static int toUtf8Code(int codePoint) {
         byte[] buf = new String(Character.toChars(codePoint)).getBytes(DEFAULT_CHARSET);
         return toUtf8Code(buf, 0, buf.length);
     }
@@ -96,7 +96,7 @@ public final class Utf8Util {
      * @param charLength 1, 2, 3 or 4
      * @return utf8 code
      */
-    public final static int toUtf8Code(byte[] buf, int startIndex, int charLength) {
+    public static int toUtf8Code(byte[] buf, int startIndex, int charLength) {
         switch(charLength) {
         case 1:
             return buf[startIndex];
@@ -123,7 +123,7 @@ public final class Utf8Util {
      * @param str not null
      * @return
      */
-    public final static int[] toUtf8Codes(String str) {
+    public static int[] toUtf8Codes(String str) {
         byte[] buf = str.getBytes(DEFAULT_CHARSET);
         int startIndex = 0;
         List<Integer> utf8CodeList = new ArrayList<>();
@@ -149,7 +149,7 @@ public final class Utf8Util {
      * @param utf8Code
      * @return
      */
-    public final static String codeToString(int utf8Code) {
+    public static String codeToString(int utf8Code) {
         return codesToString(new int[]{utf8Code});
     }
 
@@ -159,7 +159,7 @@ public final class Utf8Util {
      * @param utf8Codes
      * @return
      */
-    public final static String codesToString(int[] utf8Codes) {
+    public static String codesToString(int[] utf8Codes) {
         List<Integer> codeList = new ArrayList<>(utf8Codes.length);
         for(int code : utf8Codes) {
             codeList.add(code);
@@ -173,7 +173,7 @@ public final class Utf8Util {
      * @param utf8CodeList
      * @return
      */
-    public final static String codeListToString(List<Integer> utf8CodeList) {
+    public static String codeListToString(List<Integer> utf8CodeList) {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         for(int code : utf8CodeList) {
             codeToString(buffer, code);
@@ -187,7 +187,7 @@ public final class Utf8Util {
      * @param buffer
      * @param utf8Code
      */
-    private final static void codeToString(ByteArrayOutputStream buffer, int utf8Code) {
+    private static void codeToString(ByteArrayOutputStream buffer, int utf8Code) {
         for(int i = 3; i > -1; i--) {
             int shift = i * 8;
             int mask = 0xff << shift;
@@ -198,11 +198,11 @@ public final class Utf8Util {
         }
     }
 
-    public final static boolean isAsciiCode(int utf8Code) {
+    public static boolean isAsciiCode(int utf8Code) {
         return utf8Code >= 0 && utf8Code <= 127;
     }
 
-    public final static boolean isUtf8Code(int code) {
+    public static boolean isUtf8Code(int code) {
         // 1 byte code
         if(isAsciiCode(code)) {
             return true;

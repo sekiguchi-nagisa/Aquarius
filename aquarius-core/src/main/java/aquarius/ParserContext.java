@@ -93,7 +93,7 @@ public class ParserContext {
         }
     }
 
-    private final boolean checkFailureCreation(int failurePos) {
+    private boolean checkFailureCreation(int failurePos) {
         return this.failureCreation && (this.longestFailure == null
                 || failurePos > this.longestFailure.getFailurePos());
     }

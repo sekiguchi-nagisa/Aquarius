@@ -22,40 +22,40 @@ import aquarius.expression.ParsingExpression;
 @FunctionalInterface
 public interface Rule<R> extends ParsingExpression<R> {
     @Override
-    public default <T> T accept(ExpressionVisitor<T> visitor) {
+    default <T> T accept(ExpressionVisitor<T> visitor) {
         return visitor.visitRule(this);
     }
 
     @Override
-    public default boolean parseImpl(ParserContext context) {
+    default boolean parseImpl(ParserContext context) {
         return false;
     }
 
     @Override
-    public default boolean isReturnable() {
+    default boolean isReturnable() {
         return false;
     }
 
-    public default int getRuleIndex() {
+    default int getRuleIndex() {
         return 0;
     }
 
-    public default ParsingExpression<R> getPattern() {
+    default ParsingExpression<R> getPattern() {
         return null;
     }
 
-    public default void init(int ruleSize) {
+    default void init(int ruleSize) {
     }
 
-    public default ParsedResult<R> parse(AquariusInputStream input) {
+    default ParsedResult<R> parse(AquariusInputStream input) {
         return this.parse(input, new CacheFactory(CacheKind.Limit));
     }
 
-    public default ParsedResult<R> parse(AquariusInputStream input, CacheFactory factory) {
+    default ParsedResult<R> parse(AquariusInputStream input, CacheFactory factory) {
         return null;
     }
 
-    public ParsingExpression<R> invoke();
+    ParsingExpression<R> invoke();
 }
 
 class RuleImpl<R> implements Rule<R> {

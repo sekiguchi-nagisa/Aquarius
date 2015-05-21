@@ -32,14 +32,14 @@ public class Utils {
      *
      * @param message print this message before printing memory
      */
-    public final static void showMemory(String message) {
+    public static void showMemory(String message) {
         MemoryInfo info = getMemoryInfo();
         System.err.println(message);
         System.err.println(info);
         System.err.println();
     }
 
-    public final static MemoryInfo getMemoryInfo() {
+    public static MemoryInfo getMemoryInfo() {
         System.gc();
         return new MemoryInfo();
     }
@@ -52,7 +52,7 @@ public class Utils {
      * @throws RuntimeException if e is RuntimeException, rethrow it.
      *                          otherwise wrapped by RuntimeException.
      */
-    public final static boolean propagate(Exception e) throws RuntimeException {
+    public static boolean propagate(Exception e) throws RuntimeException {
         if(e instanceof RuntimeException) {
             throw (RuntimeException) e;
         }
@@ -80,13 +80,13 @@ public class Utils {
         @Override
         public String toString() {
             StringBuilder sBuilder = new StringBuilder();
-            sBuilder.append("total memory: " + f.format(this.total));
+            sBuilder.append("total memory: ").append(f.format(this.total));
             sBuilder.append(System.lineSeparator());
-            sBuilder.append("free  memory: " + f.format(this.free));
+            sBuilder.append("free  memory: ").append(f.format(this.free));
             sBuilder.append(System.lineSeparator());
-            sBuilder.append("used  memory: " + f.format(this.used) + " (" + f2.format(this.ratio) + "%)");
+            sBuilder.append("used  memory: ").append(f.format(this.used)).append(" (").append(f2.format(this.ratio)).append("%)");
             sBuilder.append(System.lineSeparator());
-            sBuilder.append("max   memory: " + f.format(this.max));
+            sBuilder.append("max   memory: ").append(f.format(this.max));
             return sBuilder.toString();
         }
     }

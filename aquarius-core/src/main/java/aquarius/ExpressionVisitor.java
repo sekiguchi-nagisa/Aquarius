@@ -19,45 +19,45 @@ package aquarius;
 import aquarius.expression.*;
 
 public interface ExpressionVisitor<T> {
-    public <R, A> T visitAction(Action<R, A> expr);
+    <R, A> T visitAction(Action<R, A> expr);
 
-    public T visitAndPredict(AndPredict expr);
+    T visitAndPredict(AndPredict expr);
 
-    public T visitAny(Any expr);
+    T visitAny(Any expr);
 
-    public T visitCapture(Capture expr);
+    T visitCapture(Capture expr);
 
-    public T visitCharSet(CharSet expr);
+    T visitCharSet(CharSet expr);
 
-    public <R> T visitChoice(Choice<R> expr);
+    <R> T visitChoice(Choice<R> expr);
 
-    public <R> T visitCustomExpr(CustomExpr<R> expr);
+    <R> T visitCustomExpr(CustomExpr<R> expr);
 
-    public <R> T visitFilter(Filter<R> expr);
+    <R> T visitFilter(Filter<R> expr);
 
-    public T visitLiteral(Literal expr);
+    T visitLiteral(Literal expr);
 
-    public T visitNotPredict(NotPredict expr);
+    T visitNotPredict(NotPredict expr);
 
-    public <R> T visitOneMore(OneMore<R> expr);
+    <R> T visitOneMore(OneMore<R> expr);
 
-    public <R> T visitOptional(Optional<R> expr);
+    <R> T visitOptional(Optional<R> expr);
 
-    public T visitPredictAction(PredictAction expr);
+    T visitPredictAction(PredictAction expr);
 
-    public <R> T visitRule(Rule<R> expr);
+    <R> T visitRule(Rule<R> expr);
 
-    public T visitSequence(Sequence expr);
+    T visitSequence(Sequence expr);
 
-    public <A, B> T visitSequence2(Sequence2<A, B> expr);
+    <A, B> T visitSequence2(Sequence2<A, B> expr);
 
-    public <A, B, C> T visitSequence3(Sequence3<A, B, C> expr);
+    <A, B, C> T visitSequence3(Sequence3<A, B, C> expr);
 
-    public <A, B, C, D> T visitSequence4(Sequence4<A, B, C, D> expr);
+    <A, B, C, D> T visitSequence4(Sequence4<A, B, C, D> expr);
 
-    public <A, B, C, D, E> T visitSequence5(Sequence5<A, B, C, D, E> expr);
+    <A, B, C, D, E> T visitSequence5(Sequence5<A, B, C, D, E> expr);
 
-    public T visitVoidCustomExpr(VoidCustomExpr expr);
+    T visitVoidCustomExpr(VoidCustomExpr expr);
 
-    public <R> T visitZeroMore(ZeroMore<R> expr);
+    <R> T visitZeroMore(ZeroMore<R> expr);
 }

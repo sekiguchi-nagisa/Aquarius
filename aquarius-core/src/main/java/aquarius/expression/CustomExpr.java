@@ -30,11 +30,11 @@ import aquarius.misc.Utils;
  */
 @FunctionalInterface
 public interface CustomExpr<R> extends ParsingExpression<R> {
-    public default <T> T accept(ExpressionVisitor<T> visitor) {
+    default <T> T accept(ExpressionVisitor<T> visitor) {
         return visitor.visitCustomExpr(this);
     }
 
-    public default boolean parseImpl(ParserContext context) {
+    default boolean parseImpl(ParserContext context) {
         AquariusInputStream input = context.getInputStream();
         int pos = input.getPosition();
 
@@ -49,7 +49,7 @@ public interface CustomExpr<R> extends ParsingExpression<R> {
         }
     }
 
-    public default boolean isReturnable() {
+    default boolean isReturnable() {
         return true;
     }
 
@@ -61,5 +61,5 @@ public interface CustomExpr<R> extends ParsingExpression<R> {
      * @throws FailedActionException
      * @throws Exception
      */
-    public R apply(ParserContext context) throws FailedActionException, Exception;
+    R apply(ParserContext context) throws FailedActionException, Exception;
 }

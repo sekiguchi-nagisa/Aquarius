@@ -33,8 +33,8 @@ public class CacheFactory {
         return new LimitedSizeCache(ruleSize);
     }
 
-    public static enum CacheKind {
-        Empty, Limit;
+    public enum CacheKind {
+        Empty, Limit
     }
 
     /**

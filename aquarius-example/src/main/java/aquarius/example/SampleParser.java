@@ -25,32 +25,32 @@ import static aquarius.Expressions.*;
 
 @Grammar
 public interface SampleParser extends Parser {
-    public default Rule<Token> Expr() {
+    default Rule<Token> Expr() {
         return () ->
                 seq(__, Add(), __).map((ctx, a) -> a.get1());
     }
 
-    public default Rule<Token> Add() {
+    default Rule<Token> Add() {
         return () ->
                 $(Mul(), __, str("+"), __, Add())
                         .or($(Mul(), __, str("-"), __, Add()))
                         .or(Mul());
     }
 
-    public default Rule<Token> Mul() {
+    default Rule<Token> Mul() {
         return () ->
                 $(Primary(), __, str("*"), __, Mul())
                         .or($(Primary(), __, str("/"), __, Mul()))
                         .or(Primary());
     }
 
-    public default Rule<Token> Primary() {
+    default Rule<Token> Primary() {
         return () ->
                 $(str("("), __, Add(), __, str(")"))
                         .or(Num());
     }
 
-    public default Rule<Token> Num() {
+    default Rule<Token> Num() {
         return () ->
                 $("0")
                         .or($(ch('-', '+').opt(), r('1', '9'), r('0', '9').zeroMore()));

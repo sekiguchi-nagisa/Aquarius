@@ -22,13 +22,13 @@ import aquarius.action.ParsingAction.Consumer;
 import aquarius.action.ParsingAction.Mapper;
 
 public interface ParsingExpression<R> {
-    public <T> T accept(ExpressionVisitor<T> visitor);
+    <T> T accept(ExpressionVisitor<T> visitor);
 
     /**
      * @param context
      * @return return true if parsing success.
      */
-    public default boolean parse(ParserContext context) {
+    default boolean parse(ParserContext context) {
         int pos = context.getInputStream().getPosition();
         if(!this.parseImpl(context)) {
             context.getInputStream().setPosition(pos);
@@ -41,18 +41,18 @@ public interface ParsingExpression<R> {
      * @param context
      * @return return true if parsing success.
      */
-    public boolean parseImpl(ParserContext context);
+    boolean parseImpl(ParserContext context);
 
     /**
      * @return return true if this operator construct some non null value.
      */
-    public boolean isReturnable();
+    boolean isReturnable();
 
-    public default <E> Action<E, R> map(Mapper<E, R> action) {
+    default <E> Action<E, R> map(Mapper<E, R> action) {
         return new Action<>(this, action);
     }
 
-    public default Action<Void, R> consume(Consumer<R> action) {
+    default Action<Void, R> consume(Consumer<R> action) {
         return new Action<>(this, action);
     }
 
@@ -61,7 +61,7 @@ public interface ParsingExpression<R> {
      *
      * @return
      */
-    public default ZeroMore<R> zeroMore() {
+    default ZeroMore<R> zeroMore() {
         return new ZeroMore<>(this);
     }
 
@@ -70,7 +70,7 @@ public interface ParsingExpression<R> {
      *
      * @return
      */
-    public default OneMore<R> oneMore() {
+    default OneMore<R> oneMore() {
         return new OneMore<>(this);
     }
 
@@ -79,7 +79,7 @@ public interface ParsingExpression<R> {
      *
      * @return
      */
-    public default Optional<R> opt() {
+    default Optional<R> opt() {
         return new Optional<>(this);
     }
 
@@ -90,16 +90,14 @@ public interface ParsingExpression<R> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public default Choice<R> or(ParsingExpression<? extends R> expr) {
+    default Choice<R> or(ParsingExpression<? extends R> expr) {
         if(this instanceof Choice) {
             ParsingExpression<?>[] alters = ((Choice<?>) this).getExprs();
             int size = alters.length;
             ParsingExpression<?>[] exprs = new ParsingExpression<?>[size + 1];
-            for(int i = 0; i < size; i++) {
-                exprs[i] = alters[i];
-            }
+            System.arraycopy(alters, 0, exprs, 0, size);
             exprs[size] = expr;
-            return new Choice<R>((ParsingExpression<R>[]) exprs);
+            return new Choice<>((ParsingExpression<R>[]) exprs);
         }
         return new Choice<>(this, (ParsingExpression<R>) expr);
     }

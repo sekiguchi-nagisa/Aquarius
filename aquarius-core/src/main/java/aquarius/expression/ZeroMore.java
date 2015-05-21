@@ -51,7 +51,7 @@ public class ZeroMore<R> implements ParsingExpression<List<R>> {
     @SuppressWarnings("unchecked")
     @Override
     public boolean parseImpl(ParserContext context) {
-        List<R> result = this.returnable ? new LinkedList<R>() : null;
+        List<R> result = this.returnable ? new LinkedList<>() : null;
 
         context.setFailureCreation(false);
         AquariusInputStream input = context.getInputStream();
