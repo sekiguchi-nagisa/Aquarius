@@ -48,13 +48,8 @@ public class AndPredict implements ParsingExpression<Void> {
         AquariusInputStream input = context.getInputStream();
         int pos = input.getPosition();
 
-        context.setFailureCreation(false);
         boolean status = this.expr.parseImpl(context);
-        context.setFailureCreation(true);
 
-        if(!status) {
-            context.pushFailure(pos, this);
-        }
         input.setPosition(pos);
         return status;    //if prediction is success, return true
     }

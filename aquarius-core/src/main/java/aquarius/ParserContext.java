@@ -27,11 +27,11 @@ public class ParserContext {
     private final Failure longestFailure = new Failure();
     private final AquariusInputStream input;
     private final ResultCache cache;
+
     /**
      * result value of action or capture. may be null
      */
     private Object value;
-    private boolean failureCreation = true;
 
     public ParserContext(AquariusInputStream input) {
         this(input, new CacheFactory(CacheKind.Empty).newCache(0));
@@ -74,33 +74,22 @@ public class ParserContext {
         return this.value;
     }
 
-    /**
-     * @param failureCreation if true, enable failure creation.
-     */
-    public void setFailureCreation(boolean failureCreation) {
-        this.failureCreation = failureCreation;
-    }
-
     public void pushFailure(int failurePos, FailedActionException e) {
-        if(this.checkFailureCreation(failurePos)) {
+        if(failurePos >= this.longestFailure.getFailurePos()) {
             this.longestFailure.reuse(failurePos, e);
         }
     }
 
     public void pushFailure(int failurePos, ParsingExpression<?> expr) {
-        if(this.checkFailureCreation(failurePos)) {
+        if(failurePos >= this.longestFailure.getFailurePos()) {
             this.longestFailure.reuse(failurePos, expr);
         }
     }
 
-    private boolean checkFailureCreation(int failurePos) {
-        return this.failureCreation && (this.longestFailure == null
-                || failurePos > this.longestFailure.getFailurePos());
+    public void pushFailureUnchecked(int failurePos, ParsingExpression<?> expr) {
+        this.longestFailure.reuse(failurePos, expr);
     }
 
-    /**
-     * @return may be null
-     */
     public Failure getFailure() {
         return this.longestFailure;
     }

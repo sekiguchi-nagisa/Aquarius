@@ -51,9 +51,7 @@ public class PredictAction implements ParsingExpression<Void> {    // extended e
         int pos = input.getPosition();
 
         try {
-            context.setFailureCreation(false);
             boolean status = this.action.invoke(context);
-            context.setFailureCreation(true);
 
             if(!status) {
                 context.pushFailure(pos, this);

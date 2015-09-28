@@ -61,7 +61,6 @@ public class OneMore<R> implements ParsingExpression<List<R>> {
             result.add((R) context.popValue());
         }
 
-        context.setFailureCreation(false);
         AquariusInputStream input = context.getInputStream();
         int pos = input.getPosition();
         while(this.expr.parseImpl(context)) {
@@ -72,7 +71,6 @@ public class OneMore<R> implements ParsingExpression<List<R>> {
         }
         input.setPosition(pos);
         context.pushValue(result);
-        context.setFailureCreation(true);
         return true;
     }
 
