@@ -33,7 +33,7 @@ public interface VoidCustomExpr extends ParsingExpression<Void> {
         return visitor.visitVoidCustomExpr(this);
     }
 
-    default boolean parseImpl(ParserContext context) {
+    default boolean parse(ParserContext context) {
         AquariusInputStream input = context.getInputStream();
         int pos = input.getPosition();
 

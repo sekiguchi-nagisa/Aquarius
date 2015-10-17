@@ -45,7 +45,7 @@ public class Optional<R> implements ParsingExpression<java.util.Optional<R>> {
     }
 
     @Override
-    public boolean parseImpl(ParserContext context) {
+    public boolean parse(ParserContext context) {
         this.expr.parse(context);
         if(this.returnable) {
             context.pushValue(java.util.Optional.ofNullable(context.popValue()));

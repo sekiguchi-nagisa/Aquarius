@@ -27,7 +27,7 @@ public interface Rule<R> extends ParsingExpression<R> {
     }
 
     @Override
-    default boolean parseImpl(ParserContext context) {
+    default boolean parse(ParserContext context) {
         return false;
     }
 
@@ -82,7 +82,7 @@ class RuleImpl<R> implements Rule<R> {
     }
 
     @Override
-    public boolean parseImpl(ParserContext context) {
+    public boolean parse(ParserContext context) {
         AquariusInputStream input = context.getInputStream();
         ResultCache cache = context.getCache();
 
@@ -100,7 +100,7 @@ class RuleImpl<R> implements Rule<R> {
             return true;
         }
         // if not found previous parsed result, invoke rule
-        boolean status = this.pattern.parseImpl(context);
+        boolean status = this.pattern.parse(context);
         if(status) {
             cache.set(ruleIndex, srcPos, context.getValue(), input.getPosition());
         } else {

@@ -44,11 +44,11 @@ public class NotPredict implements ParsingExpression<Void> {
     }
 
     @Override
-    public boolean parseImpl(ParserContext context) {
+    public boolean parse(ParserContext context) {
         AquariusInputStream input = context.getInputStream();
         int pos = input.getPosition();
 
-        boolean status = !this.expr.parseImpl(context);
+        boolean status = !this.expr.parse(context);
 
         if(!status) {
             context.pushFailureUnchecked(pos, this);

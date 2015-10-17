@@ -44,14 +44,15 @@ public class AndPredict implements ParsingExpression<Void> {
     }
 
     @Override
-    public boolean parseImpl(ParserContext context) {
+    public boolean parse(ParserContext context) {
         AquariusInputStream input = context.getInputStream();
         int pos = input.getPosition();
 
-        boolean status = this.expr.parseImpl(context);
-
+        if(!this.expr.parse(context)) {
+            return false;
+        }
         input.setPosition(pos);
-        return status;    //if prediction is success, return true
+        return true;
     }
 
     @Override

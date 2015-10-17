@@ -30,11 +30,13 @@ public class AsciiLiteral extends Literal {
     }
 
     @Override
-    public boolean parseImpl(ParserContext context) {
+    public boolean parse(ParserContext context) {
         AquariusInputStream input = context.getInputStream();
+        int pos = input.getPosition();
         for(int code : this.targetCodes) {
             if(code != input.fetchByte()) {
                 context.pushFailure(input.getPosition(), this);
+                input.setPosition(pos);
                 return false;
             }
             input.consumeByte();

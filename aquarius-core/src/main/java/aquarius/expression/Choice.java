@@ -51,12 +51,9 @@ public class Choice<R> implements ParsingExpression<R> {
     }
 
     @Override
-    public boolean parseImpl(ParserContext context) {
-        AquariusInputStream input = context.getInputStream();
-        int pos = input.getPosition();
+    public boolean parse(ParserContext context) {
         for(ParsingExpression<R> e : this.exprs) {
-            input.setPosition(pos);
-            if(e.parseImpl(context)) {
+            if(e.parse(context)) {
                 return true;
             }
         }

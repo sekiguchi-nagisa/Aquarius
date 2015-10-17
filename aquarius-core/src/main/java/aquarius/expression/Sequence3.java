@@ -55,16 +55,17 @@ public class Sequence3<A, B, C> implements ParsingExpression<Tuple3<A, B, C>> {
     }
 
     @Override
-    public boolean parseImpl(ParserContext context) {
-        if(this.exprs.get0().parseImpl(context)) {
+    public boolean parse(ParserContext context) {
+        int pos = context.getInputStream().getPosition();
+        if(this.exprs.get0().parse(context)) {
             @SuppressWarnings("unchecked")
             A a = (A) context.popValue();
 
-            if(this.exprs.get1().parseImpl(context)) {
+            if(this.exprs.get1().parse(context)) {
                 @SuppressWarnings("unchecked")
                 B b = (B) context.popValue();
 
-                if(this.exprs.get2().parseImpl(context)) {
+                if(this.exprs.get2().parse(context)) {
                     @SuppressWarnings("unchecked")
                     C c = (C) context.popValue();
 
@@ -75,6 +76,7 @@ public class Sequence3<A, B, C> implements ParsingExpression<Tuple3<A, B, C>> {
                 }
             }
         }
+        context.getInputStream().setPosition(pos);
         return false;
     }
 

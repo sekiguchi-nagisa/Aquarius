@@ -145,7 +145,7 @@ public class CharSet implements ParsingExpression<Void> {
     }
 
     @Override
-    public boolean parseImpl(ParserContext context) {
+    public boolean parse(ParserContext context) {
         AquariusInputStream input = context.getInputStream();
         final int fetchedCh = input.fetch();
         if(fetchedCh != AquariusInputStream.EOF) {

@@ -28,20 +28,7 @@ public interface ParsingExpression<R> {
      * @param context
      * @return return true if parsing success.
      */
-    default boolean parse(ParserContext context) {
-        int pos = context.getInputStream().getPosition();
-        if(!this.parseImpl(context)) {
-            context.getInputStream().setPosition(pos);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * @param context
-     * @return return true if parsing success.
-     */
-    boolean parseImpl(ParserContext context);
+    boolean parse(ParserContext context);
 
     /**
      * @return return true if this operator construct some non null value.

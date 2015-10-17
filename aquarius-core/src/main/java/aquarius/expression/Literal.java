@@ -63,11 +63,13 @@ public class Literal implements ParsingExpression<Void> {
     }
 
     @Override
-    public boolean parseImpl(ParserContext context) {
+    public boolean parse(ParserContext context) {
         AquariusInputStream input = context.getInputStream();
+        int pos = input.getPosition();
         for(int code : this.targetCodes) {
             if(code != input.fetch()) {
                 context.pushFailure(input.getPosition(), this);
+                input.setPosition(pos);
                 return false;
             }
             input.consume();

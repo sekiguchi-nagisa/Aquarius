@@ -60,14 +60,14 @@ public class Action<R, A> implements ParsingExpression<R> {    // extended expre
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean parseImpl(ParserContext context) {
-        // parser preceding expression
-        if(!this.expr.parseImpl(context)) {
-            return false;
-        }
-
+    public boolean parse(ParserContext context) {
         AquariusInputStream input = context.getInputStream();
         int pos = input.getPosition();
+
+        // parser preceding expression
+        if(!this.expr.parse(context)) {
+            return false;
+        }
 
         // invoke action
         try {
@@ -79,7 +79,8 @@ public class Action<R, A> implements ParsingExpression<R> {    // extended expre
             }
             return true;
         } catch(FailedActionException e) {
-            context.pushFailure(pos, e);
+            context.pushFailure(input.getPosition(), e);
+            input.setPosition(pos);
             return false;
         } catch(Exception e) {
             return Utils.propagate(e);

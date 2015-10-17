@@ -66,8 +66,8 @@ public class Filter<R> implements ParsingExpression<R> {
     }
 
     @Override
-    public boolean parseImpl(ParserContext context) {
-        if(!this.expr.parseImpl(context)) {
+    public boolean parse(ParserContext context) {
+        if(!this.expr.parse(context)) {
             return false;
         }
         Object value = context.popValue();

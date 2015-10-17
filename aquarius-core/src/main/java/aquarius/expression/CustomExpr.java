@@ -34,7 +34,7 @@ public interface CustomExpr<R> extends ParsingExpression<R> {
         return visitor.visitCustomExpr(this);
     }
 
-    default boolean parseImpl(ParserContext context) {
+    default boolean parse(ParserContext context) {
         AquariusInputStream input = context.getInputStream();
         int pos = input.getPosition();
 

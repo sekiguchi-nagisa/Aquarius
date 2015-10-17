@@ -16,7 +16,6 @@
 
 package aquarius.expression;
 
-import aquarius.AquariusInputStream;
 import aquarius.ExpressionVisitor;
 import aquarius.ParserContext;
 
@@ -50,18 +49,14 @@ public class ZeroMore<R> implements ParsingExpression<List<R>> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean parseImpl(ParserContext context) {
+    public boolean parse(ParserContext context) {
         List<R> result = this.returnable ? new LinkedList<>() : null;
 
-        AquariusInputStream input = context.getInputStream();
-        int pos = input.getPosition();
         while(this.expr.parse(context)) {
             if(this.returnable) {
                 result.add((R) context.popValue());
             }
-            pos = input.getPosition();
         }
-        input.setPosition(pos);
         context.pushValue(result);
         return true;
     }
